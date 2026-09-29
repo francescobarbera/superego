@@ -100,7 +100,8 @@ The legacy bootstrap supplies internationalization data for English and Italian,
 fetch, and AbortController before loading application dependencies. React Aria's
 DOM factory uses explicit getters instead of Proxy, and React Query disables
 Proxy-based property tracking on browsers without native Proxy. The build also
-omits cosmetic function name/length changes that Safari 9 rejects. Keep the
+preserves React Aria's mouse/touch fallbacks for browsers without PointerEvent
+and omits cosmetic function name/length changes that Safari 9 rejects. Keep the
 internationalization polyfills on their declared major versions: newer releases
 can require native BigInt, which iOS 9 cannot parse.
 

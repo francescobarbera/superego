@@ -11,7 +11,38 @@ export default mergeConfig(browserAppViteConfig as UserConfig, {
       ? [
           {
             name: "legacy-browser-dependencies",
+            enforce: "pre" as const,
             transform(code: string, identifier: string) {
+              if (
+                /\/react-aria\/dist\/private\/interactions\/use(Press|Hover|InteractOutside|FocusVisible|Move)\.mjs$/.test(
+                  identifier,
+                )
+              ) {
+                // React Aria retains mouse/touch handlers for its tests, but
+                // removes them from production. iOS 9 needs those handlers
+                // because it has no PointerEvent implementation.
+                const transformedCode = code
+                  .replaceAll(
+                    "else if (process.env.NODE_ENV === 'test')",
+                    "else",
+                  )
+                  .replaceAll(
+                    "typeof PointerEvent === 'undefined' && process.env.NODE_ENV === 'test'",
+                    "typeof PointerEvent === 'undefined'",
+                  )
+                  // Safari 9 has neither composedPath nor Shadow DOM. Outside
+                  // presses can use ordinary containment on that browser.
+                  .replace(
+                    "return !event.composedPath().includes(ref.current);",
+                    "return event.composedPath ? !event.composedPath().includes(ref.current) : !ref.current.contains(target);",
+                  );
+                if (transformedCode === code) {
+                  throw new Error(
+                    "React Aria interaction fallback changed; review legacy compatibility",
+                  );
+                }
+                return transformedCode;
+              }
               if (
                 identifier.endsWith("/urlpattern-polyfill/dist/urlpattern.js")
               ) {
