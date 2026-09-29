@@ -3674,6 +3674,12 @@
       "value": "Parla"
     }
   ],
+  "SendRecordButtons.tsx_SttzK5": [
+    {
+      "type": 0,
+      "value": "La registrazione audio non è disponibile in questo browser o con questa connessione"
+    }
+  ],
   "SendRecordButtons.tsx_kNl1RN": [
     {
       "type": 0,

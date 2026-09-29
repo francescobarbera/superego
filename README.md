@@ -17,6 +17,8 @@
 - [Download the latest release](https://github.com/superegodev/superego/releases/latest)
   (local app).
 - Or [try the online demo](https://demo.superego.dev) (no login required).
+- Or [run the local network server](./packages/apps/server-app/README.md) to
+  access your desktop database from a browser.
 
 ## Watch a short demo
 

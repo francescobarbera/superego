@@ -3696,6 +3696,12 @@
       "value": "Speak"
     }
   ],
+  "SendRecordButtons.tsx_SttzK5": [
+    {
+      "type": 0,
+      "value": "Audio recording is unavailable in this browser or connection"
+    }
+  ],
   "SendRecordButtons.tsx_kNl1RN": [
     {
       "type": 0,

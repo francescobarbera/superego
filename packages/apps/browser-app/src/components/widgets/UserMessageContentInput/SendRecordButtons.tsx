@@ -35,6 +35,9 @@ export default function SendRecordButtons({
   onCancelRecording,
 }: Props) {
   const intl = useIntl();
+  const canRecordAudio =
+    typeof MediaRecorder !== "undefined" &&
+    typeof navigator.mediaDevices?.getUserMedia === "function";
   return (
     <Toolbar className={cs.SendRecordButtons.root}>
       {isRecording ? (
@@ -66,12 +69,17 @@ export default function SendRecordButtons({
         <IconButton
           variant="invisible"
           label={
-            isRecording
-              ? intl.formatMessage({ defaultMessage: "Finish and send" })
-              : intl.formatMessage({ defaultMessage: "Speak" })
+            !canRecordAudio
+              ? intl.formatMessage({
+                  defaultMessage:
+                    "Audio recording is unavailable in this browser or connection",
+                })
+              : isRecording
+                ? intl.formatMessage({ defaultMessage: "Finish and send" })
+                : intl.formatMessage({ defaultMessage: "Speak" })
           }
           onPress={isRecording ? onFinishRecording : onStartRecording}
-          isDisabled={isDisabled}
+          isDisabled={isDisabled || !canRecordAudio}
           className={cs.SendRecordButtons.button}
         >
           {isRecording ? <PiStopFill /> : <PiMicrophoneFill />}

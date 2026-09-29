@@ -1,0 +1,18 @@
+[Unit]
+Description=Superego local network server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/opt/superego
+ExecStart=/usr/bin/node %h/opt/superego/packages/apps/server-app/dist/server/index.js
+Environment=SUPEREGO_HOST=0.0.0.0
+Environment=SUPEREGO_PORT=5177
+Environment=SUPEREGO_SANDBOX_PORT=5178
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=35
+UMask=0077
+
+[Install]
+WantedBy=default.target

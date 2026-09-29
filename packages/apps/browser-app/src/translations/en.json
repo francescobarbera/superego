@@ -1292,6 +1292,9 @@
   "SendRecordButtons.tsx_GEd3kV": {
     "defaultMessage": "Speak"
   },
+  "SendRecordButtons.tsx_SttzK5": {
+    "defaultMessage": "Audio recording is unavailable in this browser or connection"
+  },
   "SendRecordButtons.tsx_kNl1RN": {
     "defaultMessage": "Configure assistant"
   },

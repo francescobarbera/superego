@@ -1669,5 +1669,8 @@
   },
   "useCreateAndEditApp.ts_SbVBaN": {
     "defaultMessage": "Nuova app"
+  },
+  "SendRecordButtons.tsx_SttzK5": {
+    "defaultMessage": "La registrazione audio non è disponibile in questo browser o con questa connessione"
   }
 }

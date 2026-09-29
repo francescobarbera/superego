@@ -26,7 +26,9 @@
     "build-electron": "yarn workspace @superego/electron-app build",
     "deploy-electron": "yarn workspace @superego/electron-app deploy",
     "prepare-release": "node scripts/prepareRelease.ts",
-    "playwright": "playwright"
+    "playwright": "playwright",
+    "build-server": "yarn workspace @superego/server-app build",
+    "start-server": "yarn workspace @superego/server-app start"
   },
   "devDependencies": {
     "oxfmt": "^0.67.0",
