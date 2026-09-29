@@ -2,6 +2,18 @@ import "core-js/stable";
 import "whatwg-fetch";
 import "urlpattern-polyfill";
 import { ResizeObserver as ResizeObserverPolyfill } from "@juggle/resize-observer";
+import cssEscape from "css.escape";
+
+if (!window.CSS?.escape) {
+  const cssNamespace = (window.CSS ??= {} as typeof CSS);
+  cssNamespace.escape = cssEscape;
+  // Old WebKit can discard expandos when it recreates the native CSS wrapper.
+  // Keep that wrapper alive for the lifetime of the page.
+  Object.defineProperty(window, "superegoCssNamespace", {
+    value: cssNamespace,
+    configurable: true,
+  });
+}
 
 if (!window.ResizeObserver) {
   window.ResizeObserver = ResizeObserverPolyfill;

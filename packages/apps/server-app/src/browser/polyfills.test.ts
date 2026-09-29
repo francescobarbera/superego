@@ -53,8 +53,13 @@ it("preserves native browser implementations", async () => {
   const randomUUID = vi.fn(() => "native-uuid");
   const matchMedia = vi.fn(() => ({ addEventListener: vi.fn() }));
   const resizeObserver = vi.fn();
+  const escape = vi.fn();
   vi.stubGlobal("crypto", { randomUUID });
-  vi.stubGlobal("window", { matchMedia, ResizeObserver: resizeObserver });
+  vi.stubGlobal("window", {
+    matchMedia,
+    ResizeObserver: resizeObserver,
+    CSS: { escape },
+  });
 
   // Exercise
   await import("./polyfills.js");
@@ -63,4 +68,13 @@ it("preserves native browser implementations", async () => {
   expect(crypto.randomUUID).toBe(randomUUID);
   expect(window.matchMedia).toBe(matchMedia);
   expect(window.ResizeObserver).toBe(resizeObserver);
+  expect(window.CSS.escape).toBe(escape);
+});
+
+it("installs CSS escaping on the browser global when the module only exports it", async () => {
+  // Exercise
+  await import("./polyfills.js");
+
+  // Verify
+  expect(window.CSS.escape("a b")).toBe("a\\ b");
 });

@@ -19,6 +19,13 @@ The frontend and API share port 5177. Embedded apps use port 5178 on the same
 desktop, preserving their separate origin and existing permission bridge. Both
 ports must be reachable from the iPad. No authentication is configured.
 
+If the desktop uses UFW, allow both ports from your LAN subnet (adjust the
+subnet to match your network):
+
+```sh
+sudo ufw allow proto tcp from 192.168.1.0/24 to any port 5177:5178 comment 'Superego local network'
+```
+
 | Variable                 | Default                                                                      |
 | ------------------------ | ---------------------------------------------------------------------------- |
 | `SUPEREGO_HOST`          | `0.0.0.0`                                                                    |
@@ -88,6 +95,14 @@ the experimental build on the same ports. The existing UI uses modern CSS
 complex editors need device testing and fallbacks. Embedded user apps also
 dynamically import generated JavaScript, which needs additional adaptation for
 iOS 9. The default build is for modern browsers.
+
+The legacy bootstrap supplies internationalization data for English and Italian,
+fetch, and AbortController before loading application dependencies. React Aria's
+DOM factory uses explicit getters instead of Proxy, and React Query disables
+Proxy-based property tracking on browsers without native Proxy. The build also
+omits cosmetic function name/length changes that Safari 9 rejects. Keep the
+internationalization polyfills on their declared major versions: newer releases
+can require native BigInt, which iOS 9 cannot parse.
 
 ## iPad Home Screen launcher
 
