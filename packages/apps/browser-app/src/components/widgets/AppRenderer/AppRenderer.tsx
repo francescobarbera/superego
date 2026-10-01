@@ -9,9 +9,12 @@ import type {
   CollectionId,
   Document,
   DocumentId,
+  DocumentVersionId,
 } from "@superego/backend";
+import { DocumentContentChangeType } from "@superego/backend";
+import { fromHref, RouteName, toHref } from "@superego/routing";
 import { makeSuccessfulResult } from "@superego/shared-utils";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import DataLoader from "../../../business-logic/backend/DataLoader.js";
 import { useGlobalData } from "../../../business-logic/backend/GlobalData.js";
@@ -21,11 +24,6 @@ import {
   useCreateNewDocumentVersion,
 } from "../../../business-logic/backend/hooks.js";
 import useBackend from "../../../business-logic/backend/useBackend.js";
-import { RouteName } from "../../../business-logic/navigation/Route.js";
-import {
-  fromHref,
-  toHref,
-} from "../../../business-logic/navigation/RouteUtils.js";
 import useNavigationState from "../../../business-logic/navigation/useNavigationState.js";
 import useTheme from "../../../business-logic/theme/useTheme.js";
 import CollectionUtils from "../../../utils/CollectionUtils.js";
@@ -38,6 +36,8 @@ interface Props {
   app: App;
 }
 export default function AppRenderer({ app }: Props) {
+  const appBackend = useBackend();
+  const permissions = app.permissions;
   const intl = useIntl();
   const theme = useTheme();
   const { navigateTo } = useNavigationState();
@@ -48,27 +48,51 @@ export default function AppRenderer({ app }: Props) {
     collectionId: CollectionId;
     documentId: DocumentId;
   } | null>(null);
+  const createNewDocumentVersionMutation = useCreateNewDocumentVersion();
 
   const backend = {
+    state: {
+      get: () => appBackend.apps.getState(app.id, app.latestVersion.id),
+      update: (latestRevision: number, content: any) =>
+        appBackend.apps.updateState(
+          app.id,
+          app.latestVersion.id,
+          latestRevision,
+          content,
+        ),
+    },
     // Pass these as mutation so the query cache is automatically invalidated.
     documents: {
       create: useCreateDocument().mutate,
-      createNewVersion: useCreateNewDocumentVersion().mutate,
+      createNewVersion: (
+        collectionId: CollectionId,
+        documentId: DocumentId,
+        latestVersionId: DocumentVersionId,
+        content: any,
+      ) =>
+        createNewDocumentVersionMutation.mutate(
+          collectionId,
+          documentId,
+          latestVersionId,
+          { type: DocumentContentChangeType.Full, content },
+        ),
       delete: (collectionId: CollectionId, documentId: DocumentId) => {
         setDeleteModalState({ collectionId, documentId });
         return makeSuccessfulResult(null);
       },
     },
     files: {
-      getContent: useBackend().files.getContent,
+      getContent: appBackend.files.getContent,
     },
   };
 
   const [incompatibilityWarningDismissed, setIncompatibilityWarningDismissed] =
     useState(false);
-  useEffect(() => {
+  const [previousAppId, setPreviousAppId] = useState(app.id);
+  if (previousAppId !== app.id) {
+    setPreviousAppId(app.id);
     setIncompatibilityWarningDismissed(false);
-  }, [app.id]);
+  }
 
   const settings: Settings = useMemo(() => ({ theme }), [theme]);
   const intlMessages: IntlMessages = useMemo(
@@ -109,7 +133,9 @@ export default function AppRenderer({ app }: Props) {
       >
         {(...documentsLists) => (
           <Sandbox
+            key={`${app.id}:${app.latestVersion.id}:${JSON.stringify(permissions)}`}
             backend={backend}
+            permissions={permissions}
             navigateTo={sandboxNavigateTo}
             iframeSrc={
               import.meta.env["VITE_SANDBOX_URL"] ??

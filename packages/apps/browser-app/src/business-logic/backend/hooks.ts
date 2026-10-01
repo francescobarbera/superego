@@ -1,3 +1,6 @@
+import type { Collection, LiteCollection } from "@superego/backend";
+import type { Result } from "@superego/global-types";
+import type BackendQuery from "./BackendQuery.js";
 import { makeBackendQueryGetter } from "./BackendQuery.js";
 import type { SuccessfulResultOf } from "./typeUtils.js";
 import { makeUseBackendMutation } from "./UseBackendMutation.js";
@@ -34,17 +37,27 @@ export const useDeleteCollectionCategory = makeUseBackendMutation(
  * Collections
  */
 
-export const listCollectionsQuery = makeBackendQueryGetter(
+const getListCollectionsQuery = makeBackendQueryGetter(
   "collections",
   "list",
-  () => ["listCollections"],
+  (lite) => ["listCollections", String(lite ?? true)],
 );
 
-export const listConnectorsQuery = makeBackendQueryGetter(
-  "collections",
-  "listConnectors",
-  () => ["listConnectors"],
-);
+export function listCollectionsQuery(
+  args: [],
+): BackendQuery<Result<LiteCollection[], any>>;
+export function listCollectionsQuery(
+  args: [false],
+): BackendQuery<Result<Collection[], any>>;
+export function listCollectionsQuery(
+  args: [] | [false],
+):
+  | BackendQuery<Result<LiteCollection[], any>>
+  | BackendQuery<Result<Collection[], any>> {
+  return getListCollectionsQuery(args) as
+    | BackendQuery<Result<LiteCollection[], any>>
+    | BackendQuery<Result<Collection[], any>>;
+}
 
 export const getCollectionVersionQuery = makeBackendQueryGetter(
   "collections",
@@ -71,23 +84,6 @@ export const useCreateManyCollections = makeUseBackendMutation(
 export const useUpdateCollectionSettings = makeUseBackendMutation(
   "collections",
   "updateSettings",
-  () => [["listCollections"]],
-);
-
-export const useSetCollectionRemote = makeUseBackendMutation(
-  "collections",
-  "setRemote",
-  ([collectionId]) => [
-    ["listCollections"],
-    ["listDocuments", collectionId],
-    ["getDocument", collectionId],
-    ["getDocumentVersion", collectionId],
-  ],
-);
-
-export const useTriggerCollectionDownSync = makeUseBackendMutation(
-  "collections",
-  "triggerDownSync",
   () => [["listCollections"]],
 );
 
@@ -318,6 +314,12 @@ export const listAppsQuery = makeBackendQueryGetter("apps", "list", () => [
 export const useCreateApp = makeUseBackendMutation("apps", "create", () => [
   ["listApps"],
 ]);
+
+export const useUpdateAppPermissions = makeUseBackendMutation(
+  "apps",
+  "updatePermissions",
+  () => [["listApps"]],
+);
 
 export const useUpdateAppName = makeUseBackendMutation(
   "apps",

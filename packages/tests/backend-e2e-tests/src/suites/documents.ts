@@ -1,17 +1,27 @@
 import {
-  ConnectorAuthenticationStrategy,
+  DocumentContentChangeType,
   DocumentVersionCreator,
 } from "@superego/backend";
-import type { Connector } from "@superego/executing-backend";
-import { DataType, type Schema } from "@superego/schema";
+import { DataType } from "@superego/schema";
 import { Id } from "@superego/shared-utils";
 import { registeredDescribe as rd } from "@superego/vitest-registered";
 import { assert, describe, expect, it } from "vitest";
 import type GetDependencies from "../GetDependencies.js";
-import triggerAndWaitForDownSync from "../utils/triggerAndWaitForDownSync.js";
 
 export default rd<GetDependencies>("Documents", (deps) => {
   describe("create", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.create({} as any);
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: CollectionNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -30,108 +40,6 @@ export default rd<GetDependencies>("Documents", (deps) => {
         error: {
           name: "CollectionNotFound",
           details: { collectionId },
-        },
-      });
-    });
-
-    it("error: ConnectorDoesNotSupportUpSyncing", async () => {
-      // Setup mocks
-      const mockConnector: Connector.OAuth2PKCE<Schema> = {
-        name: "MockConnector",
-        authenticationStrategy: ConnectorAuthenticationStrategy.OAuth2PKCE,
-        settingsSchema: null,
-        remoteDocumentTypescriptSchema: {
-          types: "export type RemoteDocument = {};",
-          rootType: "RemoteDocument",
-        },
-        getAuthorizationRequestUrl: async () => "authorizationRequestUrl",
-        getAuthenticationState: async () => ({
-          success: true,
-          data: {
-            accessToken: "accessToken",
-            refreshToken: "refreshToken",
-            accessTokenExpiresAt: new Date(),
-          },
-          error: null,
-        }),
-        syncDown: async ({ authenticationState }) => ({
-          success: true,
-          data: {
-            changes: { addedOrModified: [], deleted: [] },
-            authenticationState,
-            syncPoint: "syncPoint",
-          },
-          error: null,
-        }),
-      };
-
-      // Setup SUT
-      const { backend } = deps({ connector: mockConnector });
-      const createCollectionResult = await backend.collections.create({
-        settings: {
-          name: "name",
-          icon: null,
-          collectionCategoryId: null,
-          defaultCollectionViewAppId: null,
-          description: null,
-          assistantInstructions: null,
-          redirectToCollectionAfterDocumentCreation: false,
-        },
-        schema: {
-          types: {
-            Root: {
-              dataType: DataType.Struct,
-              properties: {
-                title: { dataType: DataType.String },
-              },
-            },
-          },
-          rootType: "Root",
-        },
-        versionSettings: {
-          contentBlockingKeysGetter: null,
-          contentSummaryGetter: {
-            source: "",
-            compiled:
-              "export default function getContentSummary() { return {}; }",
-          },
-          defaultDocumentViewUiOptions: null,
-        },
-      });
-      assert.isTrue(createCollectionResult.success);
-      const setRemoteResult = await backend.collections.setRemote(
-        createCollectionResult.data.id,
-        mockConnector.name,
-        { clientId: "clientId", clientSecret: "clientSecret" },
-        null,
-        {
-          fromRemoteDocument: {
-            source: "",
-            compiled:
-              "export default function fromRemoteDocument(remote) { return { title: remote.title }; }",
-          },
-        },
-      );
-      assert.isTrue(setRemoteResult.success);
-
-      // Exercise
-      const createDocumentResult = await backend.documents.create({
-        collectionId: createCollectionResult.data.id,
-        content: { title: "title" },
-      });
-
-      // Verify
-      expect(createDocumentResult).toEqual({
-        success: false,
-        data: null,
-        error: {
-          name: "ConnectorDoesNotSupportUpSyncing",
-          details: {
-            collectionId: createCollectionResult.data.id,
-            connectorName: mockConnector.name,
-            message:
-              "The collection has a remote, and its connector does not support up-syncing. This effectively makes the collection read-only.",
-          },
         },
       });
     });
@@ -412,7 +320,7 @@ export default rd<GetDependencies>("Documents", (deps) => {
           contentBlockingKeysGetter: {
             source: "",
             compiled:
-              // oxlint-disable-next-line no-template-curly-in-string: intended.
+              // oxlint-disable-next-line no-template-curly-in-string -- intended.
               "export default function getContentBlockingKeys(content) { return [`title:${content.title}`]; }",
           },
           contentSummaryGetter: {
@@ -476,7 +384,7 @@ export default rd<GetDependencies>("Documents", (deps) => {
           contentBlockingKeysGetter: {
             source: "",
             compiled:
-              // oxlint-disable-next-line no-template-curly-in-string: intended.
+              // oxlint-disable-next-line no-template-curly-in-string -- intended.
               "export default function getContentBlockingKeys(content) { return [`title:${content.title}`]; }",
           },
           contentSummaryGetter: {
@@ -506,12 +414,9 @@ export default rd<GetDependencies>("Documents", (deps) => {
       assert.isTrue(createDuplicateDocumentResult.success);
       expect(createDuplicateDocumentResult.data).toEqual({
         id: expect.id("Document"),
-        remoteId: null,
-        remoteUrl: null,
         collectionId: createCollectionResult.data.id,
         latestVersion: expect.objectContaining({
           id: expect.id("DocumentVersion"),
-          remoteId: null,
           previousVersionId: null,
           collectionVersionId: createCollectionResult.data.latestVersion.id,
           conversationId: null,
@@ -574,12 +479,9 @@ export default rd<GetDependencies>("Documents", (deps) => {
       assert.isTrue(createDocumentResult.success);
       expect(createDocumentResult.data).toEqual({
         id: expect.id("Document"),
-        remoteId: null,
-        remoteUrl: null,
         collectionId: createCollectionResult.data.id,
         latestVersion: expect.objectContaining({
           id: expect.id("DocumentVersion"),
-          remoteId: null,
           previousVersionId: null,
           collectionVersionId: createCollectionResult.data.latestVersion.id,
           conversationId: null,
@@ -602,6 +504,18 @@ export default rd<GetDependencies>("Documents", (deps) => {
   });
 
   describe("createMany", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.createMany([{} as any]);
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: CollectionNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -876,12 +790,9 @@ export default rd<GetDependencies>("Documents", (deps) => {
       expect(result.data).toHaveLength(1);
       expect(result.data[0]).toEqual({
         id: expect.id("Document"),
-        remoteId: null,
-        remoteUrl: null,
         collectionId: createCollectionResult.data.id,
         latestVersion: expect.objectContaining({
           id: expect.id("DocumentVersion"),
-          remoteId: null,
           previousVersionId: null,
           collectionVersionId: createCollectionResult.data.latestVersion.id,
           conversationId: null,
@@ -1059,7 +970,7 @@ export default rd<GetDependencies>("Documents", (deps) => {
       });
     });
 
-    it("atomicity: no documents created if one fails validation", async () => {
+    it("error: DocumentContentNotValid leaves no documents created", async () => {
       // Setup SUT
       const { backend } = deps();
       const createCollectionResult = await backend.collections.create({
@@ -1118,6 +1029,23 @@ export default rd<GetDependencies>("Documents", (deps) => {
   });
 
   describe("createNewVersion", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.createNewVersion(
+        Id.generate.collection(),
+        Id.generate.document(),
+        Id.generate.documentVersion(),
+        {} as any,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: CollectionNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -1131,7 +1059,10 @@ export default rd<GetDependencies>("Documents", (deps) => {
           collectionId,
           documentId,
           latestVersionId,
-          { title: "updated" },
+          {
+            type: DocumentContentChangeType.Full,
+            content: { title: "updated" },
+          },
         );
 
       // Verify
@@ -1187,7 +1118,10 @@ export default rd<GetDependencies>("Documents", (deps) => {
           createCollectionResult.data.id,
           documentId,
           latestVersionId,
-          { title: "updated" },
+          {
+            type: DocumentContentChangeType.Full,
+            content: { title: "updated" },
+          },
         );
 
       // Verify
@@ -1197,132 +1131,6 @@ export default rd<GetDependencies>("Documents", (deps) => {
         error: {
           name: "DocumentNotFound",
           details: { documentId },
-        },
-      });
-    });
-
-    it("error: ConnectorDoesNotSupportUpSyncing", async () => {
-      // Setup mocks
-      const changes: Connector.Changes = {
-        addedOrModified: [
-          {
-            id: "remoteId",
-            versionId: "remoteVersionId",
-            url: "remoteUrl",
-            content: { title: "remote title" },
-          },
-        ],
-        deleted: [],
-      };
-      const mockConnector: Connector.OAuth2PKCE<Schema> = {
-        name: "MockConnector",
-        authenticationStrategy: ConnectorAuthenticationStrategy.OAuth2PKCE,
-        settingsSchema: {
-          types: { Settings: { dataType: DataType.Struct, properties: {} } },
-          rootType: "Settings",
-        },
-        remoteDocumentTypescriptSchema: {
-          types: "export type RemoteDocument = { title: string };",
-          rootType: "RemoteDocument",
-        },
-        getAuthorizationRequestUrl: async () => "authorizationRequestUrl",
-        getAuthenticationState: async () => ({
-          success: true,
-          data: {
-            accessToken: "accessToken",
-            refreshToken: "refreshToken",
-            accessTokenExpiresAt: new Date(),
-          },
-          error: null,
-        }),
-        syncDown: async ({ authenticationState }) => ({
-          success: true,
-          data: { changes, authenticationState, syncPoint: "syncPoint" },
-          error: null,
-        }),
-      };
-
-      // Setup SUT
-      const { backend } = deps({ connector: mockConnector });
-      const createCollectionResult = await backend.collections.create({
-        settings: {
-          name: "name",
-          icon: null,
-          collectionCategoryId: null,
-          defaultCollectionViewAppId: null,
-          description: null,
-          assistantInstructions: null,
-          redirectToCollectionAfterDocumentCreation: false,
-        },
-        schema: {
-          types: {
-            Root: {
-              dataType: DataType.Struct,
-              properties: { title: { dataType: DataType.String } },
-            },
-          },
-          rootType: "Root",
-        },
-        versionSettings: {
-          contentBlockingKeysGetter: null,
-          contentSummaryGetter: {
-            source: "",
-            compiled:
-              "export default function getContentSummary() { return {}; }",
-          },
-          defaultDocumentViewUiOptions: null,
-        },
-      });
-      assert.isTrue(createCollectionResult.success);
-      const setRemoteResult = await backend.collections.setRemote(
-        createCollectionResult.data.id,
-        mockConnector.name,
-        { clientId: "clientId", clientSecret: "clientSecret" },
-        {},
-        {
-          fromRemoteDocument: {
-            source: "",
-            compiled:
-              "export default function fromRemoteDocument(remote) { return { title: remote.title }; }",
-          },
-        },
-      );
-      assert.isTrue(setRemoteResult.success);
-      const authenticateOAuth2PKCEConnectorResult =
-        await backend.collections.authenticateOAuth2PKCEConnector(
-          createCollectionResult.data.id,
-          "authorizationResponseUrl",
-        );
-      assert.isTrue(authenticateOAuth2PKCEConnectorResult.success);
-      await triggerAndWaitForDownSync(backend, createCollectionResult.data.id);
-      const listDocumentsResult = await backend.documents.list(
-        createCollectionResult.data.id,
-      );
-      assert.isTrue(listDocumentsResult.success);
-      const remoteDocument = listDocumentsResult.data[0];
-      assert.isDefined(remoteDocument);
-
-      // Exercise
-      const createNewDocumentVersionResult =
-        await backend.documents.createNewVersion(
-          createCollectionResult.data.id,
-          remoteDocument.id,
-          remoteDocument.latestVersion.id,
-          { title: "updated" },
-        );
-
-      // Verify
-      expect(createNewDocumentVersionResult).toEqual({
-        success: false,
-        data: null,
-        error: {
-          name: "ConnectorDoesNotSupportUpSyncing",
-          details: {
-            collectionId: createCollectionResult.data.id,
-            connectorName: mockConnector.name,
-            message:
-              "The collection has a remote, and its connector does not support up-syncing. This effectively makes the collection read-only.",
-          },
         },
       });
     });
@@ -1373,7 +1181,10 @@ export default rd<GetDependencies>("Documents", (deps) => {
           createCollectionResult.data.id,
           createDocumentResult.data.id,
           wrongVersionId,
-          { title: "updated title" },
+          {
+            type: DocumentContentChangeType.Full,
+            content: { title: "updated title" },
+          },
         );
 
       // Verify
@@ -1436,7 +1247,7 @@ export default rd<GetDependencies>("Documents", (deps) => {
           createCollectionResult.data.id,
           createDocumentResult.data.id,
           createDocumentResult.data.latestVersion.id,
-          { title: 123 },
+          { type: DocumentContentChangeType.Full, content: { title: 123 } },
         );
 
       // Verify
@@ -1508,10 +1319,13 @@ export default rd<GetDependencies>("Documents", (deps) => {
           createDocumentResult.data.id,
           createDocumentResult.data.latestVersion.id,
           {
-            attachment: {
-              id: fileId,
-              name: "file.txt",
-              mimeType: "text/plain",
+            type: DocumentContentChangeType.Full,
+            content: {
+              attachment: {
+                id: fileId,
+                name: "file.txt",
+                mimeType: "text/plain",
+              },
             },
           },
         );
@@ -1576,9 +1390,12 @@ export default rd<GetDependencies>("Documents", (deps) => {
         createDocumentResult.data.id,
         createDocumentResult.data.latestVersion.id,
         {
-          documentRef: {
-            collectionId: createCollectionResult.data.id,
-            documentId: nonExistentDocumentId,
+          type: DocumentContentChangeType.Full,
+          content: {
+            documentRef: {
+              collectionId: createCollectionResult.data.id,
+              documentId: nonExistentDocumentId,
+            },
           },
         },
       );
@@ -1656,7 +1473,10 @@ export default rd<GetDependencies>("Documents", (deps) => {
           createCollectionResult.data.id,
           createDocumentResult.data.id,
           createDocumentResult.data.latestVersion.id,
-          { title: "updated title" },
+          {
+            type: DocumentContentChangeType.Full,
+            content: { title: "updated title" },
+          },
         );
 
       // Verify
@@ -1678,6 +1498,210 @@ export default rd<GetDependencies>("Documents", (deps) => {
       });
     });
 
+    it("error: DocumentContentNotValid when patch removes a required field", async () => {
+      // Setup SUT
+      const { backend } = deps();
+      const createCollectionResult = await backend.collections.create({
+        settings: {
+          name: "name",
+          icon: null,
+          collectionCategoryId: null,
+          defaultCollectionViewAppId: null,
+          description: null,
+          assistantInstructions: null,
+          redirectToCollectionAfterDocumentCreation: false,
+        },
+        schema: {
+          types: {
+            Root: {
+              dataType: DataType.Struct,
+              properties: { title: { dataType: DataType.String } },
+            },
+          },
+          rootType: "Root",
+        },
+        versionSettings: {
+          contentBlockingKeysGetter: null,
+          contentSummaryGetter: {
+            source: "",
+            compiled:
+              "export default function getContentSummary() { return {}; }",
+          },
+          defaultDocumentViewUiOptions: null,
+        },
+      });
+      assert.isTrue(createCollectionResult.success);
+      const createDocumentResult = await backend.documents.create({
+        collectionId: createCollectionResult.data.id,
+        content: { title: "title" },
+      });
+      assert.isTrue(createDocumentResult.success);
+
+      // Exercise
+      const createNewDocumentVersionResult =
+        await backend.documents.createNewVersion(
+          createCollectionResult.data.id,
+          createDocumentResult.data.id,
+          createDocumentResult.data.latestVersion.id,
+          {
+            type: DocumentContentChangeType.Patch,
+            patch: [{ op: "remove", path: "/title" }],
+          },
+        );
+
+      // Verify
+      assert.isFalse(createNewDocumentVersionResult.success);
+      expect(createNewDocumentVersionResult.error.name).toBe(
+        "DocumentContentNotValid",
+      );
+      expect(createNewDocumentVersionResult.error.details).toEqual(
+        expect.objectContaining({
+          collectionId: createCollectionResult.data.id,
+          collectionVersionId: createCollectionResult.data.latestVersion.id,
+          documentId: createDocumentResult.data.id,
+        }),
+      );
+    });
+
+    it("error: DocumentContentPatchNotValid when patch path is missing", async () => {
+      // Setup SUT
+      const { backend } = deps();
+      const createCollectionResult = await backend.collections.create({
+        settings: {
+          name: "name",
+          icon: null,
+          collectionCategoryId: null,
+          defaultCollectionViewAppId: null,
+          description: null,
+          assistantInstructions: null,
+          redirectToCollectionAfterDocumentCreation: false,
+        },
+        schema: {
+          types: {
+            Root: {
+              dataType: DataType.Struct,
+              properties: { title: { dataType: DataType.String } },
+            },
+          },
+          rootType: "Root",
+        },
+        versionSettings: {
+          contentBlockingKeysGetter: null,
+          contentSummaryGetter: {
+            source: "",
+            compiled:
+              "export default function getContentSummary() { return {}; }",
+          },
+          defaultDocumentViewUiOptions: null,
+        },
+      });
+      assert.isTrue(createCollectionResult.success);
+      const createDocumentResult = await backend.documents.create({
+        collectionId: createCollectionResult.data.id,
+        content: { title: "title" },
+      });
+      assert.isTrue(createDocumentResult.success);
+
+      // Exercise
+      const createNewDocumentVersionResult =
+        await backend.documents.createNewVersion(
+          createCollectionResult.data.id,
+          createDocumentResult.data.id,
+          createDocumentResult.data.latestVersion.id,
+          {
+            type: DocumentContentChangeType.Patch,
+            patch: [{ op: "replace", path: "/missing", value: "value" }],
+          },
+        );
+
+      // Verify
+      expect(createNewDocumentVersionResult).toEqual({
+        success: false,
+        data: null,
+        error: {
+          name: "DocumentContentPatchNotValid",
+          details: {
+            collectionId: createCollectionResult.data.id,
+            documentId: createDocumentResult.data.id,
+            latestVersionId: createDocumentResult.data.latestVersion.id,
+            operationIndex: 0,
+            path: "/missing",
+            cause: expect.stringContaining(
+              "Cannot perform the operation at a path that does not exist",
+            ),
+          },
+        },
+      });
+    });
+
+    it("error: DocumentContentPatchNotValid when patch test fails", async () => {
+      // Setup SUT
+      const { backend } = deps();
+      const createCollectionResult = await backend.collections.create({
+        settings: {
+          name: "name",
+          icon: null,
+          collectionCategoryId: null,
+          defaultCollectionViewAppId: null,
+          description: null,
+          assistantInstructions: null,
+          redirectToCollectionAfterDocumentCreation: false,
+        },
+        schema: {
+          types: {
+            Root: {
+              dataType: DataType.Struct,
+              properties: { title: { dataType: DataType.String } },
+            },
+          },
+          rootType: "Root",
+        },
+        versionSettings: {
+          contentBlockingKeysGetter: null,
+          contentSummaryGetter: {
+            source: "",
+            compiled:
+              "export default function getContentSummary() { return {}; }",
+          },
+          defaultDocumentViewUiOptions: null,
+        },
+      });
+      assert.isTrue(createCollectionResult.success);
+      const createDocumentResult = await backend.documents.create({
+        collectionId: createCollectionResult.data.id,
+        content: { title: "title" },
+      });
+      assert.isTrue(createDocumentResult.success);
+
+      // Exercise
+      const createNewDocumentVersionResult =
+        await backend.documents.createNewVersion(
+          createCollectionResult.data.id,
+          createDocumentResult.data.id,
+          createDocumentResult.data.latestVersion.id,
+          {
+            type: DocumentContentChangeType.Patch,
+            patch: [{ op: "test", path: "/title", value: "other" }],
+          },
+        );
+
+      // Verify
+      expect(createNewDocumentVersionResult).toEqual({
+        success: false,
+        data: null,
+        error: {
+          name: "DocumentContentPatchNotValid",
+          details: {
+            collectionId: createCollectionResult.data.id,
+            documentId: createDocumentResult.data.id,
+            latestVersionId: createDocumentResult.data.latestVersion.id,
+            operationIndex: 0,
+            path: "/title",
+            cause: expect.stringContaining("Test operation failed"),
+          },
+        },
+      });
+    });
     it("success: creates new version", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -1725,7 +1749,10 @@ export default rd<GetDependencies>("Documents", (deps) => {
           createCollectionResult.data.id,
           createDocumentResult.data.id,
           createDocumentResult.data.latestVersion.id,
-          { title: "updated title" },
+          {
+            type: DocumentContentChangeType.Full,
+            content: { title: "updated title" },
+          },
         );
 
       // Verify
@@ -1752,9 +1779,159 @@ export default rd<GetDependencies>("Documents", (deps) => {
         error: null,
       });
     });
+
+    it("success: creates new version from patch", async () => {
+      // Setup SUT
+      const { backend } = deps();
+      const createCollectionResult = await backend.collections.create({
+        settings: {
+          name: "name",
+          icon: null,
+          collectionCategoryId: null,
+          defaultCollectionViewAppId: null,
+          description: null,
+          assistantInstructions: null,
+          redirectToCollectionAfterDocumentCreation: false,
+        },
+        schema: {
+          types: {
+            Root: {
+              dataType: DataType.Struct,
+              properties: {
+                title: { dataType: DataType.String },
+                notes: { dataType: DataType.String },
+              },
+            },
+          },
+          rootType: "Root",
+        },
+        versionSettings: {
+          contentBlockingKeysGetter: null,
+          contentSummaryGetter: {
+            source: "",
+            compiled:
+              "export default function getContentSummary() { return {}; }",
+          },
+          defaultDocumentViewUiOptions: null,
+        },
+      });
+      assert.isTrue(createCollectionResult.success);
+      const createDocumentResult = await backend.documents.create({
+        collectionId: createCollectionResult.data.id,
+        content: { title: "title", notes: "keep" },
+      });
+      assert.isTrue(createDocumentResult.success);
+
+      // Exercise
+      const createNewDocumentVersionResult =
+        await backend.documents.createNewVersion(
+          createCollectionResult.data.id,
+          createDocumentResult.data.id,
+          createDocumentResult.data.latestVersion.id,
+          {
+            type: DocumentContentChangeType.Patch,
+            patch: [{ op: "replace", path: "/title", value: "updated title" }],
+          },
+        );
+
+      // Verify
+      assert.isTrue(createNewDocumentVersionResult.success);
+      expect(createNewDocumentVersionResult.data.latestVersion.content).toEqual(
+        { title: "updated title", notes: "keep" },
+      );
+    });
+
+    it("success: patch preserves omitted file refs", async () => {
+      // Setup SUT
+      const { backend } = deps();
+      const createCollectionResult = await backend.collections.create({
+        settings: {
+          name: "name",
+          icon: null,
+          collectionCategoryId: null,
+          defaultCollectionViewAppId: null,
+          description: null,
+          assistantInstructions: null,
+          redirectToCollectionAfterDocumentCreation: false,
+        },
+        schema: {
+          types: {
+            Root: {
+              dataType: DataType.Struct,
+              properties: {
+                title: { dataType: DataType.String },
+                attachment: { dataType: DataType.File },
+              },
+            },
+          },
+          rootType: "Root",
+        },
+        versionSettings: {
+          contentBlockingKeysGetter: null,
+          contentSummaryGetter: {
+            source: "",
+            compiled:
+              "export default function getContentSummary() { return {}; }",
+          },
+          defaultDocumentViewUiOptions: null,
+        },
+      });
+      assert.isTrue(createCollectionResult.success);
+      const createDocumentResult = await backend.documents.create({
+        collectionId: createCollectionResult.data.id,
+        content: {
+          title: "title",
+          attachment: {
+            name: "file.txt",
+            mimeType: "text/plain",
+            content: Uint8Array.from([1, 2, 3]),
+          },
+        },
+      });
+      assert.isTrue(createDocumentResult.success);
+      const attachment =
+        createDocumentResult.data.latestVersion.content.attachment;
+
+      // Exercise
+      const createNewDocumentVersionResult =
+        await backend.documents.createNewVersion(
+          createCollectionResult.data.id,
+          createDocumentResult.data.id,
+          createDocumentResult.data.latestVersion.id,
+          {
+            type: DocumentContentChangeType.Patch,
+            patch: [{ op: "replace", path: "/title", value: "updated title" }],
+          },
+        );
+
+      // Verify
+      assert.isTrue(createNewDocumentVersionResult.success);
+      expect(createNewDocumentVersionResult.data.latestVersion.content).toEqual(
+        {
+          title: "updated title",
+          attachment,
+        },
+      );
+    });
   });
 
   describe("delete", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.delete(
+        "not-a-valid-id" as any,
+        Id.generate.document(),
+        "delete",
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: CollectionNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -1891,132 +2068,6 @@ export default rd<GetDependencies>("Documents", (deps) => {
           details: {
             requiredCommandConfirmation: "delete",
             suppliedCommandConfirmation: "not-delete",
-          },
-        },
-      });
-    });
-
-    it("error: ConnectorDoesNotSupportUpSyncing", async () => {
-      // Setup mocks
-      const changes: Connector.Changes = {
-        addedOrModified: [
-          {
-            id: "remoteId",
-            versionId: "remoteVersionId",
-            url: "remoteUrl",
-            content: { title: "remote title" },
-          },
-        ],
-        deleted: [],
-      };
-      const mockConnector: Connector.OAuth2PKCE<Schema> = {
-        name: "MockConnector",
-        authenticationStrategy: ConnectorAuthenticationStrategy.OAuth2PKCE,
-        settingsSchema: {
-          types: { Settings: { dataType: DataType.Struct, properties: {} } },
-          rootType: "Settings",
-        },
-        remoteDocumentTypescriptSchema: {
-          types: "export type RemoteDocument = { title: string };",
-          rootType: "RemoteDocument",
-        },
-        getAuthorizationRequestUrl: async () => "authorizationRequestUrl",
-        getAuthenticationState: async () => ({
-          success: true,
-          data: {
-            accessToken: "accessToken",
-            refreshToken: "refreshToken",
-            accessTokenExpiresAt: new Date(),
-          },
-          error: null,
-        }),
-        syncDown: async ({ authenticationState }) => ({
-          success: true,
-          data: { changes, authenticationState, syncPoint: "syncPoint" },
-          error: null,
-        }),
-      };
-
-      // Setup SUT
-      const { backend } = deps({ connector: mockConnector });
-      const createCollectionResult = await backend.collections.create({
-        settings: {
-          name: "name",
-          icon: null,
-          collectionCategoryId: null,
-          defaultCollectionViewAppId: null,
-          description: null,
-          assistantInstructions: null,
-          redirectToCollectionAfterDocumentCreation: false,
-        },
-        schema: {
-          types: {
-            Root: {
-              dataType: DataType.Struct,
-              properties: {
-                title: { dataType: DataType.String },
-              },
-            },
-          },
-          rootType: "Root",
-        },
-        versionSettings: {
-          contentBlockingKeysGetter: null,
-          contentSummaryGetter: {
-            source: "",
-            compiled:
-              "export default function getContentSummary() { return {}; }",
-          },
-          defaultDocumentViewUiOptions: null,
-        },
-      });
-      assert.isTrue(createCollectionResult.success);
-      const setRemoteResult = await backend.collections.setRemote(
-        createCollectionResult.data.id,
-        mockConnector.name,
-        { clientId: "clientId", clientSecret: "clientSecret" },
-        {},
-        {
-          fromRemoteDocument: {
-            source: "",
-            compiled:
-              "export default function fromRemoteDocument(remote) { return { title: remote.title }; }",
-          },
-        },
-      );
-      assert.isTrue(setRemoteResult.success);
-      const authenticateOAuth2PKCEConnectorResult =
-        await backend.collections.authenticateOAuth2PKCEConnector(
-          createCollectionResult.data.id,
-          "authorizationResponseUrl",
-        );
-      assert.isTrue(authenticateOAuth2PKCEConnectorResult.success);
-      await triggerAndWaitForDownSync(backend, createCollectionResult.data.id);
-      const listDocumentsResult = await backend.documents.list(
-        createCollectionResult.data.id,
-      );
-      assert.isTrue(listDocumentsResult.success);
-      const remoteDocument = listDocumentsResult.data[0];
-      assert.isDefined(remoteDocument);
-
-      // Exercise
-      const deleteDocumentResult = await backend.documents.delete(
-        createCollectionResult.data.id,
-        remoteDocument.id,
-        "delete",
-      );
-
-      // Verify
-      expect(deleteDocumentResult).toEqual({
-        success: false,
-        data: null,
-        error: {
-          name: "ConnectorDoesNotSupportUpSyncing",
-          details: {
-            collectionId: createCollectionResult.data.id,
-            connectorName: mockConnector.name,
-            message:
-              "The collection has a remote, and its connector does not support up-syncing. This effectively makes the collection read-only.",
           },
         },
       });
@@ -2167,6 +2218,18 @@ export default rd<GetDependencies>("Documents", (deps) => {
   });
 
   describe("list", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.list("not-a-valid-id" as any);
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: CollectionNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -2247,6 +2310,21 @@ export default rd<GetDependencies>("Documents", (deps) => {
   });
 
   describe("listVersions", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.listVersions(
+        "not-a-valid-id" as any,
+        Id.generate.document(),
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: DocumentNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -2402,14 +2480,20 @@ export default rd<GetDependencies>("Documents", (deps) => {
         createCollectionResult.data.id,
         createDocumentResult.data.id,
         createDocumentResult.data.latestVersion.id,
-        { title: "version 2" },
+        {
+          type: DocumentContentChangeType.Full,
+          content: { title: "version 2" },
+        },
       );
       assert.isTrue(createNewVersionResult1.success);
       const createNewVersionResult2 = await backend.documents.createNewVersion(
         createCollectionResult.data.id,
         createDocumentResult.data.id,
         createNewVersionResult1.data.latestVersion.id,
-        { title: "version 3" },
+        {
+          type: DocumentContentChangeType.Full,
+          content: { title: "version 3" },
+        },
       );
       assert.isTrue(createNewVersionResult2.success);
 
@@ -2497,7 +2581,10 @@ export default rd<GetDependencies>("Documents", (deps) => {
         createCollectionResult.data.id,
         createDocument2Result.data.id,
         createDocument2Result.data.latestVersion.id,
-        { title: "document 2 updated" },
+        {
+          type: DocumentContentChangeType.Full,
+          content: { title: "document 2 updated" },
+        },
       );
       assert.isTrue(createNewVersionResult.success);
 
@@ -2517,6 +2604,21 @@ export default rd<GetDependencies>("Documents", (deps) => {
   });
 
   describe("get", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.get(
+        "not-a-valid-id" as any,
+        Id.generate.document(),
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: DocumentNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -2626,6 +2728,22 @@ export default rd<GetDependencies>("Documents", (deps) => {
   });
 
   describe("getVersion", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.getVersion(
+        "not-a-valid-id" as any,
+        Id.generate.document(),
+        Id.generate.documentVersion(),
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: DocumentVersionNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -2727,7 +2845,10 @@ export default rd<GetDependencies>("Documents", (deps) => {
           createCollectionResult.data.id,
           createDocumentResult.data.id,
           createDocumentResult.data.latestVersion.id,
-          { title: "updated title" },
+          {
+            type: DocumentContentChangeType.Full,
+            content: { title: "updated title" },
+          },
         );
       assert.isTrue(createNewDocumentVersionResult.success);
 
@@ -2748,6 +2869,18 @@ export default rd<GetDependencies>("Documents", (deps) => {
   });
 
   describe("search", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.search(null, "query", {} as any);
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: CollectionNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -3058,6 +3191,120 @@ export default rd<GetDependencies>("Documents", (deps) => {
       expect(searchResult.data[0]!.match.id).toEqual(
         createDocumentResult1.data.id,
       );
+    });
+  });
+
+  describe("executeTypescriptFunction", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.documents.executeTypescriptFunction(
+        ["not-a-valid-id"] as any,
+        "export default function main() { return null; }",
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
+    it("success: executes the TypeScript function", async () => {
+      // Setup SUT
+      const { backend } = deps();
+      const createCollectionResult = await backend.collections.create({
+        settings: {
+          name: "name",
+          icon: null,
+          collectionCategoryId: null,
+          defaultCollectionViewAppId: null,
+          description: null,
+          assistantInstructions: null,
+          redirectToCollectionAfterDocumentCreation: false,
+        },
+        schema: {
+          types: {
+            Root: {
+              dataType: DataType.Struct,
+              properties: { title: { dataType: DataType.String } },
+            },
+          },
+          rootType: "Root",
+        },
+        versionSettings: {
+          contentBlockingKeysGetter: null,
+          contentSummaryGetter: {
+            source: "",
+            compiled:
+              "export default function getContentSummary() { return {}; }",
+          },
+          defaultDocumentViewUiOptions: null,
+        },
+      });
+      assert.isTrue(createCollectionResult.success);
+      const createDocumentResult1 = await backend.documents.create({
+        collectionId: createCollectionResult.data.id,
+        content: { title: "first" },
+      });
+      assert.isTrue(createDocumentResult1.success);
+      const createDocumentResult2 = await backend.documents.create({
+        collectionId: createCollectionResult.data.id,
+        content: { title: "second" },
+      });
+      assert.isTrue(createDocumentResult2.success);
+
+      // Exercise
+      const result = await backend.documents.executeTypescriptFunction(
+        [createCollectionResult.data.id],
+        `
+          import type * as TargetCollection from "./${createCollectionResult.data.id}.ts";
+
+          interface Document<Content> {
+            id: string;
+            versionId: string;
+            content: Content;
+          }
+
+          export default function main(documentsByCollection: {
+            "${createCollectionResult.data.id}": Document<TargetCollection.Root>[];
+          }) {
+            return documentsByCollection["${createCollectionResult.data.id}"].map(
+              (document) => document.content.title,
+            );
+          }
+        `,
+      );
+
+      // Verify
+      expect(result.data).toHaveLength(2);
+      expect(result).toEqual({
+        success: true,
+        data: expect.arrayContaining(["first", "second"]),
+        error: null,
+      });
+    });
+
+    it("error: CollectionNotFound", async () => {
+      // Setup SUT
+      const { backend } = deps();
+      const collectionId = Id.generate.collection();
+
+      // Exercise
+      const result = await backend.documents.executeTypescriptFunction(
+        [collectionId],
+        "export default function main() { return null; }",
+      );
+
+      // Verify
+      expect(result).toEqual({
+        success: false,
+        data: null,
+        error: {
+          name: "CollectionNotFound",
+          details: { collectionId },
+        },
+      });
     });
   });
 });

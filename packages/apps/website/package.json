@@ -1,6 +1,6 @@
 {
   "name": "@superego/website",
-  "version": "2026.3.8",
+  "version": "2026.9.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -14,12 +14,12 @@
     "deploy:preview": "wrangler pages deploy dist/ --project-name superegodev"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
-    "@astrojs/mdx": "^5.0.2",
-    "@astrojs/starlight": "^0.38.2",
-    "astro": "^6.0.8",
-    "starlight-theme-nova": "^0.11.7",
-    "typescript": "^5.9.3",
-    "wrangler": "^4.76.0"
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/mdx": "^8.0.1",
+    "@astrojs/starlight": "^0.42.0",
+    "astro": "^7.3.2",
+    "starlight-theme-nova": "^0.12.3",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.131.1"
   }
 }

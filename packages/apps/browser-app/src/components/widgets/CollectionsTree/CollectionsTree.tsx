@@ -10,7 +10,6 @@ import {
   useUpdateCollectionSettings,
 } from "../../../business-logic/backend/hooks.js";
 import classnames from "../../../utils/classnames.js";
-import isEmpty from "../../../utils/isEmpty.js";
 import CollectionCategoryTreeItem from "./CollectionCategoryTreeItem.js";
 import * as cs from "./CollectionsTree.css.js";
 import CollectionTreeItem from "./CollectionTreeItem.js";
@@ -18,6 +17,7 @@ import { IsParentDropDisabledProvider } from "./dnd.js";
 import Header from "./Header.js";
 import RootTreeItem from "./RootTreeItem.js";
 import * as tree from "./tree.js";
+import useCollectionsTreeExpansionState from "./useCollectionsTreeExpansionState.js";
 
 interface Props {
   className?: string | undefined;
@@ -29,6 +29,12 @@ export default function CollectionsTree({ className }: Props) {
   const { mutate: deleteCollectionCategory } = useDeleteCollectionCategory();
   const { mutate: updateCollectionCategory } = useUpdateCollectionCategory();
   const { mutate: updateCollectionSettings } = useUpdateCollectionSettings();
+  const { collectionsTree, expandedCollectionCategoryIds, onExpandedChange } =
+    useCollectionsTreeExpansionState(
+      collectionCategories,
+      collections,
+      collator,
+    );
   const onItemDropped = (
     droppedItemId: CollectionCategoryId | CollectionId,
     droppedOn: CollectionCategoryId | CollectionId | null,
@@ -47,22 +53,18 @@ export default function CollectionsTree({ className }: Props) {
       updateCollectionSettings(droppedItemId, { collectionCategoryId: target });
     }
   };
-  const collectionsTree = tree.makeTree(
-    collectionCategories,
-    collections,
-    collator,
-  );
   return (
     <IsParentDropDisabledProvider value={false}>
       <div className={classnames(cs.CollectionsTree.root, className)}>
-        <Header alwaysShowToolbar={isEmpty(collectionsTree.children)} />
+        <Header />
         <Tree
           aria-label={intl.formatMessage({
             defaultMessage: "Tree of collection categories and collections",
           })}
           selectionMode="none"
           items={collectionsTree.children}
-          defaultExpandedKeys={collectionCategories.map(({ id }) => id)}
+          expandedKeys={expandedCollectionCategoryIds}
+          onExpandedChange={onExpandedChange}
           className={cs.CollectionsTree.tree}
         >
           {function renderItem(item) {

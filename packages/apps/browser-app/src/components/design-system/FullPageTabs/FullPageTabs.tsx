@@ -1,7 +1,6 @@
+import { toHref, type Route } from "@superego/routing";
 import { type ReactNode, useId } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-aria-components";
-import type Route from "../../../business-logic/navigation/Route.js";
-import { toHref } from "../../../business-logic/navigation/RouteUtils.js";
 import * as cs from "./FullPageTabs.css.js";
 
 interface Props {
@@ -22,7 +21,7 @@ export default function FullPageTabs({ tabs }: Props) {
           .filter((tab) => tab !== null)
           .map((tab, index) => (
             <Tab
-              // oxlint-disable-next-line react/no-array-index-key: tabs is stable.
+              // oxlint-disable-next-line react/no-array-index-key -- tabs is stable.
               key={index}
               id={`${tabsId}-${index}`}
               className={cs.FullPageTabs.tab}
@@ -37,7 +36,7 @@ export default function FullPageTabs({ tabs }: Props) {
         .filter((tab) => tab !== null && "panel" in tab)
         .map((tab, index) => (
           <TabPanel
-            // oxlint-disable-next-line react/no-array-index-key: tabs is stable.
+            // oxlint-disable-next-line react/no-array-index-key -- tabs is stable.
             key={index}
             id={`${tabsId}-${index}`}
             className={cs.FullPageTabs.tabPanel}

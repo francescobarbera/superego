@@ -3,9 +3,9 @@ import type {
   DocumentId,
   DocumentVersionId,
 } from "@superego/backend";
+import { RouteName } from "@superego/routing";
 import { useState } from "react";
 import {
-  PiArrowSquareOut,
   PiClockCountdown,
   PiClockCountdownFill,
   PiFloppyDisk,
@@ -20,7 +20,6 @@ import {
   listDocumentVersionsQuery,
 } from "../../../business-logic/backend/hooks.js";
 import useSaveShortcut from "../../../business-logic/forms/useSaveShortcut.js";
-import { RouteName } from "../../../business-logic/navigation/Route.js";
 import useApplyAlwaysCollapsePrimarySidebar from "../../../business-logic/navigation/useApplyAlwaysCollapsePrimarySidebar.js";
 import useNavigationState from "../../../business-logic/navigation/useNavigationState.js";
 import classnames from "../../../utils/classnames.js";
@@ -95,7 +94,6 @@ export default function Document({
       )}
     >
       {(document, documentVersions) => {
-        const isRemote = document.remoteId !== null;
         // History is shown when documentVersionId is specified.
         const isShowingHistory = typeof documentVersionId === "string";
         return (
@@ -141,17 +139,8 @@ export default function Document({
                   icon: <PiInfo />,
                   onPress: () => setIsDocumentInfoModalOpen(true),
                 },
-                document.remoteUrl
-                  ? {
-                      label: intl.formatMessage({
-                        defaultMessage: "Go to remote document",
-                      }),
-                      icon: <PiArrowSquareOut />,
-                      href: document.remoteUrl,
-                    }
-                  : null,
-                !isRemote ? PanelHeaderActionSeparator : null,
-                !isRemote && !isShowingHistory
+                PanelHeaderActionSeparator,
+                !isShowingHistory
                   ? {
                       label: intl.formatMessage({ defaultMessage: "Save" }),
                       icon: <PiFloppyDisk />,
@@ -159,16 +148,14 @@ export default function Document({
                       isDisabled: isCreateFormSubmitDisabled,
                     }
                   : null,
-                !isRemote
-                  ? {
-                      label: intl.formatMessage({
-                        defaultMessage: "Delete document",
-                      }),
-                      icon: <PiTrash />,
-                      onPress: () => setIsDeleteModalOpen(true),
-                      isDanger: true,
-                    }
-                  : null,
+                {
+                  label: intl.formatMessage({
+                    defaultMessage: "Delete document",
+                  }),
+                  icon: <PiTrash />,
+                  onPress: () => setIsDeleteModalOpen(true),
+                  isDanger: true,
+                },
               ]}
             />
             <Shell.Panel.Content
@@ -195,13 +182,7 @@ export default function Document({
                   }
                   formId={createFormId}
                   setSubmitDisabled={setIsCreateFormSubmitDisabled}
-                  readOnlyReason={
-                    isRemote
-                      ? "remote"
-                      : isShowingHistory
-                        ? "history-version"
-                        : null
-                  }
+                  isShowingHistory={isShowingHistory}
                 />
               </div>
               {isShowingHistory ? (
@@ -223,7 +204,6 @@ export default function Document({
                 }
               />
               <DocumentInfoModal
-                collection={collection}
                 document={document}
                 isOpen={isDocumentInfoModalOpen}
                 onClose={() => setIsDocumentInfoModalOpen(false)}

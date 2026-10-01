@@ -1,0 +1,48 @@
+/* Safari 9 supports custom properties but not Grid or dynamic viewport units. */
+@supports not (display: grid) {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  [data-primary-sidebar-collapse][data-primary-sidebar-open] {
+    display: flex;
+    width: calc(100vw + 16rem);
+    height: 100vh;
+    margin-left: -16rem;
+  }
+
+  [data-primary-sidebar-collapse][data-primary-sidebar-open="true"] {
+    margin-left: 0;
+  }
+
+  [data-primary-sidebar-collapse] > [data-slot="PrimarySidebar"] {
+    flex: 0 0 16rem;
+    width: 16rem;
+    height: 100vh;
+  }
+
+  [data-primary-sidebar-collapse] > [data-slot="PrimarySidebar"] > div {
+    padding: 1rem;
+  }
+
+  [data-primary-sidebar-collapse] > [data-slot="Main"] {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  @media (min-width: 65.001rem) {
+    [data-primary-sidebar-collapse="SmallScreens"][data-primary-sidebar-open] {
+      width: 100vw;
+      margin-left: 0;
+    }
+
+    [data-primary-sidebar-collapse="SmallScreens"] > [data-slot="Main"] {
+      flex: 1 1 auto;
+      width: calc(100vw - 16rem);
+      min-width: 0;
+    }
+  }
+}

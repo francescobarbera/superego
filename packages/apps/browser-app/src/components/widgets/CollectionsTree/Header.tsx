@@ -1,17 +1,14 @@
+import { RouteName } from "@superego/routing";
 import { Toolbar } from "react-aria-components";
 import { PiFolderSimplePlus, PiPlus } from "react-icons/pi";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useCreateCollectionCategory } from "../../../business-logic/backend/hooks.js";
-import { RouteName } from "../../../business-logic/navigation/Route.js";
 import useShell from "../../../business-logic/navigation/useShell.js";
 import IconButton from "../../design-system/IconButton/IconButton.js";
 import IconLink from "../../design-system/IconLink/IconLink.js";
 import * as cs from "./CollectionsTree.css.js";
 
-interface Props {
-  alwaysShowToolbar: boolean;
-}
-export default function Header({ alwaysShowToolbar }: Props) {
+export default function Header() {
   const intl = useIntl();
 
   const { closePrimarySidebar } = useShell();
@@ -30,10 +27,7 @@ export default function Header({ alwaysShowToolbar }: Props) {
   return (
     <div className={cs.Header.root}>
       <FormattedMessage defaultMessage="Collections" />
-      <Toolbar
-        className={cs.Header.toolbar}
-        style={alwaysShowToolbar ? { opacity: 1 } : undefined}
-      >
+      <Toolbar className={cs.Header.toolbar}>
         <IconLink
           variant="invisible"
           label={intl.formatMessage({ defaultMessage: "Create collection" })}

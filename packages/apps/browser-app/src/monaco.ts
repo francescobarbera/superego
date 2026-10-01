@@ -1,14 +1,14 @@
 import { SchemaJsonSchema } from "@superego/schema";
+import { getMonacoTypescriptCompilerOptions } from "@superego/shared-utils";
 import * as monaco from "monaco-editor";
-import editorWorker from "monaco-editor/esm/vs/editor/editor.worker.js?worker";
-import cssWorker from "monaco-editor/esm/vs/language/css/css.worker.js?worker";
-import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker.js?worker";
-import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker.js?worker";
+import editorWorker from "monaco-editor/editor/editor.worker.js?worker";
+import cssWorker from "monaco-editor/languages/features/css/css.worker.js?worker";
+import htmlWorker from "monaco-editor/languages/features/html/html.worker.js?worker";
+import jsonWorker from "monaco-editor/languages/features/json/json.worker.js?worker";
 // @ts-expect-error: no declaration for this file.
-import { setupMode } from "monaco-editor/esm/vs/language/json/jsonMode.js";
-// @ts-expect-error: no declaration for this file.
-import { jsonDefaults } from "monaco-editor/esm/vs/language/json/monaco.contribution.js";
-import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker.js?worker";
+import { setupMode } from "monaco-editor/languages/features/json/jsonMode.js";
+import { jsonDefaults } from "monaco-editor/languages/features/json/register.js";
+import tsWorker from "monaco-editor/languages/features/typescript/ts.worker.js?worker";
 
 (self as any).MonacoEnvironment = {
   getWorker(_: any, label: string) {
@@ -28,49 +28,9 @@ import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker.js?work
   },
 };
 monaco.typescript.typescriptDefaults.setEagerModelSync(true);
-monaco.typescript.typescriptDefaults.setCompilerOptions({
-  // Emit
-  noEmit: false,
-  sourceMap: false,
-  declaration: false,
-  declarationMap: false,
-
-  // Modules
-  module: monaco.typescript.ModuleKind.ESNext,
-  moduleResolution: monaco.typescript.ModuleResolutionKind.NodeJs,
-
-  // Interop constraints
-  allowSyntheticDefaultImports: true,
-
-  // Language and environment
-  target: monaco.typescript.ScriptTarget.ESNext,
-  jsx: monaco.typescript.JsxEmit.React,
-
-  // Completeness
-  skipLibCheck: true,
-
-  // Type checking options
-  allowUnreachableCode: false,
-  allowUnusedLabels: false,
-  alwaysStrict: true,
-  exactOptionalPropertyTypes: false,
-  noFallthroughCasesInSwitch: true,
-  noImplicitAny: true,
-  noImplicitOverride: false,
-  noImplicitReturns: true,
-  noImplicitThis: true,
-  noPropertyAccessFromIndexSignature: false,
-  noUncheckedIndexedAccess: false,
-  noUnusedLocals: false,
-  noUnusedParameters: false,
-  strict: true,
-  strictBindCallApply: true,
-  strictBuiltinIteratorReturn: true,
-  strictFunctionTypes: true,
-  strictNullChecks: true,
-  strictPropertyInitialization: true,
-  useUnknownInCatchVariables: true,
-});
+monaco.typescript.typescriptDefaults.setCompilerOptions(
+  getMonacoTypescriptCompilerOptions(monaco.typescript),
+);
 monaco.json.jsonDefaults.setDiagnosticsOptions({
   schemas: [
     {

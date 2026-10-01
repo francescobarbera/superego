@@ -3,11 +3,12 @@ import {
   extractErrorDetails,
   makeUnsuccessfulResult,
 } from "@superego/shared-utils";
+import * as v from "valibot";
 import BackgroundJobExecutor from "./BackgroundJobExecutor.js";
 import type Config from "./Config.js";
 import LiveConversationStore from "./LiveConversationStore.js";
 import makeResultError from "./makers/makeResultError.js";
-import type Connector from "./requirements/Connector.js";
+import makeValidationIssues from "./makers/makeValidationIssues.js";
 import type DataRepositories from "./requirements/DataRepositories.js";
 import type DataRepositoriesManager from "./requirements/DataRepositoriesManager.js";
 import type InferenceServiceFactory from "./requirements/InferenceServiceFactory.js";
@@ -16,8 +17,11 @@ import type TypescriptCompiler from "./requirements/TypescriptCompiler.js";
 import AppsCreate from "./usecases/apps/Create.js";
 import AppsCreateNewVersion from "./usecases/apps/CreateNewVersion.js";
 import AppsDelete from "./usecases/apps/Delete.js";
+import AppsGetState from "./usecases/apps/GetState.js";
 import AppsList from "./usecases/apps/List.js";
 import AppsUpdateName from "./usecases/apps/UpdateName.js";
+import AppsUpdatePermissions from "./usecases/apps/UpdatePermissions.js";
+import AppsUpdateState from "./usecases/apps/UpdateState.js";
 import AssistantsContinueConversation from "./usecases/assistants/ContinueConversation.js";
 import AssistantsDeleteConversation from "./usecases/assistants/DeleteConversation.js";
 import AssistantsGetConversation from "./usecases/assistants/GetConversation.js";
@@ -36,17 +40,14 @@ import CollectionCategoriesCreate from "./usecases/collection-categories/Create.
 import CollectionCategoriesDelete from "./usecases/collection-categories/Delete.js";
 import CollectionCategoriesList from "./usecases/collection-categories/List.js";
 import CollectionCategoriesUpdate from "./usecases/collection-categories/Update.js";
-import CollectionsAuthenticateOAuth2PKCEConnector from "./usecases/collections/CollectionsAuthenticateOAuth2PKCEConnector.js";
 import CollectionsCreate from "./usecases/collections/Create.js";
 import CollectionsCreateMany from "./usecases/collections/CreateMany.js";
 import CollectionsCreateNewVersion from "./usecases/collections/CreateNewVersion.js";
 import CollectionsDelete from "./usecases/collections/Delete.js";
-import CollectionsGetOAuth2PKCEConnectorAuthorizationRequestUrl from "./usecases/collections/GetOAuth2PKCEConnectorAuthorizationRequestUrl.js";
+import CollectionsGet from "./usecases/collections/Get.js";
+import CollectionsGetTypescriptSchema from "./usecases/collections/GetTypescriptSchema.js";
 import CollectionsGetVersion from "./usecases/collections/GetVersion.js";
 import CollectionsList from "./usecases/collections/List.js";
-import CollectionsListConnectors from "./usecases/collections/ListConnectors.js";
-import CollectionsSetRemote from "./usecases/collections/SetRemote.js";
-import CollectionsTriggerDownSync from "./usecases/collections/TriggerDownSync.js";
 import CollectionUpdateLatestVersionSettings from "./usecases/collections/UpdateLatestVersionSettings.js";
 import CollectionsUpdateSettings from "./usecases/collections/UpdateSettings.js";
 import DatabaseExport from "./usecases/database/Export.js";
@@ -54,6 +55,7 @@ import DocumentsCreate from "./usecases/documents/Create.js";
 import DocumentsCreateMany from "./usecases/documents/CreateMany.js";
 import DocumentsCreateNewVersion from "./usecases/documents/CreateNewVersion.js";
 import DocumentsDelete from "./usecases/documents/Delete.js";
+import DocumentsExecuteTypescriptFunction from "./usecases/documents/ExecuteTypescriptFunction.js";
 import DocumentsGet from "./usecases/documents/Get.js";
 import DocumentsGetVersion from "./usecases/documents/GetVersion.js";
 import DocumentsList from "./usecases/documents/List.js";
@@ -65,6 +67,7 @@ import GlobalSettingsUpdate from "./usecases/global-settings/Update.js";
 import InferenceImplementTypescriptModule from "./usecases/inference/ImplementTypescriptModule.js";
 import InferenceStt from "./usecases/inference/Stt.js";
 import PacksInstall from "./usecases/packs/Install.js";
+import type BackendUsecase from "./utils/BackendUsecase.js";
 
 export default class ExecutingBackend implements Backend {
   collectionCategories: Backend["collectionCategories"];
@@ -90,7 +93,6 @@ export default class ExecutingBackend implements Backend {
     private javascriptSandbox: JavascriptSandbox,
     private typescriptCompiler: TypescriptCompiler,
     private inferenceServiceFactory: InferenceServiceFactory,
-    private connectors: Connector<any, any>[],
     config?: Partial<Config>,
   ) {
     this.resolvedConfig = {
@@ -109,15 +111,6 @@ export default class ExecutingBackend implements Backend {
       create: this.makeUsecase(CollectionsCreate, true),
       createMany: this.makeUsecase(CollectionsCreateMany, true),
       updateSettings: this.makeUsecase(CollectionsUpdateSettings, true),
-      setRemote: this.makeUsecase(CollectionsSetRemote, true),
-      getOAuth2PKCEConnectorAuthorizationRequestUrl: this.makeUsecase(
-        CollectionsGetOAuth2PKCEConnectorAuthorizationRequestUrl,
-        false,
-      ),
-      authenticateOAuth2PKCEConnector: this.makeUsecase(
-        CollectionsAuthenticateOAuth2PKCEConnector,
-        true,
-      ),
       createNewVersion: this.makeUsecase(CollectionsCreateNewVersion, true),
       updateLatestVersionSettings: this.makeUsecase(
         CollectionUpdateLatestVersionSettings,
@@ -125,9 +118,12 @@ export default class ExecutingBackend implements Backend {
       ),
       delete: this.makeUsecase(CollectionsDelete, true),
       list: this.makeUsecase(CollectionsList, false),
-      triggerDownSync: this.makeUsecase(CollectionsTriggerDownSync, true),
-      listConnectors: this.makeUsecase(CollectionsListConnectors, false),
+      get: this.makeUsecase(CollectionsGet, false),
       getVersion: this.makeUsecase(CollectionsGetVersion, false),
+      getTypescriptSchema: this.makeUsecase(
+        CollectionsGetTypescriptSchema,
+        false,
+      ),
     };
 
     this.documents = {
@@ -140,6 +136,10 @@ export default class ExecutingBackend implements Backend {
       search: this.makeUsecase(DocumentsSearch, false),
       get: this.makeUsecase(DocumentsGet, false),
       getVersion: this.makeUsecase(DocumentsGetVersion, false),
+      executeTypescriptFunction: this.makeUsecase(
+        DocumentsExecuteTypescriptFunction,
+        false,
+      ),
     };
 
     this.files = {
@@ -183,8 +183,11 @@ export default class ExecutingBackend implements Backend {
     };
 
     this.apps = {
+      getState: this.makeUsecase(AppsGetState, false),
+      updateState: this.makeUsecase(AppsUpdateState, false),
       create: this.makeUsecase(AppsCreate, true),
       updateName: this.makeUsecase(AppsUpdateName, true),
+      updatePermissions: this.makeUsecase(AppsUpdatePermissions, true),
       createNewVersion: this.makeUsecase(AppsCreateNewVersion, true),
       delete: this.makeUsecase(AppsDelete, true),
       list: this.makeUsecase(AppsList, false),
@@ -219,7 +222,6 @@ export default class ExecutingBackend implements Backend {
       javascriptSandbox,
       typescriptCompiler,
       inferenceServiceFactory,
-      connectors,
       this.liveConversationStore,
       this.resolvedConfig,
     );
@@ -231,30 +233,67 @@ export default class ExecutingBackend implements Backend {
       javascriptSandbox: JavascriptSandbox,
       typescriptCompiler: TypescriptCompiler,
       inferenceServiceFactory: InferenceServiceFactory,
-      connectors: Connector[],
       liveConversationStore: LiveConversationStore,
       config: Config,
-    ) => { exec: Exec },
+    ) => BackendUsecase<Exec>,
     triggerBackgroundJobCheck: boolean,
   ): Exec {
     return (async (...args: any[]) =>
       this.dataRepositoriesManager
-        .runInSerializableTransaction(async (repos) => {
-          const usecase = new UsecaseClass(
-            repos,
-            this.javascriptSandbox,
-            this.typescriptCompiler,
-            this.inferenceServiceFactory,
-            this.connectors,
-            this.liveConversationStore,
-            this.resolvedConfig,
-          );
-          const result = await usecase.exec(...args);
-          return {
-            action: result.success ? "commit" : "rollback",
-            returnValue: result,
-          };
-        })
+        .runInSerializableTransaction<Awaited<ReturnType<Exec>>>(
+          async (repos) => {
+            const usecase = new UsecaseClass(
+              repos,
+              this.javascriptSandbox,
+              this.typescriptCompiler,
+              this.inferenceServiceFactory,
+              this.liveConversationStore,
+              this.resolvedConfig,
+            );
+            const argumentsValidationResult = v.safeParse(
+              usecase.argumentsSchema,
+              args,
+            );
+            if (!argumentsValidationResult.success) {
+              return {
+                action: "rollback",
+                returnValue: makeUnsuccessfulResult(
+                  makeResultError("ArgumentsNotValid", {
+                    issues: makeValidationIssues(
+                      argumentsValidationResult.issues,
+                    ),
+                  }),
+                ) as Awaited<ReturnType<Exec>>,
+              };
+            }
+            const result = await usecase.exec(
+              ...argumentsValidationResult.output,
+            );
+            const resultValidationResult = v.safeParse(
+              usecase.resultSchema,
+              result,
+            );
+            if (!resultValidationResult.success) {
+              return {
+                action: "rollback",
+                returnValue: makeUnsuccessfulResult(
+                  makeResultError("UnexpectedError", {
+                    cause: {
+                      reason: "ResultValidationFailed",
+                      issues: makeValidationIssues(
+                        resultValidationResult.issues,
+                      ),
+                    },
+                  }),
+                ) as Awaited<ReturnType<Exec>>,
+              };
+            }
+            return {
+              action: result.success ? "commit" : "rollback",
+              returnValue: result as Awaited<ReturnType<Exec>>,
+            };
+          },
+        )
         .then((result) => {
           // We trigger a background job check only _after_ the transaction that
           // might have created some background jobs has been committed. (Else

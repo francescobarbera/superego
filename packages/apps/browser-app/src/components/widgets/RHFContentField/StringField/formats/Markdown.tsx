@@ -21,11 +21,15 @@ export default function Markdown({
 }: Props) {
   const { isReadOnly } = useUiOptions();
   const { flexGrow } = useFieldUiOptions(name);
-  const { field, fieldState } = useController({ control, name });
+  const {
+    field: { ref: fieldRef, ...field },
+    fieldState,
+  } = useController({ control, name });
   const fieldOnChange = field.onChange;
   const onChange = useCallback(
-    (newValue: string) => fieldOnChange(newValue !== "" ? newValue : null),
-    [fieldOnChange],
+    (newValue: string) =>
+      fieldOnChange(newValue === "" && isNullable ? null : newValue),
+    [fieldOnChange, isNullable],
   );
   return (
     <div
@@ -56,7 +60,7 @@ export default function Markdown({
         isReadOnly={isReadOnly}
         placeholder="null"
         autoFocus={autoFocus}
-        ref={field.ref}
+        ref={fieldRef}
         className={flexGrow ? cs.Field.flexGrowContent : undefined}
       />
       <FieldErrorContext

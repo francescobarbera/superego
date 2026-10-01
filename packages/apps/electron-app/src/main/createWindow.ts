@@ -1,11 +1,15 @@
 import { join } from "node:path";
 import { BrowserWindow, Menu, shell } from "electron";
 
-export default function createWindow(isDevenv = false): BrowserWindow {
+export default function createWindow(): BrowserWindow {
   const win = new BrowserWindow({
     show: false,
     webPreferences: {
       preload: join(import.meta.dirname, "../preload/index.cjs"),
+      webSecurity: true,
+      contextIsolation: true,
+      sandbox: true,
+      nodeIntegration: false,
     },
     icon:
       process.platform === "linux"
@@ -44,12 +48,7 @@ export default function createWindow(isDevenv = false): BrowserWindow {
   });
 
   win.maximize();
-  win.loadFile(
-    join(
-      import.meta.dirname,
-      isDevenv ? "../renderer/index-devenv.html" : "../renderer/index.html",
-    ),
-  );
+  win.loadFile(join(import.meta.dirname, "../renderer/index.html"));
   win.show();
 
   return win;

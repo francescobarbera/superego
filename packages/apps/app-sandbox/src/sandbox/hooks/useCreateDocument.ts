@@ -1,9 +1,12 @@
 import type {
+  ArgumentsNotValid,
   CollectionNotFound,
-  ConnectorDoesNotSupportUpSyncing,
   DocumentContentNotValid,
   DocumentDefinition,
+  DuplicateDocumentDetected,
   FilesNotFound,
+  MakingContentBlockingKeysFailed,
+  ReferencedDocumentsNotFound,
   UnexpectedError,
 } from "@superego/backend";
 import { useMutation } from "@tanstack/react-query";
@@ -17,9 +20,12 @@ interface UseCreateDocument {
   isSuccess: boolean;
   error:
     | CollectionNotFound
-    | ConnectorDoesNotSupportUpSyncing
     | DocumentContentNotValid
     | FilesNotFound
+    | ReferencedDocumentsNotFound
+    | MakingContentBlockingKeysFailed
+    | DuplicateDocumentDetected
+    | ArgumentsNotValid
     | UnexpectedError
     | null;
   data: null;
@@ -29,9 +35,12 @@ export default function useCreateDocument(): UseCreateDocument {
   const { mutate, isIdle, isPending, isError, isSuccess, error } = useMutation<
     null,
     | CollectionNotFound
-    | ConnectorDoesNotSupportUpSyncing
     | DocumentContentNotValid
     | FilesNotFound
+    | ReferencedDocumentsNotFound
+    | MakingContentBlockingKeysFailed
+    | DuplicateDocumentDetected
+    | ArgumentsNotValid
     | UnexpectedError,
     DocumentDefinition
   >({

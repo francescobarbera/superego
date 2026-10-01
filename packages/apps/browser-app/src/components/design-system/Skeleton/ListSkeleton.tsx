@@ -19,13 +19,14 @@ export default function ListSkeleton({
         .fill(null)
         .map((_, index) => (
           <div
-            // oxlint-disable-next-line react/no-array-index-key: items are identical.
+            // oxlint-disable-next-line react/no-array-index-key -- items are identical.
             key={index}
             className={cs.ListSkeleton.item}
             style={{
               height: itemHeight,
+              // Deterministic variation keeps widths stable across renders.
               width: randomizeItemWidth
-                ? `${Math.round(Math.random() * 100)}%`
+                ? `${(index * 37 + 23) % 101}%`
                 : "100%",
             }}
           />

@@ -8,6 +8,7 @@ import { PublisherGithub } from "@electron-forge/publisher-github";
 import type { ForgeConfig } from "@electron-forge/shared-types";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
 import { MakerAppImage } from "@reforged/maker-appimage";
+import { deepLinkProtocol } from "@superego/routing";
 
 const { GITHUB_REF: githubRef } = process.env;
 const isTag = githubRef !== undefined && githubRef.startsWith("refs/tags/v");
@@ -37,17 +38,26 @@ export default {
       "^/scripts",
       "^/src",
       "cli.vite.config.ts",
-      "devenv.vite.config.ts",
       "electron.vite.config.ts",
       "forge.config.ts",
       "tsconfig.json",
     ],
-    extraResource: ["./dist/cli/superego.js"],
+    extraResource: [
+      "./dist/cli/superego",
+      "./dist/cli/superego.js",
+      "./dist/cli/emscripten-module.wasm",
+    ],
     icon: "./assets/icon",
     osxSign: isTag ? {} : undefined,
     extendInfo: {
       CFBundleName: "Superego",
     },
+    protocols: [
+      {
+        name: "Superego",
+        schemes: [deepLinkProtocol],
+      },
+    ],
   },
   makers: [
     new MakerZIP({}, ["darwin"]),
@@ -57,6 +67,7 @@ export default {
         bin: "superego-app",
         icon: "./assets/icon.png",
         categories: ["Office"],
+        mimeType: [`x-scheme-handler/${deepLinkProtocol}`],
       },
     }),
     new MakerDeb({
@@ -65,6 +76,7 @@ export default {
         bin: "superego-app",
         icon: "./assets/icon.png",
         categories: ["Office"],
+        mimeType: [`x-scheme-handler/${deepLinkProtocol}`],
       },
     }),
     new MakerAppImage({
@@ -73,13 +85,14 @@ export default {
         bin: "superego-app",
         icon: "./assets/icon.png",
         categories: ["Office"],
+        mimeType: [`x-scheme-handler/${deepLinkProtocol}`],
       },
     }),
   ],
   plugins: [
     new FusesPlugin({
       version: FuseVersion.V1,
-      [FuseV1Options.RunAsNode]: false,
+      [FuseV1Options.RunAsNode]: true,
       [FuseV1Options.EnableCookieEncryption]: true,
       [FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,
       [FuseV1Options.EnableNodeCliInspectArguments]: false,

@@ -1,6 +1,6 @@
 {
   "name": "@superego/echarts",
-  "version": "2026.3.8",
+  "version": "2026.9.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -14,9 +14,9 @@
   "dependencies": {
     "@superego/backend": "workspace:*",
     "@superego/themes": "workspace:*",
-    "echarts": "^6.0.0"
+    "echarts": "^6.1.0"
   },
   "devDependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }

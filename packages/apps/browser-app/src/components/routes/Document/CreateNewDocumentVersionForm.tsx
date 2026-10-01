@@ -1,4 +1,5 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { DocumentContentChangeType } from "@superego/backend";
 import type {
   Collection,
   DefaultDocumentViewUiOptions,
@@ -21,8 +22,6 @@ import FormStateEffects from "../../widgets/FormStateEffects/FormStateEffects.js
 import RHFContentField from "../../widgets/RHFContentField/RHFContentField.js";
 import * as cs from "./Document.css.js";
 
-export type ReadOnlyReason = "remote" | "history-version";
-
 interface Props {
   collection: Collection;
   collectionSchema?: Schema;
@@ -31,7 +30,7 @@ interface Props {
   documentVersion?: DocumentVersion;
   formId: string;
   setSubmitDisabled: (isDisabled: boolean) => void;
-  readOnlyReason: ReadOnlyReason | null;
+  isReadOnly: boolean;
 }
 export default function CreateNewDocumentVersionForm({
   collection,
@@ -42,11 +41,9 @@ export default function CreateNewDocumentVersionForm({
   documentVersion = document.latestVersion,
   formId,
   setSubmitDisabled,
-  readOnlyReason,
+  isReadOnly,
 }: Props) {
   const intl = useIntl();
-
-  const isReadOnly = readOnlyReason !== null;
 
   const { mutate } = useCreateNewDocumentVersion();
 
@@ -83,7 +80,7 @@ export default function CreateNewDocumentVersionForm({
       );
       latestVersionIdRef.current = document.latestVersion.id;
     }
-    // oxlint-disable-next-line react/exhaustive-deps: see comment above.
+    // oxlint-disable-next-line react/exhaustive-deps -- see comment above.
   }, [document.latestVersion.id]);
 
   const onSubmit = async (contentData: any) => {
@@ -91,10 +88,13 @@ export default function CreateNewDocumentVersionForm({
       collection.id,
       document.id,
       document.latestVersion.id,
-      await forms.utils.RHFContent.fromRHFContent(
-        contentData,
-        collectionSchema,
-      ),
+      {
+        type: DocumentContentChangeType.Full,
+        content: await forms.utils.RHFContent.fromRHFContent(
+          contentData,
+          collectionSchema,
+        ),
+      },
     );
     if (success) {
       reset(
@@ -132,28 +132,24 @@ export default function CreateNewDocumentVersionForm({
         triggerExitWarningWhenDirty={true}
         isDisabled={isReadOnly}
       />
-      {readOnlyReason !== null ? (
+      {isReadOnly ? (
         <Alert
           variant="info"
           className={cs.CreateNewDocumentVersionForm.readOnlyAlert}
         >
-          {readOnlyReason === "remote" ? (
-            <FormattedMessage defaultMessage="This document is synced from a remote source and cannot be edited." />
-          ) : (
-            <FormattedMessage
-              defaultMessage="Viewing document version from <b>{date}</b>. Document editing is disabled."
-              values={{
-                date: (
-                  <FormattedDate
-                    value={documentVersion.createdAt}
-                    dateStyle="medium"
-                    timeStyle="medium"
-                  />
-                ),
-                ...formattedMessageHtmlTags,
-              }}
-            />
-          )}
+          <FormattedMessage
+            defaultMessage="Viewing document version from <b>{date}</b>. Document editing is disabled."
+            values={{
+              date: (
+                <FormattedDate
+                  value={documentVersion.createdAt}
+                  dateStyle="medium"
+                  timeStyle="medium"
+                />
+              ),
+              ...formattedMessageHtmlTags,
+            }}
+          />
         </Alert>
       ) : null}
       <RHFContentField

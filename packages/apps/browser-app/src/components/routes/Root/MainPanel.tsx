@@ -1,4 +1,4 @@
-import { RouteName } from "../../../business-logic/navigation/Route.js";
+import { RouteName } from "@superego/routing";
 import useNavigationState from "../../../business-logic/navigation/useNavigationState.js";
 import Ask from "../Ask/Ask.js";
 import BackgroundJob from "../BackgroundJob/BackgroundJob.js";
@@ -8,7 +8,6 @@ import Collection from "../Collection/Collection.js";
 import CollectionSettings from "../CollectionSettings/CollectionSettings.js";
 import Conversation from "../Conversation/Conversation.js";
 import Conversations from "../Conversations/Conversations.js";
-import CreateApp from "../CreateApp/CreateApp.js";
 import CreateCollectionAssisted from "../CreateCollectionAssisted/CreateCollectionAssisted.js";
 import CreateCollectionManual from "../CreateCollectionManual/CreateCollectionManual.js";
 import CreateDocument from "../CreateDocument/CreateDocument.js";
@@ -16,6 +15,7 @@ import CreateNewCollectionVersion from "../CreateNewCollectionVersion/CreateNewC
 import Document from "../Document/Document.js";
 import EditApp from "../EditApp/EditApp.js";
 import GlobalSettings from "../GlobalSettings/GlobalSettings.js";
+import NotFound from "../NotFound/NotFound.js";
 import Pack from "../Pack/Pack.js";
 
 export default function MainPanel() {
@@ -53,21 +53,19 @@ export default function MainPanel() {
           documentVersionId={activeRoute.documentVersionId}
         />
       );
-    case RouteName.CreateApp:
-      return (
-        <CreateApp initialCollectionIds={activeRoute.initialCollectionIds} />
-      );
     case RouteName.EditApp:
-      return <EditApp appId={activeRoute.appId} />;
+      return <EditApp key={activeRoute.appId} appId={activeRoute.appId} />;
     case RouteName.Boutique:
       return <Boutique />;
     case RouteName.Pack:
-      return <Pack packId={activeRoute.packId} source={activeRoute.source} />;
+      return <Pack packId={activeRoute.packId} />;
     case RouteName.BackgroundJobs:
       return <BackgroundJobs />;
     case RouteName.BackgroundJob:
       return <BackgroundJob backgroundJobId={activeRoute.backgroundJobId} />;
     case RouteName.GlobalSettings:
       return <GlobalSettings />;
+    case RouteName.NotFound:
+      return <NotFound route={activeRoute.route} />;
   }
 }

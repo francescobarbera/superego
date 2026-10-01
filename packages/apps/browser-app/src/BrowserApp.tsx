@@ -1,4 +1,5 @@
 import type { Backend } from "@superego/backend";
+import { fromHref } from "@superego/routing";
 import { type QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, useLocale } from "react-aria-components";
 import { FormattedMessage, IntlProvider } from "react-intl";
@@ -10,10 +11,8 @@ import {
   listAppsQuery,
   listCollectionCategoriesQuery,
   listCollectionsQuery,
-  listConnectorsQuery,
 } from "./business-logic/backend/hooks.js";
 import { BackendProvider } from "./business-logic/backend/useBackend.js";
-import { fromHref } from "./business-logic/navigation/RouteUtils.js";
 import useNavigationState from "./business-logic/navigation/useNavigationState.js";
 import ScreenSizeProvider from "./business-logic/screen-size/ScreenSizeProvider.js";
 import ResultErrors from "./components/design-system/ResultErrors/ResultErrors.js";
@@ -38,9 +37,8 @@ export default function BrowserApp({ backend, queryClient }: Props) {
               <DataLoader
                 queries={[
                   listCollectionCategoriesQuery([]),
-                  listCollectionsQuery([]),
+                  listCollectionsQuery([false]),
                   listAppsQuery([]),
-                  listConnectorsQuery([]),
                   getGlobalSettingsQuery([]),
                   getDeveloperPromptsQuery([]),
                 ]}
@@ -49,7 +47,7 @@ export default function BrowserApp({ backend, queryClient }: Props) {
                     <h1>
                       <FormattedMessage defaultMessage="Error loading app" />
                     </h1>
-                    <ResultErrors errors={errors} />
+                    <ResultErrors errors={errors} highlightDetails={false} />
                   </>
                 )}
               >
@@ -57,7 +55,6 @@ export default function BrowserApp({ backend, queryClient }: Props) {
                   collectionCategories,
                   collections,
                   apps,
-                  connectors,
                   globalSettings,
                   developerPrompts,
                 ) => (
@@ -66,7 +63,6 @@ export default function BrowserApp({ backend, queryClient }: Props) {
                       collectionCategories,
                       collections,
                       apps,
-                      connectors,
                       globalSettings,
                       developerPrompts,
                     }}

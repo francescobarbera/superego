@@ -65,42 +65,6 @@
       "value": "Le tue preferenze"
     }
   ],
-  "AuthenticateOAuth2PKCEConnectorButton.tsx_Zdmqoc": [
-    {
-      "type": 0,
-      "value": "Autentica il connettore"
-    }
-  ],
-  "AuthenticateOAuth2PKCEConnectorButton.tsx_wAxMM5": [
-    {
-      "type": 0,
-      "value": "Ri-autentica il connettore"
-    }
-  ],
-  "AuthenticationSettings.tsx_B7p2EC": [
-    {
-      "type": 0,
-      "value": "Segreto del client"
-    }
-  ],
-  "AuthenticationSettings.tsx_KTNoOq": [
-    {
-      "type": 0,
-      "value": "Chiave API"
-    }
-  ],
-  "AuthenticationSettings.tsx_Q0U6OF": [
-    {
-      "type": 0,
-      "value": "Impostazioni di autenticazione"
-    }
-  ],
-  "AuthenticationSettings.tsx_U5+MBC": [
-    {
-      "type": 0,
-      "value": "ID del client"
-    }
-  ],
   "BackgroundJob.tsx_EiyxpM": [
     {
       "type": 0,
@@ -241,48 +205,6 @@
     {
       "type": 0,
       "value": "Boutique"
-    }
-  ],
-  "Boutique.tsx_XBMGwY": [
-    {
-      "type": 0,
-      "value": "Impossibile decodificare il file pack"
-    }
-  ],
-  "Boutique.tsx_a1s4zI": [
-    {
-      "type": 0,
-      "value": "Oppure installa il tuo"
-    }
-  ],
-  "Boutique.tsx_rrrB1P": [
-    {
-      "type": 0,
-      "value": "Trascina "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "pack.mpk"
-        }
-      ],
-      "type": 8,
-      "value": "packMpk"
-    },
-    {
-      "type": 0,
-      "value": " per installare"
-    }
-  ],
-  "BoutiquePack.tsx_AHlDyN": [
-    {
-      "type": 0,
-      "value": "Boutique » "
-    },
-    {
-      "type": 1,
-      "value": "packId"
     }
   ],
   "BrowserApp.tsx_w1vfWS": [
@@ -479,12 +401,6 @@
       "value": "Impostazioni generali"
     }
   ],
-  "CollectionSettings.tsx_JJBzhX": [
-    {
-      "type": 0,
-      "value": "Remoto"
-    }
-  ],
   "CollectionSettings.tsx_VcipZo": [
     {
       "type": 0,
@@ -521,44 +437,20 @@
       "value": "Compilazione in corso..."
     }
   ],
-  "ConnectorSelect.tsx_Gnbr9F": [
-    {
-      "type": 0,
-      "value": "Seleziona un connettore"
-    }
-  ],
-  "ConnectorSelect.tsx_nSFiyf": [
-    {
-      "type": 0,
-      "value": "Il connettore non può essere modificato dopo aver configurato un remoto."
-    }
-  ],
-  "ConnectorSelect.tsx_r8XsCU": [
-    {
-      "type": 0,
-      "value": "Connettore"
-    }
-  ],
-  "ConnectorSettings.tsx_1B+Bnl": [
-    {
-      "type": 0,
-      "value": "Impostazioni del connettore"
-    }
-  ],
   "ContentBlockingKeysTab.tsx_mzcj4a": [
     {
       "type": 0,
       "value": "Aggiorna la funzione "
     },
     {
+      "type": 8,
+      "value": "code",
       "children": [
         {
           "type": 0,
           "value": "getContentBlockingKeys"
         }
-      ],
-      "type": 8,
-      "value": "code"
+      ]
     },
     {
       "type": 0,
@@ -581,14 +473,14 @@
       "value": "Aggiorna la funzione "
     },
     {
+      "type": 8,
+      "value": "code",
       "children": [
         {
           "type": 0,
           "value": "getContentSummary"
         }
-      ],
-      "type": 8,
-      "value": "code"
+      ]
     },
     {
       "type": 0,
@@ -625,6 +517,12 @@
       "value": "Ingrandisci"
     }
   ],
+  "Conversation.tsx_2U3CJ+": [
+    {
+      "type": 0,
+      "value": "🤖 Conversazioni"
+    }
+  ],
   "Conversation.tsx_9eR0Qp": [
     {
       "type": 0,
@@ -637,10 +535,20 @@
       "value": "Mostra le tool call"
     }
   ],
-  "Conversation.tsx_eq3LES": [
+  "Conversation.tsx_avxZiI": [
     {
       "type": 0,
-      "value": "🤖 Conversazioni » "
+      "value": "🤖 Conversazioni » "
+    },
+    {
+      "type": 1,
+      "value": "conversationId"
+    }
+  ],
+  "Conversation.tsx_l0Yx7U": [
+    {
+      "type": 0,
+      "value": "🤖 Conversazioni » "
     },
     {
       "type": 1,
@@ -659,16 +567,6 @@
       "value": "Azioni della conversazione"
     }
   ],
-  "Conversation.tsx_y2z/xn": [
-    {
-      "type": 0,
-      "value": "🤖 Conversazioni » "
-    },
-    {
-      "type": 1,
-      "value": "conversationId"
-    }
-  ],
   "Conversation.tsx_yGVyFv": [
     {
       "type": 0,
@@ -679,12 +577,6 @@
     {
       "type": 0,
       "value": "Che tipo di dati vuoi salvare?"
-    }
-  ],
-  "Conversation.tsx_yYmfIl": [
-    {
-      "type": 0,
-      "value": "🤖 Conversazioni"
     }
   ],
   "ConversationSearchResult.tsx_KHJ2sI": [
@@ -699,6 +591,12 @@
       "value": "Nuova conversazione"
     }
   ],
+  "Conversations.tsx_2U3CJ+": [
+    {
+      "type": 0,
+      "value": "🤖 Conversazioni"
+    }
+  ],
   "Conversations.tsx_PQ8A3I": [
     {
       "type": 0,
@@ -709,12 +607,6 @@
     {
       "type": 0,
       "value": "Azioni delle conversazioni"
-    }
-  ],
-  "Conversations.tsx_yYmfIl": [
-    {
-      "type": 0,
-      "value": "🤖 Conversazioni"
     }
   ],
   "ConversationsTable.tsx_/+r2Su": [
@@ -751,18 +643,6 @@
     {
       "type": 0,
       "value": "Assistente"
-    }
-  ],
-  "CreateApp.tsx_VzzYJk": [
-    {
-      "type": 0,
-      "value": "Crea"
-    }
-  ],
-  "CreateApp.tsx_dtELK2": [
-    {
-      "type": 0,
-      "value": "Crea app"
     }
   ],
   "CreateCollectionAssisted.tsx_7uKYfK": [
@@ -875,7 +755,8 @@
       "value": " » "
     },
     {
-      "offset": 0,
+      "type": 6,
+      "value": "documentsCount",
       "options": {
         "one": {
           "value": [
@@ -897,9 +778,8 @@
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "documentsCount"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "CreateNewAppVersionForm.tsx_6GRvO0": [
@@ -954,12 +834,6 @@
       "value": "2. Deduplicazione"
     }
   ],
-  "CreateNewCollectionVersionForm.tsx_sSfm9D": [
-    {
-      "type": 0,
-      "value": "5. Convertitori remoti"
-    }
-  ],
   "CreateNewDocumentVersion.tsx_p5+z7U": [
     {
       "type": 1,
@@ -976,24 +850,18 @@
       "value": "Si sta visualizzando la versione del documento del "
     },
     {
+      "type": 8,
+      "value": "b",
       "children": [
         {
           "type": 1,
           "value": "date"
         }
-      ],
-      "type": 8,
-      "value": "b"
+      ]
     },
     {
       "type": 0,
       "value": ". La modifica del documento è disabilitata."
-    }
-  ],
-  "CreateNewDocumentVersionForm.tsx_gzZ4Jo": [
-    {
-      "type": 0,
-      "value": "Questo documento è sincronizzato da una fonte remota e non può essere modificato."
     }
   ],
   "CreateNewDocumentVersionForm.tsx_p6/GR5": [
@@ -1018,12 +886,6 @@
     {
       "type": 0,
       "value": "Creato nella conversazione"
-    }
-  ],
-  "CreatedByLine.tsx_ufqNmd": [
-    {
-      "type": 0,
-      "value": "Creato dalla sincronizzazione"
     }
   ],
   "DatePickerInput.tsx_/GCoTA": [
@@ -1088,28 +950,28 @@
   ],
   "DeleteAppModalForm.tsx_U+RSUu": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Eliminare l'app è definitivo. Se sei sicuro, scrivi "
         },
         {
+          "type": 8,
+          "value": "i",
           "children": [
             {
               "type": 0,
               "value": "delete"
             }
-          ],
-          "type": 8,
-          "value": "i"
+          ]
         },
         {
           "type": 0,
           "value": " nel campo sottostante. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "DeleteAppModalForm.tsx_bJAAvK": [
@@ -1140,42 +1002,42 @@
   ],
   "DeleteCollectionModalForm.tsx_J24oFm": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Eliminando la collezione cancellerai definitivamente tutti i suoi documenti e file. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Se sei sicuro di voler eliminare la collezione, scrivi "
         },
         {
+          "type": 8,
+          "value": "i",
           "children": [
             {
               "type": 0,
               "value": "delete"
             }
-          ],
-          "type": 8,
-          "value": "i"
+          ]
         },
         {
           "type": 0,
           "value": " nel campo sottostante. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "DeleteCollectionModalForm.tsx_K3r6DQ": [
@@ -1232,40 +1094,34 @@
   ],
   "DeleteConversationModalForm.tsx_jGLuOH": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Eliminare la conversazione è permanente. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Se sei sicuro di voler eliminare la conversazione, scrivi nel campo sottostante. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "DeleteConversationModalForm.tsx_lml5ZH": [
     {
       "type": 0,
       "value": "Conferma comando"
-    }
-  ],
-  "Document.tsx_AB6IO/": [
-    {
-      "type": 0,
-      "value": "Vai al documento remoto"
     }
   ],
   "Document.tsx_EPTOBf": [
@@ -1332,38 +1188,16 @@
       "value": "documentId"
     }
   ],
-  "DocumentInfoModal.tsx_1D7voQ": [
-    {
-      "type": 0,
-      "value": "Sincronizzato con "
-    },
-    {
-      "type": 1,
-      "value": "remote"
-    }
-  ],
   "DocumentInfoModal.tsx_gm5+Hy": [
     {
       "type": 0,
       "value": "ID collezione:"
     }
   ],
-  "DocumentInfoModal.tsx_h6SlY+": [
-    {
-      "type": 0,
-      "value": "ID documento remoto:"
-    }
-  ],
   "DocumentInfoModal.tsx_i3P6ZD": [
     {
       "type": 0,
       "value": "Creato il:"
-    }
-  ],
-  "DocumentInfoModal.tsx_nY1/sq": [
-    {
-      "type": 0,
-      "value": "ID versione documento remoto:"
     }
   ],
   "DocumentInfoModal.tsx_ps0LGU": [
@@ -1412,12 +1246,6 @@
     {
       "type": 0,
       "value": "Nessun risultato trovato"
-    }
-  ],
-  "DocumentTableRow.tsx_aBBLZR": [
-    {
-      "type": 0,
-      "value": "Apri documento remoto"
     }
   ],
   "DocumentTableRow.tsx_vT9jcW": [
@@ -1472,32 +1300,10 @@
       "value": "ID"
     }
   ],
-  "DocumentsTable.tsx_xIoGG9": [
+  "DownloadsField.tsx_xj9V0+": [
     {
       "type": 0,
-      "value": "Vai a"
-    }
-  ],
-  "DownSyncInfoModal.tsx_47FYwb": [
-    {
-      "type": 0,
-      "value": "Annulla"
-    }
-  ],
-  "DownSyncInfoModal.tsx_8I58x/": [
-    {
-      "type": 0,
-      "value": "Sincronizzazione con "
-    },
-    {
-      "type": 1,
-      "value": "remote"
-    }
-  ],
-  "DownSyncInfoModal.tsx_dKtz/9": [
-    {
-      "type": 0,
-      "value": "Sincronizza"
+      "value": "Consenti download di file"
     }
   ],
   "DuplicateDocumentDetectedModal.tsx_47FYwb": [
@@ -1578,10 +1384,10 @@
       "value": "Elimina"
     }
   ],
-  "EditApp.tsx_LDlHu6": [
+  "EditApp.tsx_LVy7EO": [
     {
       "type": 0,
-      "value": "🧩 "
+      "value": "🧩 "
     },
     {
       "type": 1,
@@ -1592,16 +1398,16 @@
       "value": " » Modifica"
     }
   ],
+  "EditApp.tsx_RsXx1A": [
+    {
+      "type": 0,
+      "value": "Impostazioni app"
+    }
+  ],
   "EditApp.tsx_Vl13tq": [
     {
       "type": 0,
       "value": "Crea nuova versione"
-    }
-  ],
-  "EditApp.tsx_Vva+Yr": [
-    {
-      "type": 0,
-      "value": "Modifica nome"
     }
   ],
   "EditingToolbar.tsx_1hhuuF": [
@@ -1704,182 +1510,154 @@
       "value": "L'assistente ha riscontrato un errore."
     }
   ],
+  "Explainer.tsx_2ouWR4": [
+    {
+      "type": 8,
+      "value": "p",
+      "children": [
+        {
+          "type": 0,
+          "value": " Qui nella Boutique puoi trovare collezioni e app già pronte, raggruppate in "
+        },
+        {
+          "type": 8,
+          "value": "b",
+          "children": [
+            {
+              "type": 0,
+              "value": "pack"
+            }
+          ]
+        },
+        {
+          "type": 0,
+          "value": " tematici che puoi installare con un click. "
+        }
+      ]
+    }
+  ],
   "Explainer.tsx_Np7GhL": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " I tuoi dati in Superego sono organizzati in "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "collezioni"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " di "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "documenti"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": ". Ogni collezione ha uno "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "schema"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " che definisce quali dati contiene ciascun documento. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Esempio: una collezione "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "Spese"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " contiene molti documenti "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "Spesa"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": ". Ogni documento contiene la data della spesa, l'importo e una descrizione. (Questo è lo schema.) "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Descrivi al "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "Creatore di Collezioni"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " quali dati vuoi archiviare e creerà una collezione per te. "
         }
-      ],
-      "type": 8,
-      "value": "p"
-    }
-  ],
-  "Explainer.tsx_kM11wK": [
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " Qui nel Boutique puoi trovare collezioni e app già pronte, raggruppate in "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "pack"
-            }
-          ],
-          "type": 8,
-          "value": "b"
-        },
-        {
-          "type": 0,
-          "value": " tematici che puoi installare con un click. "
-        }
-      ],
-      "type": 8,
-      "value": "p"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " Puoi anche usare la "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "CLI di Superego"
-            }
-          ],
-          "type": 8,
-          "value": "cliDocsLink"
-        },
-        {
-          "type": 0,
-          "value": " per creare i tuoi pack. (Trascinali qui sotto per installarli.) "
-        }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "FileField.tsx_5q3qC0": [
@@ -2260,6 +2038,28 @@
       "value": "Cronologia delle versioni"
     }
   ],
+  "HttpOriginField.tsx_+Ynh/m": [
+    {
+      "type": 0,
+      "value": "Inserisci un’origine HTTP(S) valida, senza percorso, query o frammento."
+    }
+  ],
+  "HttpOriginField.tsx_H8n1Sy": [
+    {
+      "type": 0,
+      "value": "Origine HTTP numero "
+    },
+    {
+      "type": 1,
+      "value": "itemNumber"
+    }
+  ],
+  "HttpOriginsField.tsx_JV06rg": [
+    {
+      "type": 0,
+      "value": "Consenti richieste HTTP verso queste destinazioni:"
+    }
+  ],
   "ImplementWithAssistantButton.tsx_40hUOu": [
     {
       "type": 0,
@@ -2352,28 +2152,28 @@
   ],
   "IncompatibilityWarning.tsx_QL2z4z": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Questa app potrebbe non funzionare correttamente, perché utilizza collezioni che sono state modificate o eliminate da quando è stata creata. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Aggiorna l'app per evitare questo avviso. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "IncompatibilityWarning.tsx_q9XsfI": [
@@ -2394,14 +2194,14 @@
       "value": "Configura un "
     },
     {
+      "type": 8,
+      "value": "b",
       "children": [
         {
           "type": 0,
           "value": "fornitore di inferenza"
         }
-      ],
-      "type": 8,
-      "value": "b"
+      ]
     },
     {
       "type": 0,
@@ -2544,16 +2344,6 @@
       "value": "Non ci sono elementi nell'elenco"
     }
   ],
-  "LocalPack.tsx_/hNhmZ": [
-    {
-      "type": 0,
-      "value": "Pack personalizzati » "
-    },
-    {
-      "type": 1,
-      "value": "packId"
-    }
-  ],
   "Logo.tsx_FbFgI4": [
     {
       "type": 0,
@@ -2612,42 +2402,54 @@
   ],
   "ModalContent.tsx_qjTjxw": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Eliminando il documento cancellerai definitivamente il documento, tutte le sue versioni e tutti i suoi file. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Se sei sicuro di voler eliminare il documento, scrivi "
         },
         {
+          "type": 8,
+          "value": "i",
           "children": [
             {
               "type": 0,
               "value": "delete"
             }
-          ],
-          "type": 8,
-          "value": "i"
+          ]
         },
         {
           "type": 0,
           "value": " nel campo sottostante. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
+    }
+  ],
+  "ModalsField.tsx_5g9TrD": [
+    {
+      "type": 0,
+      "value": "Consenti finestre di dialogo del browser e stampa"
+    }
+  ],
+  "ModalsField.tsx_kgdY08": [
+    {
+      "type": 0,
+      "value": "Abilita stampa, alert, confirm, prompt e le altre finestre di dialogo modali del browser."
     }
   ],
   "Model.tsx_G/yZLu": [
@@ -2680,6 +2482,32 @@
       "value": "Modello"
     }
   ],
+  "NotFound.tsx_WG5jPT": [
+    {
+      "type": 0,
+      "value": "La route "
+    },
+    {
+      "type": 1,
+      "value": "route"
+    },
+    {
+      "type": 0,
+      "value": " non esiste."
+    }
+  ],
+  "NotFound.tsx_ejEGdx": [
+    {
+      "type": 0,
+      "value": "Home"
+    }
+  ],
+  "NotFound.tsx_gc051n": [
+    {
+      "type": 0,
+      "value": "Route non trovata"
+    }
+  ],
   "NullifyFieldAction.tsx_MLa9CL": [
     {
       "type": 0,
@@ -2694,6 +2522,16 @@
       "value": " su null"
     }
   ],
+  "Pack.tsx_AHlDyN": [
+    {
+      "type": 0,
+      "value": "Boutique » "
+    },
+    {
+      "type": 1,
+      "value": "packId"
+    }
+  ],
   "PackCard.tsx_EgRJme": [
     {
       "type": 0,
@@ -2702,7 +2540,8 @@
   ],
   "PackEntityCounts.tsx_GPDaFU": [
     {
-      "offset": 0,
+      "type": 6,
+      "value": "appsCount",
       "options": {
         "one": {
           "value": [
@@ -2727,14 +2566,14 @@
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "appsCount"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "PackEntityCounts.tsx_M51yty": [
     {
-      "offset": 0,
+      "type": 6,
+      "value": "documentsCount",
       "options": {
         "one": {
           "value": [
@@ -2759,14 +2598,14 @@
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "documentsCount"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "PackEntityCounts.tsx_P2D191": [
     {
-      "offset": 0,
+      "type": 6,
+      "value": "collectionCategoriesCount",
       "options": {
         "one": {
           "value": [
@@ -2791,14 +2630,14 @@
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "collectionCategoriesCount"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "PackEntityCounts.tsx_pKXETD": [
     {
-      "offset": 0,
+      "type": 6,
+      "value": "collectionsCount",
       "options": {
         "one": {
           "value": [
@@ -2823,9 +2662,8 @@
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "collectionsCount"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "PackMainPanel.tsx_HUc4Bb": [
@@ -2838,16 +2676,6 @@
     {
       "type": 0,
       "value": "Boutique » "
-    },
-    {
-      "type": 1,
-      "value": "packName"
-    }
-  ],
-  "PackMainPanel.tsx_hgmRAL": [
-    {
-      "type": 0,
-      "value": "Pack personalizzati » "
     },
     {
       "type": 1,
@@ -3030,152 +2858,152 @@
   ],
   "RHFContentBlockingKeysGetterField.tsx_VP/mgq": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " La deduplicazione dei documenti ti aiuta a evitare la creazione di record duplicati, ad esempio impedendo che venga creato un secondo contatto con la stessa email. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Quando è abilitata, ogni volta che crei un nuovo documento Superego verifica che non esista già un "
         },
         {
+          "type": 8,
+          "value": "i",
           "children": [
             {
               "type": 0,
               "value": "documento simile"
             }
-          ],
-          "type": 8,
-          "value": "i"
+          ]
         },
         {
           "type": 0,
           "value": " e ti avvisa se lo trova. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Questo avviene associando a ogni documento un set di "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "\"blocking keys\""
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": ": piccole impronte deterministiche ricavate dal contenuto del documento (ad esempio, un'email normalizzata, o una combinazione cognome + CAP) che identificano quasi univocamente il documento. Se due documenti condividono una blocking key, è probabile che siano duplicati. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "RHFContentBlockingKeysGetterField.tsx_fNZ6MZ": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Le "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "content blocking keys"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " di un documento sono una lista di "
         },
         {
+          "type": 8,
+          "value": "code",
           "children": [
             {
               "type": 0,
               "value": "string"
             }
-          ],
-          "type": 8,
-          "value": "code"
+          ]
         },
         {
           "type": 0,
           "value": " — derivate dal contenuto — che identificano il documento in base ai suoi dati. I documenti che condividono una blocking key sono considerati duplicati. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Il "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "blocking keys getter"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " è la funzione TypeScript che ricava queste chiavi dal contenuto del documento. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Le chiavi devono essere deterministiche (lo stesso contenuto produce le stesse chiavi) e sensibili ai cambiamenti significativi, ignorando differenze non significative come gli spazi. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "RHFContentBlockingKeysGetterField.tsx_sGF42J": [
@@ -3192,112 +3020,112 @@
   ],
   "RHFContentSummaryGetterField.tsx_BmNFs6": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Il "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "sommario dei contenuti"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " di un documento è un "
         },
         {
+          "type": 8,
+          "value": "code",
           "children": [
             {
               "type": 0,
               "value": "Record<name: string, value: string | number | boolean | null>"
             }
-          ],
-          "type": 8,
-          "value": "code"
+          ]
         },
         {
           "type": 0,
           "value": ", derivato dal contenuto del documento, che raccoglie le informazioni più importanti. Le proprietà del record vengono mostrate quando si visualizza una \"vista sommario\" del documento; ad esempio nelle tabelle, dove ogni proprietà diventa una colonna. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Il "
         },
         {
+          "type": 8,
+          "value": "b",
           "children": [
             {
               "type": 0,
               "value": "content summary getter"
             }
-          ],
-          "type": 8,
-          "value": "b"
+          ]
         },
         {
           "type": 0,
           "value": " è la funzione TypeScript che ricava il sommario dal contenuto del documento. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " I nomi delle proprietà dell'oggetto sommario possono essere preceduti da attributi che configurano il comportamento delle interfacce che lo mostrano. Ad esempio, quando si renderizza una tabella di documenti, "
         },
         {
+          "type": 8,
+          "value": "code",
           "children": [
             {
               "type": 0,
               "value": "{position:0,sortable:true,default-sort:asc} Nome"
             }
-          ],
-          "type": 8,
-          "value": "code"
+          ]
         },
         {
           "type": 0,
           "value": " rende "
         },
         {
+          "type": 8,
+          "value": "code",
           "children": [
             {
               "type": 0,
               "value": "Nome"
             }
-          ],
-          "type": 8,
-          "value": "code"
+          ]
         },
         {
           "type": 0,
           "value": " la prima colonna, la rende ordinabile e imposta la colonna come ordinamento predefinito della tabella. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "RHFDefaultDocumentViewUiOptionsField.tsx_9CnsYv": [
@@ -3326,42 +3154,42 @@
   ],
   "RHFDefaultDocumentViewUiOptionsField.tsx_w7P3KC": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Personalizza l'aspetto del modulo del documento durante la visualizzazione o la modifica dei documenti in questa collezione. Le opzioni includono l'utilizzo dell'intera larghezza della pagina, la chiusura della barra laterale e la definizione di un layout personalizzato dei campi. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Per maggiori informazioni, vedi "
         },
         {
+          "type": 8,
+          "value": "a",
           "children": [
             {
               "type": 0,
               "value": "https://superego.dev/customization/default-document-view-ui-options"
             }
-          ],
-          "type": 8,
-          "value": "a"
+          ]
         },
         {
           "type": 0,
           "value": ". "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "RHFRedirectToCollectionAfterDocumentCreationField.tsx_JL+VrQ": [
@@ -3392,6 +3220,34 @@
     {
       "type": 0,
       "value": "Definisce la \"forma\" del contenuto dei documenti in questa collezione."
+    }
+  ],
+  "RHFTextListField.tsx_2/2yg+": [
+    {
+      "type": 0,
+      "value": "Aggiungi"
+    }
+  ],
+  "RHFTextListField.tsx_G/yZLu": [
+    {
+      "type": 0,
+      "value": "Rimuovi"
+    }
+  ],
+  "RHFTextListField.tsx_OT7vQx": [
+    {
+      "type": 0,
+      "value": "Elemento "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    }
+  ],
+  "RHFTextListField.tsx_pUcgkI": [
+    {
+      "type": 0,
+      "value": "Non ci sono elementi nell'elenco"
     }
   ],
   "ReasoningEffortSelect.tsx_2X1lvg": [
@@ -3428,256 +3284,6 @@
     {
       "type": 0,
       "value": "Medio"
-    }
-  ],
-  "Remote.tsx_s8FZNF": [
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " Puoi sincronizzare una collezione con un'origine dati esterna (un "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "remoto"
-            }
-          ],
-          "type": 8,
-          "value": "b"
-        },
-        {
-          "type": 0,
-          "value": "). Quando configuri un remoto, diventa la "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "fonte di verità"
-            }
-          ],
-          "type": 8,
-          "value": "i"
-        },
-        {
-          "type": 0,
-          "value": " per quella collezione. "
-        }
-      ],
-      "type": 8,
-      "value": "p"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " La collezione non è necessariamente una replica esatta del remoto. I documenti prelevati dal remoto vengono trasformati per rispettare lo schema della tua collezione tramite la mappatura "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "fromRemoteDocument"
-            }
-          ],
-          "type": 8,
-          "value": "code"
-        },
-        {
-          "type": 0,
-          "value": " e puoi filtrare quali documenti remoti vengono sincronizzati. "
-        }
-      ],
-      "type": 8,
-      "value": "p"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " Per configurare un remoto, configura un "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "connettore"
-            }
-          ],
-          "type": 8,
-          "value": "i"
-        },
-        {
-          "type": 0,
-          "value": " verso l'origine dati esterna. "
-        }
-      ],
-      "type": 8,
-      "value": "p"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " Alcuni connettori supportano solo la "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "sincronizzazione dal"
-            }
-          ],
-          "type": 8,
-          "value": "b"
-        },
-        {
-          "type": 0,
-          "value": " remoto, rendendo la collezione in sola lettura. Altri supportano anche la "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "sincronizzazione verso"
-            }
-          ],
-          "type": 8,
-          "value": "b"
-        },
-        {
-          "type": 0,
-          "value": " il remoto, così le creazioni, gli aggiornamenti e le eliminazioni nella collezione vengono propagate al remoto. "
-        }
-      ],
-      "type": 8,
-      "value": "p"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " Ulteriori informazioni su "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "https://superego.dev/connectors"
-            }
-          ],
-          "type": 8,
-          "value": "a"
-        },
-        {
-          "type": 0,
-          "value": ". "
-        }
-      ],
-      "type": 8,
-      "value": "p"
-    }
-  ],
-  "RemoteConverters.tsx_3cBs4J": [
-    {
-      "type": 0,
-      "value": "Funzione TypeScript che trasforma un documento remoto nel contenuto di un documento locale. Restituisci "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "null"
-        }
-      ],
-      "type": 8,
-      "value": "code"
-    },
-    {
-      "type": 0,
-      "value": " per non sincronizzare il documento."
-    }
-  ],
-  "RemoteConverters.tsx_GqZhDC": [
-    {
-      "type": 0,
-      "value": "Dal documento remoto"
-    }
-  ],
-  "RemoteConverters.tsx_abnr48": [
-    {
-      "type": 0,
-      "value": "Convertitori di documenti remoti"
-    }
-  ],
-  "RemoteConvertersTab.tsx_3cBs4J": [
-    {
-      "type": 0,
-      "value": "Funzione TypeScript che trasforma un documento remoto nel contenuto di un documento locale. Restituisci "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "null"
-        }
-      ],
-      "type": 8,
-      "value": "code"
-    },
-    {
-      "type": 0,
-      "value": " per non sincronizzare il documento."
-    }
-  ],
-  "RemoteConvertersTab.tsx_CPS541": [
-    {
-      "type": 0,
-      "value": "Aggiorna la funzione "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "fromRemoteDocument"
-        }
-      ],
-      "type": 8,
-      "value": "code"
-    },
-    {
-      "type": 0,
-      "value": " per riflettere le modifiche allo schema."
-    }
-  ],
-  "RemoteConvertersTab.tsx_GqZhDC": [
-    {
-      "type": 0,
-      "value": "Dal documento remoto"
-    }
-  ],
-  "RemoteConvertersTab.tsx_J/yjzE": [
-    {
-      "type": 0,
-      "value": "Crea una nuova versione e migra i documenti"
     }
   ],
   "RenameCollectionCategoryModalForm.tsx_47FYwb": [
@@ -3726,28 +3332,28 @@
   ],
   "ResolveIncompatibilityModal.tsx_5HfPcg": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Le collezioni utilizzate da questa app sono cambiate da quando è stata creata. Aggiorna l'app per assicurarti che funzioni correttamente. "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": "Modifiche alle collezioni:"
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     }
   ],
   "ResolveIncompatibilityModal.tsx_5daczq": [
@@ -3764,18 +3370,20 @@
   ],
   "ResolveIncompatibilityModal.tsx_Gf4r/F": [
     {
+      "type": 5,
+      "value": "type",
       "options": {
         "WasDeleted": {
           "value": [
             {
+              "type": 8,
+              "value": "code",
               "children": [
                 {
                   "type": 1,
                   "value": "collectionId"
                 }
-              ],
-              "type": 8,
-              "value": "code"
+              ]
             },
             {
               "type": 0,
@@ -3786,14 +3394,14 @@
         "other": {
           "value": [
             {
+              "type": 8,
+              "value": "code",
               "children": [
                 {
                   "type": 1,
                   "value": "collectionId"
                 }
-              ],
-              "type": 8,
-              "value": "code"
+              ]
             },
             {
               "type": 0,
@@ -3801,9 +3409,7 @@
             }
           ]
         }
-      },
-      "type": 5,
-      "value": "type"
+      }
     }
   ],
   "ResolveIncompatibilityModal.tsx_kAEQyV": [
@@ -3876,144 +3482,76 @@
   ],
   "SchemaTab.tsx_/WLKzQ": [
     {
+      "type": 8,
+      "value": "p",
       "children": [
         {
           "type": 0,
           "value": " Ogni volta che vuoi modificare lo schema di una collezione (ad es. per aggiungere, modificare o rimuovere proprietà), devi creare una nuova versione della collezione. Il processo prevede i passaggi seguenti: "
         }
-      ],
-      "type": 8,
-      "value": "p"
+      ]
     },
     {
       "type": 0,
       "value": " "
     },
     {
+      "type": 8,
+      "value": "ol",
       "children": [
         {
           "type": 0,
           "value": " "
         },
         {
+          "type": 8,
+          "value": "li",
           "children": [
             {
               "type": 0,
               "value": "Implementa le modifiche allo schema che vuoi effettuare."
             }
-          ],
-          "type": 8,
-          "value": "li"
+          ]
         },
         {
           "type": 0,
           "value": " "
         },
         {
+          "type": 8,
+          "value": "li",
           "children": [
             {
               "type": 0,
               "value": " Aggiorna il getter del sommario dei contenuti della collezione per riflettere tali modifiche. "
             }
-          ],
-          "type": 8,
-          "value": "li"
+          ]
         },
         {
           "type": 0,
           "value": " "
         },
         {
+          "type": 8,
+          "value": "li",
           "children": [
             {
               "type": 0,
               "value": " Scrivi una funzione di migrazione per convertire i documenti dallo schema precedente a quello aggiornato. "
             }
-          ],
-          "type": 8,
-          "value": "li"
+          ]
         },
         {
           "type": 0,
           "value": " "
         }
-      ],
-      "type": 8,
-      "value": "ol"
+      ]
     }
   ],
   "SchemaTab.tsx_Lktmvk": [
     {
       "type": 0,
       "value": "Schema"
-    }
-  ],
-  "SchemaTab.tsx_Vi4BUn": [
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " Ogni volta che vuoi modificare lo schema di una collezione (ad es. per aggiungere, modificare o rimuovere proprietà), devi creare una nuova versione della collezione. Il processo prevede i passaggi seguenti: "
-        }
-      ],
-      "type": 8,
-      "value": "p"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": " "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": "Implementa le modifiche allo schema che vuoi effettuare."
-            }
-          ],
-          "type": 8,
-          "value": "li"
-        },
-        {
-          "type": 0,
-          "value": " "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": " Aggiorna il getter del sommario dei contenuti della collezione per riflettere tali modifiche. "
-            }
-          ],
-          "type": 8,
-          "value": "li"
-        },
-        {
-          "type": 0,
-          "value": " "
-        },
-        {
-          "children": [
-            {
-              "type": 0,
-              "value": " Poiché si tratta di una collezione remota, aggiorna anche i relativi convertitori remoti. "
-            }
-          ],
-          "type": 8,
-          "value": "li"
-        },
-        {
-          "type": 0,
-          "value": " "
-        }
-      ],
-      "type": 8,
-      "value": "ol"
     }
   ],
   "SearchModal.tsx_xmcVZ0": [
@@ -4136,6 +3674,12 @@
       "value": "Parla"
     }
   ],
+  "SendRecordButtons.tsx_SttzK5": [
+    {
+      "type": 0,
+      "value": "La registrazione audio non è disponibile in questo browser o con questa connessione"
+    }
+  ],
   "SendRecordButtons.tsx_kNl1RN": [
     {
       "type": 0,
@@ -4146,48 +3690,6 @@
     {
       "type": 0,
       "value": "Aggiungi un modello con comprensione audio per usare la voce"
-    }
-  ],
-  "SetCollectionRemoteForm.tsx_fsGyC4": [
-    {
-      "type": 0,
-      "value": "Aggiorna remoto"
-    }
-  ],
-  "SetCollectionRemoteForm.tsx_m8TXbJ": [
-    {
-      "type": 0,
-      "value": "Imposta remoto"
-    }
-  ],
-  "SetNameAndSaveModal.tsx_47FYwb": [
-    {
-      "type": 0,
-      "value": "Annulla"
-    }
-  ],
-  "SetNameAndSaveModal.tsx_HAlOn1": [
-    {
-      "type": 0,
-      "value": "Nome"
-    }
-  ],
-  "SetNameAndSaveModal.tsx_J1XXSx": [
-    {
-      "type": 0,
-      "value": "La mia fantastica app"
-    }
-  ],
-  "SetNameAndSaveModal.tsx_VzzYJk": [
-    {
-      "type": 0,
-      "value": "Crea"
-    }
-  ],
-  "SetNameAndSaveModal.tsx_r+ksJu": [
-    {
-      "type": 0,
-      "value": "Crea app"
     }
   ],
   "StructField.tsx_BPj/Jo": [
@@ -4376,7 +3878,8 @@
       "value": "Messaggio + "
     },
     {
-      "offset": 0,
+      "type": 6,
+      "value": "toolCallCount",
       "options": {
         "one": {
           "value": [
@@ -4401,9 +3904,8 @@
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "toolCallCount"
+      "offset": 0,
+      "pluralType": "cardinal"
     }
   ],
   "TokenUsage.tsx_MJ2jZQ": [
@@ -4536,34 +4038,40 @@
       "value": "Errore durante il salvataggio delle impostazioni globali"
     }
   ],
-  "UpdateNameModalForm.tsx_47FYwb": [
+  "UpdateSettingsModalForm.tsx_47FYwb": [
     {
       "type": 0,
       "value": "Annulla"
     }
   ],
-  "UpdateNameModalForm.tsx_BWpuKl": [
-    {
-      "type": 0,
-      "value": "Aggiorna"
-    }
-  ],
-  "UpdateNameModalForm.tsx_HAlOn1": [
+  "UpdateSettingsModalForm.tsx_HAlOn1": [
     {
       "type": 0,
       "value": "Nome"
     }
   ],
-  "UpdateNameModalForm.tsx_J1XXSx": [
+  "UpdateSettingsModalForm.tsx_J1XXSx": [
     {
       "type": 0,
       "value": "La mia fantastica app"
     }
   ],
-  "UpdateNameModalForm.tsx_btR6aV": [
+  "UpdateSettingsModalForm.tsx_RsXx1A": [
     {
       "type": 0,
-      "value": "Aggiorna il nome dell'app"
+      "value": "Impostazioni app"
+    }
+  ],
+  "UpdateSettingsModalForm.tsx_SFuk1v": [
+    {
+      "type": 0,
+      "value": "Permessi"
+    }
+  ],
+  "UpdateSettingsModalForm.tsx_jvo0vs": [
+    {
+      "type": 0,
+      "value": "Salva"
     }
   ],
   "UserMessage.tsx_J3ca41": [
@@ -4610,14 +4118,40 @@
   ],
   "Welcome.tsx_NZjpCr": [
     {
+      "type": 8,
+      "value": "settingsLink",
       "children": [
         {
           "type": 0,
           "value": "Configura l'assistente AI"
         }
-      ],
+      ]
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "Welcome.tsx_hmNCAz": [
+    {
       "type": 8,
-      "value": "settingsLink"
+      "value": "installCliButton",
+      "children": [
+        {
+          "type": 0,
+          "value": "Installa la CLI "
+        },
+        {
+          "type": 8,
+          "value": "cliName",
+          "children": [
+            {
+              "type": 0,
+              "value": "superego"
+            }
+          ]
+        }
+      ]
     },
     {
       "type": 0,
@@ -4626,28 +4160,28 @@
   ],
   "Welcome.tsx_mD6yYG": [
     {
+      "type": 8,
+      "value": "createCollectionLink",
       "children": [
         {
           "type": 0,
           "value": "Crea la tua prima collezione"
         }
-      ],
-      "type": 8,
-      "value": "createCollectionLink"
+      ]
     },
     {
       "type": 0,
       "value": ", o "
     },
     {
+      "type": 8,
+      "value": "boutiqueLink",
       "children": [
         {
           "type": 0,
           "value": "installane una già pronta"
         }
-      ],
-      "type": 8,
-      "value": "boutiqueLink"
+      ]
     },
     {
       "type": 0,
@@ -4656,14 +4190,14 @@
   ],
   "Welcome.tsx_mNIlLz": [
     {
+      "type": 8,
+      "value": "createAppLink",
       "children": [
         {
           "type": 0,
           "value": "Crea la tua prima app"
         }
-      ],
-      "type": 8,
-      "value": "createAppLink"
+      ]
     },
     {
       "type": 0,
@@ -4678,7 +4212,8 @@
   ],
   "formatDuration.ts_26OSN4": [
     {
-      "offset": 0,
+      "type": 6,
+      "value": "minutes",
       "options": {
         "one": {
           "value": [
@@ -4700,9 +4235,8 @@
           ]
         }
       },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "minutes"
+      "offset": 0,
+      "pluralType": "cardinal"
     },
     {
       "type": 0,
@@ -4719,74 +4253,24 @@
   ],
   "formatDuration.ts_lf6GDO": [
     {
+      "type": 2,
+      "value": "seconds",
       "style": {
-        "parsedOptions": {
-          "maximumFractionDigits": 2
-        },
+        "type": 0,
         "tokens": [
           {
-            "options": [
-            ],
-            "stem": ".##"
+            "stem": ".##",
+            "options": []
           }
         ],
-        "type": 0
-      },
-      "type": 2,
-      "value": "seconds"
+        "parsedOptions": {
+          "maximumFractionDigits": 2
+        }
+      }
     },
     {
       "type": 0,
       "value": " secondi"
-    }
-  ],
-  "getDownSyncAction.tsx_IJWuS/": [
-    {
-      "type": 0,
-      "value": "Ultima sincronizzazione "
-    },
-    {
-      "style": {
-        "parsedOptions": {
-          "day": "numeric",
-          "hour": "2-digit",
-          "hourCycle": "h23",
-          "minute": "2-digit",
-          "month": "short"
-        },
-        "pattern": "MMM d, HH:mm",
-        "type": 1
-      },
-      "type": 3,
-      "value": "lastSucceededAt"
-    }
-  ],
-  "getDownSyncAction.tsx_RRA+40": [
-    {
-      "type": 0,
-      "value": "Autenticati con "
-    },
-    {
-      "type": 1,
-      "value": "remote"
-    }
-  ],
-  "getDownSyncAction.tsx_dKtz/9": [
-    {
-      "type": 0,
-      "value": "Sincronizza"
-    }
-  ],
-  "getDownSyncAction.tsx_eOnwqs": [
-    {
-      "type": 0,
-      "value": "Sincronizzazione in corso"
-    }
-  ],
-  "getDownSyncAction.tsx_mG35sa": [
-    {
-      "type": 0,
-      "value": "Ultima sincronizzazione non riuscita"
     }
   ],
   "getIntlMessages.ts_/GCoTA": [
@@ -5101,6 +4585,12 @@
       "value": "Apertura del file non riuscita"
     }
   ],
+  "rhfAppPermissions.ts_+Ynh/m": [
+    {
+      "type": 0,
+      "value": "Inserisci un’origine HTTP(S) valida, senza percorso, query o frammento."
+    }
+  ],
   "typescriptModule.ts_MZNYNj": [
     {
       "type": 0,
@@ -5117,6 +4607,18 @@
     {
       "type": 0,
       "value": "Compilazione TypeScript non riuscita"
+    }
+  ],
+  "useCreateAndEditApp.ts_NhuEyZ": [
+    {
+      "type": 0,
+      "value": "Errore durante la creazione dell'app"
+    }
+  ],
+  "useCreateAndEditApp.ts_SbVBaN": [
+    {
+      "type": 0,
+      "value": "Nuova app"
     }
   ]
 }

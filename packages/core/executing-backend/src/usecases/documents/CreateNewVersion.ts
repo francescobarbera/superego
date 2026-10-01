@@ -2,14 +2,16 @@ import {
   type Backend,
   type CollectionId,
   type CollectionNotFound,
-  type ConnectorDoesNotSupportUpSyncing,
   type ConversationId,
   type Document,
+  type DocumentContentPatchNotValid,
   type DocumentContentNotValid,
   type DocumentId,
   type DocumentNotFound,
   DocumentVersionCreator,
   type DocumentVersionId,
+  type DocumentContentChange,
+  DocumentContentChangeType,
   type DocumentVersionIdNotMatching,
   type FilesNotFound,
   type MakingContentBlockingKeysFailed,
@@ -24,7 +26,6 @@ import {
   makeUnsuccessfulResult,
 } from "@superego/shared-utils";
 import * as v from "valibot";
-import type DocumentEntity from "../../entities/DocumentEntity.js";
 import type DocumentVersionEntity from "../../entities/DocumentVersionEntity.js";
 import type FileEntity from "../../entities/FileEntity.js";
 import makeContentBlockingKeys from "../../makers/makeContentBlockingKeys.js";
@@ -32,40 +33,63 @@ import makeContentSummary from "../../makers/makeContentSummary.js";
 import makeDocument from "../../makers/makeDocument.js";
 import makeResultError from "../../makers/makeResultError.js";
 import makeValidationIssues from "../../makers/makeValidationIssues.js";
+import * as structuralSchemas from "../../structural-schemas/index.js";
+import applyDocumentContentPatch from "../../utils/applyDocumentContentPatch.js";
 import assertCollectionVersionExists from "../../utils/assertCollectionVersionExists.js";
 import assertDocumentVersionExists from "../../utils/assertDocumentVersionExists.js";
+import BackendUsecase from "../../utils/BackendUsecase.js";
 import ContentDocumentRefUtils from "../../utils/ContentDocumentRefUtils.js";
 import ContentFileUtils from "../../utils/ContentFileUtils.js";
 import difference from "../../utils/difference.js";
 import isEmpty from "../../utils/isEmpty.js";
-import Usecase from "../../utils/Usecase.js";
 
 type ExecReturnValue = ResultPromise<
   Document,
   | CollectionNotFound
   | DocumentNotFound
-  | ConnectorDoesNotSupportUpSyncing
   | DocumentVersionIdNotMatching
+  | DocumentContentPatchNotValid
   | DocumentContentNotValid
   | MakingContentBlockingKeysFailed
   | FilesNotFound
   | ReferencedDocumentsNotFound
   | UnexpectedError
 >;
-export default class DocumentsCreateNewVersion extends Usecase<
+export default class DocumentsCreateNewVersion extends BackendUsecase<
   Backend["documents"]["createNewVersion"]
 > {
+  argumentsSchema = v.tuple([
+    structuralSchemas.backend.ids.collectionId(),
+    structuralSchemas.backend.ids.documentId(),
+    structuralSchemas.backend.ids.documentVersionId(),
+    structuralSchemas.backend.types.documentContentChange(),
+  ]);
+  resultSchema = structuralSchemas.global.result(
+    structuralSchemas.backend.types.document(),
+    [
+      structuralSchemas.backend.errors.collectionNotFound(),
+      structuralSchemas.backend.errors.documentContentNotValid(),
+      structuralSchemas.backend.errors.documentContentPatchNotValid(),
+      structuralSchemas.backend.errors.documentNotFound(),
+      structuralSchemas.backend.errors.documentVersionIdNotMatching(),
+      structuralSchemas.backend.errors.filesNotFound(),
+      structuralSchemas.backend.errors.makingContentBlockingKeysFailed(),
+      structuralSchemas.backend.errors.referencedDocumentsNotFound(),
+      structuralSchemas.backend.errors.unexpectedError(),
+    ],
+  );
+
   async exec(
     collectionId: CollectionId,
     id: DocumentId,
     latestVersionId: DocumentVersionId,
-    content: any,
+    contentChange: DocumentContentChange,
   ): ExecReturnValue;
   async exec(
     collectionId: CollectionId,
     id: DocumentId,
     latestVersionId: DocumentVersionId,
-    content: any,
+    contentChange: DocumentContentChange,
     options:
       | {
           createdBy: DocumentVersionCreator.Assistant;
@@ -73,29 +97,18 @@ export default class DocumentsCreateNewVersion extends Usecase<
         }
       | {
           createdBy: DocumentVersionCreator.Migration;
-          remoteVersionId: string | null;
-        }
-      | {
-          createdBy: DocumentVersionCreator.Connector;
-          remoteVersionId: string;
-          remoteUrl: string | null;
-          remoteDocument: any;
         },
   ): ExecReturnValue;
   async exec(
     collectionId: CollectionId,
     id: DocumentId,
     latestVersionId: DocumentVersionId,
-    content: any,
+    contentChange: DocumentContentChange,
     options?: {
       createdBy:
         | DocumentVersionCreator.Assistant
-        | DocumentVersionCreator.Migration
-        | DocumentVersionCreator.Connector;
+        | DocumentVersionCreator.Migration;
       conversationId?: ConversationId;
-      remoteVersionId?: string | null;
-      remoteUrl?: string | null;
-      remoteDocument?: any;
     },
   ): ExecReturnValue {
     const collection = await this.repos.collection.find(collectionId);
@@ -109,24 +122,6 @@ export default class DocumentsCreateNewVersion extends Usecase<
     if (!document || document.collectionId !== collectionId) {
       return makeUnsuccessfulResult(
         makeResultError("DocumentNotFound", { documentId: id }),
-      );
-    }
-
-    if (
-      // Right now no connector supports up-syncing, so checking if the
-      // collection has a remote is sufficient. TODO: update condition once
-      // connectors support up-syncing.
-      collection.remote !== null &&
-      options?.createdBy !== DocumentVersionCreator.Connector &&
-      options?.createdBy !== DocumentVersionCreator.Migration
-    ) {
-      return makeUnsuccessfulResult(
-        makeResultError("ConnectorDoesNotSupportUpSyncing", {
-          collectionId: collectionId,
-          connectorName: collection.remote.connector.name,
-          message:
-            "The collection has a remote, and its connector does not support up-syncing. This effectively makes the collection read-only.",
-        }),
       );
     }
 
@@ -153,9 +148,26 @@ export default class DocumentsCreateNewVersion extends Usecase<
       latestCollectionVersion,
     );
 
+    let contentToValidate: unknown;
+    if (contentChange.type === DocumentContentChangeType.Full) {
+      contentToValidate = contentChange.content;
+    } else {
+      const applyPatchResult = applyDocumentContentPatch(
+        collectionId,
+        id,
+        latestVersionId,
+        latestVersion.content,
+        contentChange.patch,
+      );
+      if (!applyPatchResult.success) {
+        return applyPatchResult;
+      }
+      contentToValidate = applyPatchResult.data;
+    }
+
     const contentValidationResult = v.safeParse(
       valibotSchemas.content(latestCollectionVersion.schema),
-      content,
+      contentToValidate,
     );
     if (!contentValidationResult.success) {
       return makeUnsuccessfulResult(
@@ -235,7 +247,6 @@ export default class DocumentsCreateNewVersion extends Usecase<
     );
     const documentVersion: DocumentVersionEntity = {
       id: documentVersionId,
-      remoteId: options?.remoteVersionId ?? null,
       previousVersionId: latestVersionId,
       documentId: id,
       collectionId: document.collectionId,
@@ -266,17 +277,6 @@ export default class DocumentsCreateNewVersion extends Usecase<
       createdAt: now,
       content: protoFileWithId.content,
     }));
-    if (options?.createdBy === DocumentVersionCreator.Connector) {
-      const updatedDocument: DocumentEntity = {
-        ...document,
-        // TypeScript doesn't understand, but if createdBy === Connector, then
-        // options.remoteUrl is not undefined.
-        // @ts-expect-error
-        remoteUrl: options.remoteUrl,
-        latestRemoteDocument: options.remoteDocument,
-      };
-      await this.repos.document.replace(updatedDocument);
-    }
     await this.repos.documentVersion.insert(documentVersion);
     await this.repos.documentTextSearchIndex.upsert(
       collectionId,

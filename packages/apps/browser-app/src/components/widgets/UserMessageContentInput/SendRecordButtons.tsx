@@ -1,3 +1,4 @@
+import { RouteName } from "@superego/routing";
 import { Toolbar } from "react-aria-components";
 import {
   PiGear,
@@ -7,7 +8,6 @@ import {
   PiX,
 } from "react-icons/pi";
 import { useIntl } from "react-intl";
-import { RouteName } from "../../../business-logic/navigation/Route.js";
 import IconButton from "../../design-system/IconButton/IconButton.js";
 import IconLink from "../../design-system/IconLink/IconLink.js";
 import * as cs from "./UserMessageContentInput.css.js";
@@ -35,6 +35,9 @@ export default function SendRecordButtons({
   onCancelRecording,
 }: Props) {
   const intl = useIntl();
+  const canRecordAudio =
+    typeof MediaRecorder !== "undefined" &&
+    typeof navigator.mediaDevices?.getUserMedia === "function";
   return (
     <Toolbar className={cs.SendRecordButtons.root}>
       {isRecording ? (
@@ -66,12 +69,17 @@ export default function SendRecordButtons({
         <IconButton
           variant="invisible"
           label={
-            isRecording
-              ? intl.formatMessage({ defaultMessage: "Finish and send" })
-              : intl.formatMessage({ defaultMessage: "Speak" })
+            !canRecordAudio
+              ? intl.formatMessage({
+                  defaultMessage:
+                    "Audio recording is unavailable in this browser or connection",
+                })
+              : isRecording
+                ? intl.formatMessage({ defaultMessage: "Finish and send" })
+                : intl.formatMessage({ defaultMessage: "Speak" })
           }
           onPress={isRecording ? onFinishRecording : onStartRecording}
-          isDisabled={isDisabled}
+          isDisabled={isDisabled || !canRecordAudio}
           className={cs.SendRecordButtons.button}
         >
           {isRecording ? <PiStopFill /> : <PiMicrophoneFill />}

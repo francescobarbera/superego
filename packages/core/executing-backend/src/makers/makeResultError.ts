@@ -1,7 +1,14 @@
 import type {
   AppNameNotValid,
   AppNotFound,
-  CannotChangeCollectionRemoteConnector,
+  AppStateContentNotValid,
+  AppStateMigrationFailed,
+  AppStateMigrationNotValid,
+  AppStateMigrationRequired,
+  AppStateRevisionNotMatching,
+  AppStateSchemaNotValid,
+  AppVersionIdNotMatching,
+  ArgumentsNotValid,
   CannotContinueConversation,
   CannotRecoverConversation,
   CannotRetryLastResponse,
@@ -10,10 +17,7 @@ import type {
   CollectionCategoryIconNotValid,
   CollectionCategoryNameNotValid,
   CollectionCategoryNotFound,
-  CollectionHasDocuments,
-  CollectionHasNoRemote,
   CollectionIsReferenced,
-  CollectionIsSyncing,
   CollectionMigrationFailed,
   CollectionMigrationNotValid,
   CollectionNotFound,
@@ -22,26 +26,20 @@ import type {
   CollectionVersionIdNotMatching,
   CollectionVersionNotFound,
   CommandConfirmationNotValid,
-  ConnectorAuthenticationFailed,
-  ConnectorAuthenticationSettingsNotValid,
-  ConnectorDoesNotSupportUpSyncing,
-  ConnectorDoesNotUseOAuth2PKCEAuthenticationStrategy,
-  ConnectorNotAuthenticated,
-  ConnectorNotFound,
-  ConnectorSettingsNotValid,
   ContentBlockingKeysGetterNotValid,
   ContentSummaryGetterNotValid,
   ContentSummaryNotValid,
   ConversationNotFound,
   ConversationStatusNotProcessing,
   DefaultDocumentViewUiOptionsNotValid,
+  DocumentContentPatchNotValid,
   DocumentContentNotValid,
   DocumentIsReferenced,
   DocumentNotFound,
   DocumentVersionIdNotMatching,
   DocumentVersionNotFound,
   DuplicateDocumentDetected,
-  ExecutingJavascriptFunctionFailed,
+  ExecutingTypescriptFunctionFailed,
   FileNotFound,
   FilesNotFound,
   GlobalSettingsNotValid,
@@ -53,8 +51,6 @@ import type {
   ParentCollectionCategoryNotFound,
   ReferencedCollectionsNotFound,
   ReferencedDocumentsNotFound,
-  RemoteConvertersNotValid,
-  SyncingChangesFailed,
   TooManyFailedImplementationAttempts,
   TypescriptCompilationFailed,
   UnexpectedError,
@@ -64,7 +60,14 @@ import type {
 type KnownResultError =
   | AppNameNotValid
   | AppNotFound
-  | CannotChangeCollectionRemoteConnector
+  | AppStateContentNotValid
+  | AppStateMigrationFailed
+  | AppStateMigrationNotValid
+  | AppStateMigrationRequired
+  | AppStateRevisionNotMatching
+  | AppStateSchemaNotValid
+  | AppVersionIdNotMatching
+  | ArgumentsNotValid
   | CannotContinueConversation
   | CannotRecoverConversation
   | CannotRetryLastResponse
@@ -73,10 +76,7 @@ type KnownResultError =
   | CollectionCategoryIconNotValid
   | CollectionCategoryNameNotValid
   | CollectionCategoryNotFound
-  | CollectionHasDocuments
-  | CollectionHasNoRemote
   | CollectionIsReferenced
-  | CollectionIsSyncing
   | CollectionMigrationFailed
   | CollectionMigrationNotValid
   | CollectionNotFound
@@ -85,17 +85,11 @@ type KnownResultError =
   | CollectionVersionIdNotMatching
   | CollectionVersionNotFound
   | CommandConfirmationNotValid
-  | ConnectorAuthenticationFailed
-  | ConnectorAuthenticationSettingsNotValid
-  | ConnectorDoesNotSupportUpSyncing
-  | ConnectorDoesNotUseOAuth2PKCEAuthenticationStrategy
-  | ConnectorNotAuthenticated
-  | ConnectorNotFound
-  | ConnectorSettingsNotValid
   | ContentBlockingKeysGetterNotValid
   | ContentSummaryGetterNotValid
   | ContentSummaryNotValid
   | DefaultDocumentViewUiOptionsNotValid
+  | DocumentContentPatchNotValid
   | ConversationNotFound
   | ConversationStatusNotProcessing
   | DocumentContentNotValid
@@ -104,7 +98,7 @@ type KnownResultError =
   | DocumentVersionIdNotMatching
   | DocumentVersionNotFound
   | DuplicateDocumentDetected
-  | ExecutingJavascriptFunctionFailed
+  | ExecutingTypescriptFunctionFailed
   | FileNotFound
   | FilesNotFound
   | GlobalSettingsNotValid
@@ -116,8 +110,6 @@ type KnownResultError =
   | ParentCollectionCategoryNotFound
   | ReferencedCollectionsNotFound
   | ReferencedDocumentsNotFound
-  | RemoteConvertersNotValid
-  | SyncingChangesFailed
   | TooManyFailedImplementationAttempts
   | TypescriptCompilationFailed
   | UnexpectedError

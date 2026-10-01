@@ -31,8 +31,9 @@ import type CollectionVersionEntity from "../../entities/CollectionVersionEntity
 import makeCollection from "../../makers/makeCollection.js";
 import makeResultError from "../../makers/makeResultError.js";
 import makeValidationIssues from "../../makers/makeValidationIssues.js";
+import * as structuralSchemas from "../../structural-schemas/index.js";
+import BackendUsecase from "../../utils/BackendUsecase.js";
 import isEmpty from "../../utils/isEmpty.js";
-import Usecase from "../../utils/Usecase.js";
 
 interface CollectionsCreateOptions {
   dryRun?: boolean;
@@ -41,9 +42,27 @@ interface CollectionsCreateOptions {
   skipReferenceCheckForAppIds?: AppId[];
 }
 
-export default class CollectionsCreate extends Usecase<
+export default class CollectionsCreate extends BackendUsecase<
   Backend["collections"]["create"]
 > {
+  argumentsSchema = v.tuple([
+    structuralSchemas.backend.types.collectionDefinition(),
+  ]);
+  resultSchema = structuralSchemas.global.result(
+    structuralSchemas.backend.types.collection(),
+    [
+      structuralSchemas.backend.errors.appNotFound(),
+      structuralSchemas.backend.errors.collectionCategoryNotFound(),
+      structuralSchemas.backend.errors.collectionSchemaNotValid(),
+      structuralSchemas.backend.errors.collectionSettingsNotValid(),
+      structuralSchemas.backend.errors.contentBlockingKeysGetterNotValid(),
+      structuralSchemas.backend.errors.contentSummaryGetterNotValid(),
+      structuralSchemas.backend.errors.defaultDocumentViewUiOptionsNotValid(),
+      structuralSchemas.backend.errors.referencedCollectionsNotFound(),
+      structuralSchemas.backend.errors.unexpectedError(),
+    ],
+  );
+
   async exec(
     { settings, schema, versionSettings }: CollectionDefinition,
     options: CollectionsCreateOptions = {},
@@ -233,7 +252,6 @@ export default class CollectionsCreate extends Usecase<
           settingsValidationResult.output
             .redirectToCollectionAfterDocumentCreation,
       },
-      remote: null,
       createdAt: now,
     };
     const collectionVersion: CollectionVersionEntity = {
@@ -248,7 +266,6 @@ export default class CollectionsCreate extends Usecase<
           versionSettings.defaultDocumentViewUiOptions,
       },
       migration: null,
-      remoteConverters: null,
       createdAt: now,
     };
     if (!options.dryRun) {
@@ -256,8 +273,6 @@ export default class CollectionsCreate extends Usecase<
       await this.repos.collectionVersion.insert(collectionVersion);
     }
 
-    return makeSuccessfulResult(
-      makeCollection(collection, collectionVersion, null),
-    );
+    return makeSuccessfulResult(makeCollection(collection, collectionVersion));
   }
 }

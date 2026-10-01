@@ -1,0 +1,116 @@
+import { Command } from "commander";
+import { isEqual } from "es-toolkit";
+import createBackend from "../../../utils/createBackend.js";
+import { useMarkdownHelp } from "../../../utils/markdownHelp.js";
+import { getLockedApp, runAppCommand } from "../common/commandUtils.js";
+import { readLock } from "../common/lock.js";
+import { readMainSource } from "../common/mainSource.js";
+import { readManifest } from "../common/manifest.js";
+import {
+  hasStateDefinitionChanges,
+  readStateDefinitionSource,
+  stateDefinitionSourceOf,
+} from "../common/stateDefinition.js";
+import getStatus from "./getStatus.js";
+import makeArrayFieldDiff from "./makeArrayFieldDiff.js";
+import makeFieldDiff from "./makeFieldDiff.js";
+import makeUnifiedDiff from "./makeUnifiedDiff.js";
+
+export default useMarkdownHelp(
+  new Command("diff")
+    .description("Show local app project changes compared with the database.")
+    .action(async () => {
+      await runAppCommand(async () => {
+        const path = process.cwd();
+        const manifest = readManifest(path);
+        const lock = readLock(path);
+        const source = readMainSource(path);
+        if (!lock) {
+          throw new Error("app.lock.json is missing. This app is new.");
+        }
+
+        const backend = await createBackend();
+        const app = await getLockedApp(backend, lock.appId);
+        const remoteManifest = {
+          name: app.name,
+          type: app.type,
+          targetCollectionIds: app.latestVersion.targetCollections.map(
+            (targetCollection) => targetCollection.id,
+          ),
+        };
+        const remoteSource = app.latestVersion.files["/main.tsx"].source;
+        const name = makeFieldDiff(manifest.name, remoteManifest.name);
+        const type = makeFieldDiff(manifest.type, remoteManifest.type);
+        const targetCollectionIds = makeArrayFieldDiff(
+          manifest.targetCollectionIds,
+          remoteManifest.targetCollectionIds,
+        );
+        const sourceChanged = source !== remoteSource;
+        const stale = lock.latestAppVersionId !== app.latestVersion.id;
+        const status = getStatus({
+          metadataChanged:
+            name.changed || type.changed || targetCollectionIds.changed,
+          sourceChanged,
+          stale,
+        });
+
+        const localStateDefinition = readStateDefinitionSource(path);
+        const remoteStateDefinition = stateDefinitionSourceOf(
+          app.latestVersion.stateDefinition,
+        );
+        const permissionsChanged = !isEqual(
+          manifest.permissions,
+          app.permissions,
+        );
+        const stateDefinitionChanged = hasStateDefinitionChanges(
+          localStateDefinition,
+          app.latestVersion.stateDefinition,
+        );
+        if (permissionsChanged || stateDefinitionChanged) {
+          const cleanIndex = status.indexOf("clean");
+          if (cleanIndex !== -1) {
+            status.splice(cleanIndex, 1);
+          }
+        }
+        if (permissionsChanged) {
+          status.push("permissions changed");
+        }
+        if (stateDefinitionChanged) {
+          status.push("state definition changed");
+        }
+        return {
+          permissions: {
+            changed: permissionsChanged,
+            local: manifest.permissions,
+            remote: app.permissions,
+          },
+          stateDefinition: {
+            changed: stateDefinitionChanged,
+            local: localStateDefinition,
+            remote: remoteStateDefinition,
+          },
+          status,
+          appId: lock.appId,
+          lockedLatestAppVersionId: lock.latestAppVersionId,
+          databaseLatestAppVersionId: app.latestVersion.id,
+          stale,
+          manifest: {
+            name,
+            type,
+            targetCollectionIds,
+          },
+          source: {
+            changed: sourceChanged,
+            diff: sourceChanged
+              ? makeUnifiedDiff(
+                  "remote/main.tsx",
+                  remoteSource,
+                  "local/main.tsx",
+                  source,
+                )
+              : null,
+          },
+        };
+      });
+    }),
+);

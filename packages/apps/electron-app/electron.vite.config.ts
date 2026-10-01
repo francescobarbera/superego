@@ -2,13 +2,36 @@ import { resolve } from "node:path";
 import formatjs from "@formatjs/unplugin/rollup";
 import browserAppViteConfig from "@superego/browser-app/vite.config.js";
 import { defineConfig } from "electron-vite";
-import { mergeConfig, type UserConfig } from "vite";
+import {
+  mergeConfig,
+  type Plugin,
+  type ResolvedConfig,
+  type UserConfig,
+} from "vite";
+
+type WritableResolvedConfig = ResolvedConfig & { plugins: Plugin[] };
 
 export default defineConfig({
   main: {
+    plugins: [
+      {
+        name: "remove-electron-vite-esm-shim",
+        enforce: "post",
+        configResolved(config) {
+          // electron-vite's ESM shim uses regexes on rendered chunks. With the
+          // Rolldown bundle, it can match import-looking text inside embedded
+          // strings, inject the shim there, and emit an empty main entry.
+          // https://github.com/alex8088/electron-vite/issues/906
+          const writableConfig = config as WritableResolvedConfig;
+          writableConfig.plugins = writableConfig.plugins.filter(
+            (plugin) => plugin.name !== "vite:esm-shim",
+          );
+        },
+      },
+    ],
     build: {
       externalizeDeps: false,
-      rollupOptions: {
+      rolldownOptions: {
         output: { format: "es" },
         external: ["electron", "typescript", "@typescript/vfs"],
         plugins: [
@@ -16,6 +39,7 @@ export default defineConfig({
             idInterpolationPattern:
               "[name].[ext]_[sha512:contenthash:base64:6]",
             removeDefaultMessage: true,
+            flatten: false,
           }),
         ],
       },

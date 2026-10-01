@@ -1,4 +1,4 @@
-import { chmodSync } from "node:fs";
+import { chmodSync, copyFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
@@ -13,7 +13,9 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        assetFileNames: "[name][extname]",
         banner: "#!/usr/bin/env node",
+        codeSplitting: false,
         entryFileNames: "superego.js",
       },
     },
@@ -23,9 +25,21 @@ export default defineConfig({
   },
   plugins: [
     {
-      name: "make-cli-executable",
+      name: "copy-cli-launcher",
       closeBundle() {
-        chmodSync(resolve("dist/cli/superego.js"), 0o755);
+        copyFileSync(
+          resolve(import.meta.dirname, "src/cli/launcher.sh"),
+          resolve(import.meta.dirname, "dist/cli/superego"),
+        );
+        copyFileSync(
+          resolve(
+            import.meta.dirname,
+            "../../../node_modules/@jitl/quickjs-wasmfile-release-sync/dist/emscripten-module.wasm",
+          ),
+          resolve(import.meta.dirname, "dist/cli/emscripten-module.wasm"),
+        );
+        chmodSync(resolve(import.meta.dirname, "dist/cli/superego"), 0o755);
+        chmodSync(resolve(import.meta.dirname, "dist/cli/superego.js"), 0o755);
       },
     },
   ],

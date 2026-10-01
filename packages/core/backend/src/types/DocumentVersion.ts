@@ -1,7 +1,7 @@
 import type { Result } from "@superego/global-types";
 import type DocumentVersionCreator from "../enums/DocumentVersionCreator.js";
 import type ContentSummaryNotValid from "../errors/ContentSummaryNotValid.js";
-import type ExecutingJavascriptFunctionFailed from "../errors/ExecutingJavascriptFunctionFailed.js";
+import type ExecutingTypescriptFunctionFailed from "../errors/ExecutingTypescriptFunctionFailed.js";
 import type CollectionVersionId from "../ids/CollectionVersionId.js";
 import type ConversationId from "../ids/ConversationId.js";
 import type DocumentVersionId from "../ids/DocumentVersionId.js";
@@ -9,8 +9,6 @@ import type ContentSummary from "./ContentSummary.js";
 
 export default interface DocumentVersion {
   id: DocumentVersionId;
-  /** Id of the remote counterpart of this document version. */
-  remoteId: string | null;
   collectionVersionId: CollectionVersionId;
   /** Id of the previous version. Null if this is the first version. */
   previousVersionId: DocumentVersionId | null;
@@ -48,7 +46,7 @@ export default interface DocumentVersion {
    */
   contentSummary: Result<
     ContentSummary,
-    ExecutingJavascriptFunctionFailed | ContentSummaryNotValid
+    ExecutingTypescriptFunctionFailed | ContentSummaryNotValid
   >;
   createdBy: DocumentVersionCreator;
   createdAt: Date;

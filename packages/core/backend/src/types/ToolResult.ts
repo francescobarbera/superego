@@ -4,12 +4,12 @@ import type CollectionCategoryNotFound from "../errors/CollectionCategoryNotFoun
 import type CollectionNotFound from "../errors/CollectionNotFound.js";
 import type CollectionSchemaNotValid from "../errors/CollectionSchemaNotValid.js";
 import type CollectionSettingsNotValid from "../errors/CollectionSettingsNotValid.js";
-import type ConnectorDoesNotSupportUpSyncing from "../errors/ConnectorDoesNotSupportUpSyncing.js";
 import type DocumentContentNotValid from "../errors/DocumentContentNotValid.js";
+import type DocumentContentPatchNotValid from "../errors/DocumentContentPatchNotValid.js";
 import type DocumentNotFound from "../errors/DocumentNotFound.js";
 import type DocumentVersionIdNotMatching from "../errors/DocumentVersionIdNotMatching.js";
 import type DuplicateDocumentDetected from "../errors/DuplicateDocumentDetected.js";
-import type ExecutingJavascriptFunctionFailed from "../errors/ExecutingJavascriptFunctionFailed.js";
+import type ExecutingTypescriptFunctionFailed from "../errors/ExecutingTypescriptFunctionFailed.js";
 import type FileNotFound from "../errors/FileNotFound.js";
 import type FilesNotFound from "../errors/FilesNotFound.js";
 import type MakingContentBlockingKeysFailed from "../errors/MakingContentBlockingKeysFailed.js";
@@ -55,12 +55,7 @@ namespace ToolResult {
   // Factotum
   export type GetCollectionTypescriptSchema = BaseToolResult<
     ToolName.GetCollectionTypescriptSchema,
-    Result<
-      {
-        typescriptSchema: string;
-      },
-      CollectionNotFound
-    >
+    Result<string, CollectionNotFound>
   >;
   export type CreateDocuments = BaseToolResult<
     ToolName.CreateDocuments,
@@ -73,7 +68,6 @@ namespace ToolResult {
         }[];
       },
       | CollectionNotFound
-      | ConnectorDoesNotSupportUpSyncing
       | DocumentContentNotValid
       | FilesNotFound
       | ReferencedDocumentsNotFound
@@ -92,8 +86,8 @@ namespace ToolResult {
       },
       | CollectionNotFound
       | DocumentNotFound
-      | ConnectorDoesNotSupportUpSyncing
       | DocumentVersionIdNotMatching
+      | DocumentContentPatchNotValid
       | DocumentContentNotValid
       | FilesNotFound
       | ReferencedDocumentsNotFound
@@ -107,7 +101,7 @@ namespace ToolResult {
       any,
       | CollectionNotFound
       | TypescriptCompilationFailed
-      | ExecutingJavascriptFunctionFailed
+      | ExecutingTypescriptFunctionFailed
     >
   >;
   export type CreateChart = BaseToolResult<
@@ -121,7 +115,7 @@ namespace ToolResult {
       },
       | CollectionNotFound
       | TypescriptCompilationFailed
-      | ExecutingJavascriptFunctionFailed
+      | ExecutingTypescriptFunctionFailed
       | ResultError<"EChartsOptionNotValid", { issues: ValidationIssue[] }>
     >,
     {
@@ -139,7 +133,7 @@ namespace ToolResult {
       },
       | CollectionNotFound
       | TypescriptCompilationFailed
-      | ExecutingJavascriptFunctionFailed
+      | ExecutingTypescriptFunctionFailed
       | ResultError<"GeoJSONNotValid", { issues: ValidationIssue[] }>
     >,
     {
@@ -162,7 +156,7 @@ namespace ToolResult {
       >,
       | CollectionNotFound
       | TypescriptCompilationFailed
-      | ExecutingJavascriptFunctionFailed
+      | ExecutingTypescriptFunctionFailed
       | ResultError<"ReturnValueNotValid", { issues: ValidationIssue[] }>
     >,
     {

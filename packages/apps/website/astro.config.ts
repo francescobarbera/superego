@@ -22,9 +22,8 @@ export default defineConfig({
         },
         {
           label: "Customization",
-          autogenerate: { directory: "customization" },
+          items: [{ autogenerate: { directory: "customization" } }],
         },
-        { label: "Connectors", autogenerate: { directory: "connectors" } },
       ],
       customCss: ["./src/styles/custom.css"],
       plugins: [starlightThemeNova()],

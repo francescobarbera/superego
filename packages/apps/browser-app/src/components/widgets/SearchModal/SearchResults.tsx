@@ -1,10 +1,9 @@
 import type { Milliseconds } from "@superego/global-types";
+import { RouteName, toHref } from "@superego/routing";
 import { useEffect, useState } from "react";
 import { ListBox } from "react-aria-components";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useGlobalData } from "../../../business-logic/backend/GlobalData.js";
-import { RouteName } from "../../../business-logic/navigation/Route.js";
-import { toHref } from "../../../business-logic/navigation/RouteUtils.js";
 import type SearchState from "../../../business-logic/search/SearchState.js";
 import SearchType from "../../../business-logic/search/SearchType.js";
 import CollectionUtils from "../../../utils/CollectionUtils.js";
@@ -28,18 +27,35 @@ export default function SearchResults({
   const { collections } = useGlobalData();
   const collectionsById = CollectionUtils.makeByIdMap(collections);
 
-  const [showSearchingIndicator, setShowSearchingIndicator] = useState(false);
+  const [indicator, setIndicator] = useState({
+    isSearching: searchState.isSearching,
+    revision: 0,
+    delayElapsed: false,
+  });
+  if (indicator.isSearching !== searchState.isSearching) {
+    setIndicator({
+      isSearching: searchState.isSearching,
+      revision: indicator.revision + 1,
+      delayElapsed: false,
+    });
+  }
+  const { revision } = indicator;
   useEffect(() => {
     if (searchState.isSearching) {
-      const timeoutId = setTimeout(
-        () => setShowSearchingIndicator(true),
-        searchingIndicatorDelay,
-      );
+      const timeoutId = setTimeout(() => {
+        // A timer from an earlier searching period cannot reveal this one.
+        setIndicator((current) =>
+          current.revision === revision
+            ? { ...current, delayElapsed: true }
+            : current,
+        );
+      }, searchingIndicatorDelay);
       return () => clearTimeout(timeoutId);
     }
-    setShowSearchingIndicator(false);
     return;
-  }, [searchState.isSearching]);
+  }, [searchState.isSearching, revision]);
+  const showSearchingIndicator =
+    searchState.isSearching && indicator.delayElapsed;
 
   if (searchState.results === null) {
     return showSearchingIndicator ? (

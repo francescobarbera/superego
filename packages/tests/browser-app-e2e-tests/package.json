@@ -1,6 +1,6 @@
 {
   "name": "@superego/browser-app-e2e-tests",
-  "version": "2026.3.8",
+  "version": "2026.9.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,14 +11,14 @@
     "playwright": "playwright"
   },
   "dependencies": {
-    "@playwright/test": "^1.58.2",
+    "@playwright/test": "^1.63.0",
     "@superego/backend": "workspace:*",
     "@superego/browser-app": "workspace:*",
     "@superego/schema": "workspace:*",
     "luxon": "^3.7.2"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "typescript": "^5.9.3"
+    "@types/node": "^26.5.1",
+    "typescript": "^6.0.3"
   }
 }

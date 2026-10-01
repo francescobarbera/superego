@@ -1,14 +1,14 @@
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { RouteName } from "@superego/routing";
 import { valibotSchemas as schemaValibotSchemas } from "@superego/schema";
 import { valibotSchemas as backendUtilsValibotSchemas } from "@superego/shared-utils";
 import { useEffect, useMemo, useRef } from "react";
 import { Form } from "react-aria-components";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { FormattedMessage, useIntl } from "react-intl";
 import * as v from "valibot";
 import { useCreateCollection } from "../../../../business-logic/backend/hooks.js";
 import forms from "../../../../business-logic/forms/forms.js";
-import { RouteName } from "../../../../business-logic/navigation/Route.js";
 import useNavigationState from "../../../../business-logic/navigation/useNavigationState.js";
 import FullPageTabs from "../../../design-system/FullPageTabs/FullPageTabs.js";
 import FormStateEffects from "../../../widgets/FormStateEffects/FormStateEffects.js";
@@ -35,7 +35,7 @@ export default function CreateCollectionForm() {
     () => forms.defaults.contentSummaryGetter(defaultSchema),
     [],
   );
-  const { control, handleSubmit, setValue, getValues, watch, formState } =
+  const { control, handleSubmit, setValue, getValues, formState } =
     useForm<CreateCollectionFormValues>({
       defaultValues: {
         name: "",
@@ -99,7 +99,7 @@ export default function CreateCollectionForm() {
     }
   };
 
-  const schema = watch("schema");
+  const schema = useWatch({ control, name: "schema" });
   const isSchemaValid = !(
     typeof schema === "string" || formState.errors.schema
   );

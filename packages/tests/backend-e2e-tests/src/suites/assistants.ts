@@ -75,6 +75,22 @@ export default rd<GetDependencies>("Assistants", (deps) => {
   };
 
   describe("startConversation", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.startConversation(
+        "NotAnAssistant" as any,
+        [{ type: MessageContentPartType.Text, text: "Hello" }],
+        validInferenceOptions,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: InferenceOptionsNotValid", async () => {
       // Setup SUT
       const { backend } = deps({ inferenceSettings });
@@ -165,6 +181,22 @@ export default rd<GetDependencies>("Assistants", (deps) => {
   });
 
   describe("continueConversation", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.continueConversation(
+        "not-a-valid-id" as any,
+        [{ type: MessageContentPartType.Text, text: "Hello" }],
+        validInferenceOptions,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: InferenceOptionsNotValid", async () => {
       // Setup SUT
       const { backend } = deps({ inferenceSettings });
@@ -420,6 +452,21 @@ export default rd<GetDependencies>("Assistants", (deps) => {
   });
 
   describe("retryLastResponse", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.retryLastResponse(
+        "not-a-valid-id" as any,
+        validInferenceOptions,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: InferenceOptionsNotValid", async () => {
       // Setup SUT
       const { backend } = deps({ inferenceSettings });
@@ -740,6 +787,21 @@ export default rd<GetDependencies>("Assistants", (deps) => {
   });
 
   describe("recoverConversation", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.recoverConversation(
+        "not-a-valid-id" as any,
+        validInferenceOptions,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: InferenceOptionsNotValid", async () => {
       // Setup SUT
       const { backend } = deps({ inferenceSettings });
@@ -1006,6 +1068,21 @@ export default rd<GetDependencies>("Assistants", (deps) => {
   });
 
   describe("deleteConversation", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.deleteConversation(
+        "not-a-valid-id" as any,
+        "delete",
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: CommandConfirmationNotValid", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -1079,6 +1156,20 @@ export default rd<GetDependencies>("Assistants", (deps) => {
   });
 
   describe("getConversation", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.getConversation(
+        "not-a-valid-id" as any,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("error: ConversationNotFound", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -1125,9 +1216,138 @@ export default rd<GetDependencies>("Assistants", (deps) => {
       );
       expect(result.data.messages.length).toBeGreaterThanOrEqual(1);
     });
+
+    it("success: gets conversation with tool result artifacts", async () => {
+      // Setup mocks
+      let collectionId = "";
+      let callCount = 0;
+      const artifactProducingInferenceService: InferenceService = {
+        generateNextMessage: async (_messages, _tools, inferenceOptions) => {
+          callCount++;
+          if (callCount === 1) {
+            return {
+              id: Id.generate.message(),
+              role: MessageRole.Assistant,
+              toolCalls: [
+                {
+                  id: "call-1",
+                  tool: ToolName.CreateDocuments,
+                  input: {
+                    documents: [
+                      { collectionId, content: { title: "Buy milk" } },
+                    ],
+                  },
+                },
+              ],
+              reasoning: {},
+              inferenceOptions,
+              generationStats: {
+                timeTaken: 0,
+                inputTokens: 0,
+                outputTokens: 0,
+                totalTokens: 0,
+              },
+              createdAt: new Date(),
+            };
+          }
+          return {
+            id: Id.generate.message(),
+            role: MessageRole.Assistant,
+            content: [{ type: MessageContentPartType.Text, text: "Done" }],
+            reasoning: {},
+            inferenceOptions,
+            generationStats: {
+              timeTaken: 0,
+              inputTokens: 0,
+              outputTokens: 0,
+              totalTokens: 0,
+            },
+            createdAt: new Date(),
+          };
+        },
+        stt: async () => "Mock",
+        inspectFile: async () => "Mock",
+      };
+
+      // Setup SUT
+      const { backend } = deps({
+        inferenceService: artifactProducingInferenceService,
+      });
+      const createCollectionResult = await backend.collections.create({
+        settings: {
+          name: "tasks",
+          icon: null,
+          collectionCategoryId: null,
+          defaultCollectionViewAppId: null,
+          description: null,
+          assistantInstructions: null,
+          redirectToCollectionAfterDocumentCreation: false,
+        },
+        schema: {
+          types: {
+            Root: {
+              dataType: DataType.Struct,
+              properties: { title: { dataType: DataType.String } },
+            },
+          },
+          rootType: "Root",
+        },
+        versionSettings: {
+          contentBlockingKeysGetter: null,
+          contentSummaryGetter: {
+            source: "",
+            compiled:
+              "export default function getContentSummary() { return {}; }",
+          },
+          defaultDocumentViewUiOptions: null,
+        },
+      });
+      assert.isTrue(createCollectionResult.success);
+      collectionId = createCollectionResult.data.id;
+      const startResult = await backend.assistants.startConversation(
+        AssistantName.Factotum,
+        [{ type: MessageContentPartType.Text, text: "Create a task" }],
+        validInferenceOptions,
+      );
+      assert.isTrue(startResult.success);
+      await waitForConversationProcessing(backend, startResult.data.id);
+
+      // Exercise
+      const result = await backend.assistants.getConversation(
+        startResult.data.id,
+      );
+
+      // Verify
+      assert.isTrue(result.success);
+      const toolMessage = result.data.messages.find(
+        (message) => message.role === MessageRole.Tool,
+      );
+      assert.isDefined(toolMessage);
+      expect(toolMessage.toolResults[0]).toEqual(
+        expect.objectContaining({
+          artifacts: expect.objectContaining({
+            documents: expect.any(Array),
+          }),
+        }),
+      );
+    });
   });
 
   describe("getLiveConversation", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.getLiveConversation(
+        "not-a-valid-id" as any,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("success: returns null when conversation is not in live store", async () => {
       // Setup SUT
       const { backend } = deps();
@@ -1248,6 +1468,21 @@ export default rd<GetDependencies>("Assistants", (deps) => {
   });
 
   describe("searchConversations", () => {
+    it("error: ArgumentsNotValid", async () => {
+      // Setup SUT
+      const { backend } = deps();
+
+      // Exercise
+      const result = await backend.assistants.searchConversations(
+        "query",
+        {} as any,
+      );
+
+      // Verify
+      assert(!result.success);
+      expect(result.error.name).toBe("ArgumentsNotValid");
+    });
+
     it("success: returns empty array when no matches", async () => {
       // Setup SUT
       const { backend } = deps();

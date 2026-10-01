@@ -1,6 +1,6 @@
 {
   "name": "@superego/javascript-sandbox-global-utils",
-  "version": "2026.3.8",
+  "version": "2026.9.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -21,9 +21,10 @@
     "luxon": "^3.7.2"
   },
   "devDependencies": {
-    "@types/luxon": "^3.7.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.0",
+    "@types/luxon": "^3.7.5",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0",
     "zx": "8.8.5-lite"
   }
 }

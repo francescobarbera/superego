@@ -32,22 +32,17 @@ export default class BackendIPCProxyClient implements Backend {
       create: this.makeMainIpcCall("collections.create"),
       createMany: this.makeMainIpcCall("collections.createMany"),
       updateSettings: this.makeMainIpcCall("collections.updateSettings"),
-      setRemote: this.makeMainIpcCall("collections.setRemote"),
-      getOAuth2PKCEConnectorAuthorizationRequestUrl: this.makeMainIpcCall(
-        "collections.getOAuth2PKCEConnectorAuthorizationRequestUrl",
-      ),
-      authenticateOAuth2PKCEConnector: this.makeMainIpcCall(
-        "collections.authenticateOAuth2PKCEConnector",
-      ),
-      triggerDownSync: this.makeMainIpcCall("collections.triggerDownSync"),
       createNewVersion: this.makeMainIpcCall("collections.createNewVersion"),
       updateLatestVersionSettings: this.makeMainIpcCall(
         "collections.updateLatestVersionSettings",
       ),
       delete: this.makeMainIpcCall("collections.delete"),
       list: this.makeMainIpcCall("collections.list"),
-      listConnectors: this.makeMainIpcCall("collections.listConnectors"),
+      get: this.makeMainIpcCall("collections.get"),
       getVersion: this.makeMainIpcCall("collections.getVersion"),
+      getTypescriptSchema: this.makeMainIpcCall(
+        "collections.getTypescriptSchema",
+      ),
     };
 
     this.documents = {
@@ -59,6 +54,9 @@ export default class BackendIPCProxyClient implements Backend {
       listVersions: this.makeMainIpcCall("documents.listVersions"),
       get: this.makeMainIpcCall("documents.get"),
       getVersion: this.makeMainIpcCall("documents.getVersion"),
+      executeTypescriptFunction: this.makeMainIpcCall(
+        "documents.executeTypescriptFunction",
+      ),
       search: this.makeMainIpcCall("documents.search"),
     };
 
@@ -97,8 +95,11 @@ export default class BackendIPCProxyClient implements Backend {
     };
 
     this.apps = {
+      getState: this.makeMainIpcCall("apps.getState"),
+      updateState: this.makeMainIpcCall("apps.updateState"),
       create: this.makeMainIpcCall("apps.create"),
       updateName: this.makeMainIpcCall("apps.updateName"),
+      updatePermissions: this.makeMainIpcCall("apps.updatePermissions"),
       createNewVersion: this.makeMainIpcCall("apps.createNewVersion"),
       delete: this.makeMainIpcCall("apps.delete"),
       list: this.makeMainIpcCall("apps.list"),

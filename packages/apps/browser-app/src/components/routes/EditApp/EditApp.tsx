@@ -1,6 +1,6 @@
 import type { AppId } from "@superego/backend";
 import { useId, useState } from "react";
-import { PiFloppyDisk, PiPencilSimple, PiTrash } from "react-icons/pi";
+import { PiGear, PiFloppyDisk, PiTrash } from "react-icons/pi";
 import { useIntl } from "react-intl";
 import { useGlobalData } from "../../../business-logic/backend/GlobalData.js";
 import useSaveShortcut from "../../../business-logic/forms/useSaveShortcut.js";
@@ -9,17 +9,15 @@ import Shell from "../../design-system/Shell/Shell.js";
 import CreateNewAppVersionForm from "./CreateNewAppVersionForm.js";
 import DeleteAppModalForm from "./DeleteAppModalForm.js";
 import * as cs from "./EditApp.css.js";
-import UpdateNameModalForm from "./UpdateNameModalForm.js";
+import UpdateSettingsModalForm from "./UpdateSettingsModalForm.js";
 
 interface Props {
   appId: AppId;
 }
 export default function EditApp({ appId }: Props) {
   const intl = useIntl();
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const { apps } = useGlobalData();
-
-  const [isUpdateNameModalFormOpen, setIsUpdateNameModalFormOpen] =
-    useState(false);
 
   const [isDeleteAppModalFormOpen, setIsDeleteAppModalFormOpen] =
     useState(false);
@@ -30,7 +28,15 @@ export default function EditApp({ appId }: Props) {
   ] = useState(true);
 
   const createNewVersionFormId = useId();
-  useSaveShortcut(createNewVersionFormId, isCreateNewVersionFormSubmitDisabled);
+  const settingsFormId = useId();
+  const [isSettingsFormSubmitDisabled, setIsSettingsFormSubmitDisabled] =
+    useState(true);
+  useSaveShortcut(
+    isSettingsModalOpen ? settingsFormId : createNewVersionFormId,
+    isSettingsModalOpen
+      ? isSettingsFormSubmitDisabled
+      : isCreateNewVersionFormSubmitDisabled,
+  );
 
   const app = AppUtils.findApp(apps, appId);
 
@@ -38,14 +44,18 @@ export default function EditApp({ appId }: Props) {
     <Shell.Panel slot="Main">
       <Shell.Panel.Header
         title={intl.formatMessage(
-          { defaultMessage: "🧩\u2002{app} » Edit" },
+          {
+            // TODO(formatjs): Remove explicit ID when https://github.com/formatjs/formatjs/issues/6735 is fixed.
+            id: "EditApp.tsx_LVy7EO",
+            defaultMessage: "🧩\u2002{app} » Edit",
+          },
           { app: app.name },
         )}
         actions={[
           {
-            icon: <PiPencilSimple />,
-            label: intl.formatMessage({ defaultMessage: "Edit name" }),
-            onPress: () => setIsUpdateNameModalFormOpen(true),
+            icon: <PiGear />,
+            label: intl.formatMessage({ defaultMessage: "App settings" }),
+            onPress: () => setIsSettingsModalOpen(true),
           },
           {
             icon: <PiFloppyDisk />,
@@ -67,11 +77,14 @@ export default function EditApp({ appId }: Props) {
           formId={createNewVersionFormId}
           setSubmitDisabled={setIsCreateNewVersionFormSubmitDisabled}
         />
-        <UpdateNameModalForm
-          app={app}
-          isOpen={isUpdateNameModalFormOpen}
-          onClose={() => setIsUpdateNameModalFormOpen(false)}
-        />
+        {isSettingsModalOpen ? (
+          <UpdateSettingsModalForm
+            app={app}
+            formId={settingsFormId}
+            setSubmitDisabled={setIsSettingsFormSubmitDisabled}
+            onClose={() => setIsSettingsModalOpen(false)}
+          />
+        ) : null}
         <DeleteAppModalForm
           app={app}
           isOpen={isDeleteAppModalFormOpen}

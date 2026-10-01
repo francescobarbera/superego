@@ -3,14 +3,21 @@ import type { DistributivePick, ResultPromise } from "@superego/global-types";
 import { Id } from "@superego/shared-utils";
 import type Config from "../Config.js";
 import type BackgroundJobEntity from "../entities/BackgroundJobEntity.js";
-import type CollectionEntity from "../entities/CollectionEntity.js";
 import type LiveConversationStore from "../LiveConversationStore.js";
-import type Connector from "../requirements/Connector.js";
 import type DataRepositories from "../requirements/DataRepositories.js";
 import type InferenceServiceFactory from "../requirements/InferenceServiceFactory.js";
 import type JavascriptSandbox from "../requirements/JavascriptSandbox.js";
 import type TypescriptCompiler from "../requirements/TypescriptCompiler.js";
 
+/**
+ * Base class for all usecases. Holds the common constructor and helper methods.
+ * Usecases exposed via the public `Backend` interface should extend
+ * `BackendUsecase` instead, which adds the abstract `argumentsSchema` and
+ * `resultSchema` properties used by `ExecutingBackend` for RPC-boundary
+ * validation. Extend `Usecase` directly only for internal usecases, i.e., the
+ * ones invoked via `sub()` or by the background-job runner, never through the
+ * public `Backend` interface.
+ */
 export default abstract class Usecase<
   Exec extends (...args: any[]) => ResultPromise<any, any> = (
     ...args: any[]
@@ -21,7 +28,6 @@ export default abstract class Usecase<
     protected javascriptSandbox: JavascriptSandbox,
     protected typescriptCompiler: TypescriptCompiler,
     protected inferenceServiceFactory: InferenceServiceFactory,
-    protected connectors: Connector[],
     protected liveConversationStore: LiveConversationStore,
     protected config: Config,
   ) {}
@@ -34,7 +40,6 @@ export default abstract class Usecase<
       javascriptSandbox: JavascriptSandbox,
       typescriptCompiler: TypescriptCompiler,
       inferenceServiceFactory: InferenceServiceFactory,
-      connectors: Connector[],
       liveConversationStore: LiveConversationStore,
       config: Config,
     ) => Usecase,
@@ -44,7 +49,6 @@ export default abstract class Usecase<
       this.javascriptSandbox,
       this.typescriptCompiler,
       this.inferenceServiceFactory,
-      this.connectors,
       this.liveConversationStore,
       this.config,
     ) as InstanceType<SubUsecase>;
@@ -62,17 +66,5 @@ export default abstract class Usecase<
       finishedProcessingAt: null,
       error: null,
     });
-  }
-
-  protected getConnector(
-    collectionOrName: CollectionEntity | string,
-  ): Connector | null {
-    const connectorName =
-      typeof collectionOrName !== "string"
-        ? (collectionOrName.remote?.connector.name ?? null)
-        : collectionOrName;
-    return connectorName !== null
-      ? (this.connectors.find(({ name }) => name === connectorName) ?? null)
-      : null;
   }
 }

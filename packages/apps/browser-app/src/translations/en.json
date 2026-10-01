@@ -32,24 +32,6 @@
   "AssistantsSettings.tsx_xIOlmn": {
     "defaultMessage": "Your preferences"
   },
-  "AuthenticateOAuth2PKCEConnectorButton.tsx_Zdmqoc": {
-    "defaultMessage": "Authenticate connector"
-  },
-  "AuthenticateOAuth2PKCEConnectorButton.tsx_wAxMM5": {
-    "defaultMessage": "Re-authenticate connector"
-  },
-  "AuthenticationSettings.tsx_B7p2EC": {
-    "defaultMessage": "Client secret"
-  },
-  "AuthenticationSettings.tsx_KTNoOq": {
-    "defaultMessage": "API key"
-  },
-  "AuthenticationSettings.tsx_Q0U6OF": {
-    "defaultMessage": "Authentication settings"
-  },
-  "AuthenticationSettings.tsx_U5+MBC": {
-    "defaultMessage": "Client ID"
-  },
   "BackgroundJob.tsx_EiyxpM": {
     "defaultMessage": "Finished at"
   },
@@ -118,18 +100,6 @@
   },
   "Boutique.tsx_J4ocUB": {
     "defaultMessage": "Boutique"
-  },
-  "Boutique.tsx_XBMGwY": {
-    "defaultMessage": "Failed to decode pack file"
-  },
-  "Boutique.tsx_a1s4zI": {
-    "defaultMessage": "Or install your own"
-  },
-  "Boutique.tsx_rrrB1P": {
-    "defaultMessage": "Drop <packMpk>pack.mpk</packMpk> to install"
-  },
-  "BoutiquePack.tsx_AHlDyN": {
-    "defaultMessage": "Boutique » {packId}"
   },
   "BrowserApp.tsx_w1vfWS": {
     "defaultMessage": "Error loading app"
@@ -212,9 +182,6 @@
   "CollectionSettings.tsx_GjrlL9": {
     "defaultMessage": "General settings"
   },
-  "CollectionSettings.tsx_JJBzhX": {
-    "defaultMessage": "Remote"
-  },
   "CollectionSettings.tsx_VcipZo": {
     "defaultMessage": "Latest version settings"
   },
@@ -232,18 +199,6 @@
   },
   "CompilationInProgressIndicator.tsx_MCO54A": {
     "defaultMessage": "Compiling..."
-  },
-  "ConnectorSelect.tsx_Gnbr9F": {
-    "defaultMessage": "Select a connector"
-  },
-  "ConnectorSelect.tsx_nSFiyf": {
-    "defaultMessage": "The connector cannot be changed once a remote is configured."
-  },
-  "ConnectorSelect.tsx_r8XsCU": {
-    "defaultMessage": "Connector"
-  },
-  "ConnectorSettings.tsx_1B+Bnl": {
-    "defaultMessage": "Connector settings"
   },
   "ContentBlockingKeysTab.tsx_mzcj4a": {
     "defaultMessage": "Update the <code>getContentBlockingKeys</code> function to reflect schema changes."
@@ -269,13 +224,19 @@
   "Controls.tsx_xbi38c": {
     "defaultMessage": "Zoom in"
   },
+  "Conversation.tsx_2U3CJ+": {
+    "defaultMessage": "🤖 Conversations"
+  },
   "Conversation.tsx_9eR0Qp": {
     "defaultMessage": "Delete conversation"
   },
   "Conversation.tsx_A4DzYS": {
     "defaultMessage": "Show tool calls"
   },
-  "Conversation.tsx_eq3LES": {
+  "Conversation.tsx_avxZiI": {
+    "defaultMessage": "🤖 Conversations » {conversationId}"
+  },
+  "Conversation.tsx_l0Yx7U": {
     "defaultMessage": "🤖 Conversations » {conversation}"
   },
   "Conversation.tsx_oZLZvb": {
@@ -284,17 +245,11 @@
   "Conversation.tsx_w5q/I/": {
     "defaultMessage": "Conversation actions"
   },
-  "Conversation.tsx_y2z/xn": {
-    "defaultMessage": "🤖 Conversations » {conversationId}"
-  },
   "Conversation.tsx_yGVyFv": {
     "defaultMessage": "Hide tool calls"
   },
   "Conversation.tsx_yWDfdE": {
     "defaultMessage": "What kind of data do you want to store?"
-  },
-  "Conversation.tsx_yYmfIl": {
-    "defaultMessage": "🤖 Conversations"
   },
   "ConversationSearchResult.tsx_KHJ2sI": {
     "defaultMessage": "Untitled conversation"
@@ -302,14 +257,14 @@
   "ConversationUtils.ts_PQ8A3I": {
     "defaultMessage": "New conversation"
   },
+  "Conversations.tsx_2U3CJ+": {
+    "defaultMessage": "🤖 Conversations"
+  },
   "Conversations.tsx_PQ8A3I": {
     "defaultMessage": "New conversation"
   },
   "Conversations.tsx_YdANpb": {
     "defaultMessage": "Conversations actions"
-  },
-  "Conversations.tsx_yYmfIl": {
-    "defaultMessage": "🤖 Conversations"
   },
   "ConversationsTable.tsx_/+r2Su": {
     "defaultMessage": "You don't have any conversations yet."
@@ -328,12 +283,6 @@
   },
   "ConversationsTable.tsx_wSAvhu": {
     "defaultMessage": "Assistant"
-  },
-  "CreateApp.tsx_VzzYJk": {
-    "defaultMessage": "Create"
-  },
-  "CreateApp.tsx_dtELK2": {
-    "defaultMessage": "Create App"
   },
   "CreateCollectionAssisted.tsx_7uKYfK": {
     "defaultMessage": "Go to manual mode"
@@ -410,17 +359,11 @@
   "CreateNewCollectionVersionForm.tsx_oL/+8Y": {
     "defaultMessage": "2. Deduplication"
   },
-  "CreateNewCollectionVersionForm.tsx_sSfm9D": {
-    "defaultMessage": "5. Remote converters"
-  },
   "CreateNewDocumentVersion.tsx_p5+z7U": {
     "defaultMessage": "{collection} » Created new document version"
   },
   "CreateNewDocumentVersionForm.tsx_KtoryI": {
     "defaultMessage": "Viewing document version from <b>{date}</b>. Document editing is disabled."
-  },
-  "CreateNewDocumentVersionForm.tsx_gzZ4Jo": {
-    "defaultMessage": "This document is synced from a remote source and cannot be edited."
   },
   "CreateNewDocumentVersionForm.tsx_p6/GR5": {
     "defaultMessage": "Error saving document"
@@ -433,9 +376,6 @@
   },
   "CreatedByLine.tsx_qTzfr9": {
     "defaultMessage": "Created in conversation"
-  },
-  "CreatedByLine.tsx_ufqNmd": {
-    "defaultMessage": "Created by sync"
   },
   "DatePickerInput.tsx_/GCoTA": {
     "defaultMessage": "Clear"
@@ -506,9 +446,6 @@
   "DeleteConversationModalForm.tsx_lml5ZH": {
     "defaultMessage": "Command confirmation"
   },
-  "Document.tsx_AB6IO/": {
-    "defaultMessage": "Go to remote document"
-  },
   "Document.tsx_EPTOBf": {
     "defaultMessage": "{collection} » {document}"
   },
@@ -533,20 +470,11 @@
   "Document.tsx_zugcbb": {
     "defaultMessage": "{collection} » {documentId}"
   },
-  "DocumentInfoModal.tsx_1D7voQ": {
-    "defaultMessage": "Synced with {remote}"
-  },
   "DocumentInfoModal.tsx_gm5+Hy": {
     "defaultMessage": "Collection ID:"
   },
-  "DocumentInfoModal.tsx_h6SlY+": {
-    "defaultMessage": "Remote document ID:"
-  },
   "DocumentInfoModal.tsx_i3P6ZD": {
     "defaultMessage": "Created at:"
-  },
-  "DocumentInfoModal.tsx_nY1/sq": {
-    "defaultMessage": "Remote document version ID:"
   },
   "DocumentInfoModal.tsx_ps0LGU": {
     "defaultMessage": "Document info"
@@ -572,9 +500,6 @@
   "DocumentRefField.tsx_hX5PAb": {
     "defaultMessage": "No results found"
   },
-  "DocumentTableRow.tsx_aBBLZR": {
-    "defaultMessage": "Open remote document"
-  },
   "DocumentTableRow.tsx_vT9jcW": {
     "defaultMessage": "Invalid content summary"
   },
@@ -599,17 +524,8 @@
   "DocumentsTable.tsx_kGGU2D": {
     "defaultMessage": "Id"
   },
-  "DocumentsTable.tsx_xIoGG9": {
-    "defaultMessage": "Go to"
-  },
-  "DownSyncInfoModal.tsx_47FYwb": {
-    "defaultMessage": "Cancel"
-  },
-  "DownSyncInfoModal.tsx_8I58x/": {
-    "defaultMessage": "Syncing with {remote}"
-  },
-  "DownSyncInfoModal.tsx_dKtz/9": {
-    "defaultMessage": "Sync"
+  "DownloadsField.tsx_xj9V0+": {
+    "defaultMessage": "Allow file downloads"
   },
   "DuplicateDocumentDetectedModal.tsx_47FYwb": {
     "defaultMessage": "Cancel"
@@ -650,14 +566,14 @@
   "EditApp.tsx_K3r6DQ": {
     "defaultMessage": "Delete"
   },
-  "EditApp.tsx_LDlHu6": {
+  "EditApp.tsx_LVy7EO": {
     "defaultMessage": "🧩 {app} » Edit"
+  },
+  "EditApp.tsx_RsXx1A": {
+    "defaultMessage": "App settings"
   },
   "EditApp.tsx_Vl13tq": {
     "defaultMessage": "Create new version"
-  },
-  "EditApp.tsx_Vva+Yr": {
-    "defaultMessage": "Edit name"
   },
   "EditingToolbar.tsx_1hhuuF": {
     "defaultMessage": "App preview"
@@ -707,11 +623,11 @@
   "ErrorMessage.tsx_zg3wLI": {
     "defaultMessage": "The assistant encountered an error."
   },
+  "Explainer.tsx_2ouWR4": {
+    "defaultMessage": "<p> Here in the Boutique you can find pre-made collections and apps, bundled into thematic <b>packs</b> you can install in one click. </p>"
+  },
   "Explainer.tsx_Np7GhL": {
     "defaultMessage": "<p> Your data in Superego is stored in <b>collections</b> of <b>documents</b>. Each collection has a <b>schema</b> that defines what data each document contains. </p> <p> Example: an <b>Expenses</b> collection contains many <b>Expense</b> documents. Each document contains the date of the expense, the amount, and a description. (This is the schema.) </p> <p> Just tell the <b>Collection Creator</b> what data you want to store, and it will create a collection for you. </p>"
-  },
-  "Explainer.tsx_kM11wK": {
-    "defaultMessage": "<p> Here in the Boutique you can find pre-made collections and apps, bundled into thematic <b>packs</b> you can install in one click. </p> <p> You can also use the <cliDocsLink>Superego CLI</cliDocsLink> to create your own packs. (Drop below to install.) </p>"
   },
   "FileField.tsx_5q3qC0": {
     "defaultMessage": "Download"
@@ -902,6 +818,15 @@
   "History.tsx_nT6w+N": {
     "defaultMessage": "Versions history"
   },
+  "HttpOriginField.tsx_+Ynh/m": {
+    "defaultMessage": "Enter a valid HTTP(S) origin without a path, query, or fragment."
+  },
+  "HttpOriginField.tsx_H8n1Sy": {
+    "defaultMessage": "HTTP origin number {itemNumber}"
+  },
+  "HttpOriginsField.tsx_JV06rg": {
+    "defaultMessage": "Allow HTTP requests to these destinations:"
+  },
   "ImplementWithAssistantButton.tsx_40hUOu": {
     "defaultMessage": "Implement with assistant"
   },
@@ -1013,9 +938,6 @@
   "ListField.tsx_pUcgkI": {
     "defaultMessage": "There are no items in the list"
   },
-  "LocalPack.tsx_/hNhmZ": {
-    "defaultMessage": "Custom Packs » {packId}"
-  },
   "Logo.tsx_FbFgI4": {
     "defaultMessage": "Superego Logo"
   },
@@ -1043,6 +965,12 @@
   "ModalContent.tsx_qjTjxw": {
     "defaultMessage": "<p> Deleting the document will permanently delete the document, all its versions, and all its files. </p> <p> If you're sure you want to delete the document, write <i>delete</i> in the input below. </p>"
   },
+  "ModalsField.tsx_5g9TrD": {
+    "defaultMessage": "Allow browser dialogs and printing"
+  },
+  "ModalsField.tsx_kgdY08": {
+    "defaultMessage": "Enables printing, alert, confirm, prompt, and other browser modal dialogs."
+  },
   "Model.tsx_G/yZLu": {
     "defaultMessage": "Remove"
   },
@@ -1058,8 +986,20 @@
   "ModelSelect.tsx_rhSI1/": {
     "defaultMessage": "Model"
   },
+  "NotFound.tsx_WG5jPT": {
+    "defaultMessage": "Route {route} does not exist."
+  },
+  "NotFound.tsx_ejEGdx": {
+    "defaultMessage": "Home"
+  },
+  "NotFound.tsx_gc051n": {
+    "defaultMessage": "Route not found"
+  },
   "NullifyFieldAction.tsx_MLa9CL": {
     "defaultMessage": "Set {fieldLabel} to null"
+  },
+  "Pack.tsx_AHlDyN": {
+    "defaultMessage": "Boutique » {packId}"
   },
   "PackCard.tsx_EgRJme": {
     "defaultMessage": "Screenshot of the pack"
@@ -1081,9 +1021,6 @@
   },
   "PackMainPanel.tsx_OYAe1w": {
     "defaultMessage": "Boutique » {packName}"
-  },
-  "PackMainPanel.tsx_hgmRAL": {
-    "defaultMessage": "Custom Packs » {packName}"
   },
   "PackMainPanel.tsx_j9FVIw": {
     "defaultMessage": "Screenshot of {packName}"
@@ -1205,6 +1142,18 @@
   "RHFSchemaField.tsx_IBR6nN": {
     "defaultMessage": "Defines the \"shape\" of document contents in this collection."
   },
+  "RHFTextListField.tsx_2/2yg+": {
+    "defaultMessage": "Add"
+  },
+  "RHFTextListField.tsx_G/yZLu": {
+    "defaultMessage": "Remove"
+  },
+  "RHFTextListField.tsx_OT7vQx": {
+    "defaultMessage": "Item {number}"
+  },
+  "RHFTextListField.tsx_pUcgkI": {
+    "defaultMessage": "There are no items in the list"
+  },
   "ReasoningEffortSelect.tsx_2X1lvg": {
     "defaultMessage": "Reasoning effort"
   },
@@ -1222,30 +1171,6 @@
   },
   "ReasoningEffortSelect.tsx_ovJ26C": {
     "defaultMessage": "Medium"
-  },
-  "Remote.tsx_s8FZNF": {
-    "defaultMessage": "<p> You can sync a collection with an external data source (a <b>remote</b>). When a remote is configured, it becomes the <i>source of truth</i> for that collection. </p> <p> The collection isn't necessarily an exact replica of the remote. Documents pulled from the remote are transformed to match your collection's schema via your <code>fromRemoteDocument</code> mapping, and you can filter which remote documents are synced. </p> <p> To set up a remote, configure a <i>connector</i> to the external data source. </p> <p> Some connectors support only <b>syncing down from</b> the remote, making the collection read-only. Others also support <b>syncing up to</b> the remote, so creates, updates, and deletes in the collection are propagated to the remote. </p> <p> More info at <a>https://superego.dev/connectors</a>. </p>"
-  },
-  "RemoteConverters.tsx_3cBs4J": {
-    "defaultMessage": "TypeScript function transforming a remote document into the content of a local document. Return <code>null</code> to skip syncing the document."
-  },
-  "RemoteConverters.tsx_GqZhDC": {
-    "defaultMessage": "From remote document"
-  },
-  "RemoteConverters.tsx_abnr48": {
-    "defaultMessage": "Remote document converters"
-  },
-  "RemoteConvertersTab.tsx_3cBs4J": {
-    "defaultMessage": "TypeScript function transforming a remote document into the content of a local document. Return <code>null</code> to skip syncing the document."
-  },
-  "RemoteConvertersTab.tsx_CPS541": {
-    "defaultMessage": "Update the <code>fromRemoteDocument</code> function to reflect schema changes."
-  },
-  "RemoteConvertersTab.tsx_GqZhDC": {
-    "defaultMessage": "From remote document"
-  },
-  "RemoteConvertersTab.tsx_J/yjzE": {
-    "defaultMessage": "Create new version and migrate documents"
   },
   "RenameCollectionCategoryModalForm.tsx_47FYwb": {
     "defaultMessage": "Cancel"
@@ -1313,9 +1238,6 @@
   "SchemaTab.tsx_Lktmvk": {
     "defaultMessage": "Schema"
   },
-  "SchemaTab.tsx_Vi4BUn": {
-    "defaultMessage": "<p> Every time you want to change the schema of a collection (e.g., to add, change, or remove properties), you need to create a new collection version. The process involves the following steps: </p> <ol> <li>Implement the schema changes you want to make.</li> <li> Update the collection's content summary getter to reflect those changes. </li> <li> Since this is a remote collection, update its remote converters as well. </li> </ol>"
-  },
   "SearchModal.tsx_xmcVZ0": {
     "defaultMessage": "Search"
   },
@@ -1370,32 +1292,14 @@
   "SendRecordButtons.tsx_GEd3kV": {
     "defaultMessage": "Speak"
   },
+  "SendRecordButtons.tsx_SttzK5": {
+    "defaultMessage": "Audio recording is unavailable in this browser or connection"
+  },
   "SendRecordButtons.tsx_kNl1RN": {
     "defaultMessage": "Configure assistant"
   },
   "SendRecordButtons.tsx_kSy9pJ": {
     "defaultMessage": "Add model w/ audio understanding to use voice"
-  },
-  "SetCollectionRemoteForm.tsx_fsGyC4": {
-    "defaultMessage": "Update remote"
-  },
-  "SetCollectionRemoteForm.tsx_m8TXbJ": {
-    "defaultMessage": "Set remote"
-  },
-  "SetNameAndSaveModal.tsx_47FYwb": {
-    "defaultMessage": "Cancel"
-  },
-  "SetNameAndSaveModal.tsx_HAlOn1": {
-    "defaultMessage": "Name"
-  },
-  "SetNameAndSaveModal.tsx_J1XXSx": {
-    "defaultMessage": "My Awesome App"
-  },
-  "SetNameAndSaveModal.tsx_VzzYJk": {
-    "defaultMessage": "Create"
-  },
-  "SetNameAndSaveModal.tsx_r+ksJu": {
-    "defaultMessage": "Create app"
   },
   "StructField.tsx_BPj/Jo": {
     "defaultMessage": "null"
@@ -1535,20 +1439,23 @@
   "UpdateGlobalSettingsForm.tsx_pbF7L9": {
     "defaultMessage": "Error saving global settings"
   },
-  "UpdateNameModalForm.tsx_47FYwb": {
+  "UpdateSettingsModalForm.tsx_47FYwb": {
     "defaultMessage": "Cancel"
   },
-  "UpdateNameModalForm.tsx_BWpuKl": {
-    "defaultMessage": "Update"
-  },
-  "UpdateNameModalForm.tsx_HAlOn1": {
+  "UpdateSettingsModalForm.tsx_HAlOn1": {
     "defaultMessage": "Name"
   },
-  "UpdateNameModalForm.tsx_J1XXSx": {
+  "UpdateSettingsModalForm.tsx_J1XXSx": {
     "defaultMessage": "My Awesome App"
   },
-  "UpdateNameModalForm.tsx_btR6aV": {
-    "defaultMessage": "Update app name"
+  "UpdateSettingsModalForm.tsx_RsXx1A": {
+    "defaultMessage": "App settings"
+  },
+  "UpdateSettingsModalForm.tsx_SFuk1v": {
+    "defaultMessage": "Permissions"
+  },
+  "UpdateSettingsModalForm.tsx_jvo0vs": {
+    "defaultMessage": "Save"
   },
   "UserMessage.tsx_J3ca41": {
     "defaultMessage": "Play"
@@ -1574,6 +1481,9 @@
   "Welcome.tsx_NZjpCr": {
     "defaultMessage": "<settingsLink>Configure the AI assistant</settingsLink>."
   },
+  "Welcome.tsx_hmNCAz": {
+    "defaultMessage": "<installCliButton>Install the <cliName>superego</cliName> CLI</installCliButton>."
+  },
   "Welcome.tsx_mD6yYG": {
     "defaultMessage": "<createCollectionLink>Create your first collection</createCollectionLink>, or <boutiqueLink>install a pre-made one</boutiqueLink> from the Boutique."
   },
@@ -1588,21 +1498,6 @@
   },
   "formatDuration.ts_lf6GDO": {
     "defaultMessage": "{seconds, number, ::.##} seconds"
-  },
-  "getDownSyncAction.tsx_IJWuS/": {
-    "defaultMessage": "Last synced {lastSucceededAt, date, ::MMM d, HH:mm}"
-  },
-  "getDownSyncAction.tsx_RRA+40": {
-    "defaultMessage": "Authenticate with {remote}"
-  },
-  "getDownSyncAction.tsx_dKtz/9": {
-    "defaultMessage": "Sync"
-  },
-  "getDownSyncAction.tsx_eOnwqs": {
-    "defaultMessage": "Syncing"
-  },
-  "getDownSyncAction.tsx_mG35sa": {
-    "defaultMessage": "Last sync failed"
   },
   "getIntlMessages.ts_/GCoTA": {
     "defaultMessage": "Clear"
@@ -1760,6 +1655,9 @@
   "openFileWithNativeApp.ts_Blh3UZ": {
     "defaultMessage": "Opening file failed"
   },
+  "rhfAppPermissions.ts_+Ynh/m": {
+    "defaultMessage": "Enter a valid HTTP(S) origin without a path, query, or fragment."
+  },
   "typescriptModule.ts_MZNYNj": {
     "defaultMessage": "TypeScript compilation required"
   },
@@ -1768,5 +1666,11 @@
   },
   "typescriptModule.ts_yZ+w+N": {
     "defaultMessage": "TypeScript compilation failed"
+  },
+  "useCreateAndEditApp.ts_NhuEyZ": {
+    "defaultMessage": "Error creating app"
+  },
+  "useCreateAndEditApp.ts_SbVBaN": {
+    "defaultMessage": "New app"
   }
 }

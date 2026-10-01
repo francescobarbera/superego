@@ -1,6 +1,6 @@
 {
   "name": "@superego/tsc-typescript-compiler",
-  "version": "2026.3.8",
+  "version": "2026.9.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -18,9 +18,11 @@
     "@superego/global-types": "workspace:*",
     "@superego/shared-utils": "workspace:*",
     "@typescript/vfs": "^1.6.4",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "vitest": "^4.1.0"
+    "@types/node": "^26.5.1",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0"
   }
 }

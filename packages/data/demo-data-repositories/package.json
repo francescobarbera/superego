@@ -1,6 +1,6 @@
 {
   "name": "@superego/demo-data-repositories",
-  "version": "2026.3.8",
+  "version": "2026.9.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -19,10 +19,11 @@
     "flexsearch": "^0.8.212"
   },
   "devDependencies": {
-    "@vitest/browser": "^4.1.0",
-    "@vitest/browser-playwright": "^4.1.0",
-    "playwright": "^1.58.2",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "@vitest/browser": "^5.0.0",
+    "@vitest/browser-playwright": "^5.0.0",
+    "playwright": "^1.63.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0"
   }
 }

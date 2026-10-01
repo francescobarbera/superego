@@ -3,8 +3,15 @@ import type { Schema } from "@superego/schema";
 import type AssistantName from "./enums/AssistantName.js";
 import type AppNameNotValid from "./errors/AppNameNotValid.js";
 import type AppNotFound from "./errors/AppNotFound.js";
+import type AppStateContentNotValid from "./errors/AppStateContentNotValid.js";
+import type AppStateMigrationFailed from "./errors/AppStateMigrationFailed.js";
+import type AppStateMigrationNotValid from "./errors/AppStateMigrationNotValid.js";
+import type AppStateMigrationRequired from "./errors/AppStateMigrationRequired.js";
+import type AppStateRevisionNotMatching from "./errors/AppStateRevisionNotMatching.js";
+import type AppStateSchemaNotValid from "./errors/AppStateSchemaNotValid.js";
+import type AppVersionIdNotMatching from "./errors/AppVersionIdNotMatching.js";
+import type ArgumentsNotValid from "./errors/ArgumentsNotValid.js";
 import type BackgroundJobNotFound from "./errors/BackgroundJobNotFound.js";
-import type CannotChangeCollectionRemoteConnector from "./errors/CannotChangeCollectionRemoteConnector.js";
 import type CannotContinueConversation from "./errors/CannotContinueConversation.js";
 import type CannotRecoverConversation from "./errors/CannotRecoverConversation.js";
 import type CannotRetryLastResponse from "./errors/CannotRetryLastResponse.js";
@@ -12,10 +19,7 @@ import type CollectionCategoryHasChildren from "./errors/CollectionCategoryHasCh
 import type CollectionCategoryIconNotValid from "./errors/CollectionCategoryIconNotValid.js";
 import type CollectionCategoryNameNotValid from "./errors/CollectionCategoryNameNotValid.js";
 import type CollectionCategoryNotFound from "./errors/CollectionCategoryNotFound.js";
-import type CollectionHasDocuments from "./errors/CollectionHasDocuments.js";
-import type CollectionHasNoRemote from "./errors/CollectionHasNoRemote.js";
 import type CollectionIsReferenced from "./errors/CollectionIsReferenced.js";
-import type CollectionIsSyncing from "./errors/CollectionIsSyncing.js";
 import type CollectionMigrationFailed from "./errors/CollectionMigrationFailed.js";
 import type CollectionMigrationNotValid from "./errors/CollectionMigrationNotValid.js";
 import type CollectionNotFound from "./errors/CollectionNotFound.js";
@@ -24,22 +28,18 @@ import type CollectionSettingsNotValid from "./errors/CollectionSettingsNotValid
 import type CollectionVersionIdNotMatching from "./errors/CollectionVersionIdNotMatching.js";
 import type CollectionVersionNotFound from "./errors/CollectionVersionNotFound.js";
 import type CommandConfirmationNotValid from "./errors/CommandConfirmationNotValid.js";
-import type ConnectorAuthenticationSettingsNotValid from "./errors/ConnectorAuthenticationSettingsNotValid.js";
-import type ConnectorDoesNotSupportUpSyncing from "./errors/ConnectorDoesNotSupportUpSyncing.js";
-import type ConnectorDoesNotUseOAuth2PKCEAuthenticationStrategy from "./errors/ConnectorDoesNotUseOAuth2PKCEAuthenticationStrategy.js";
-import type ConnectorNotAuthenticated from "./errors/ConnectorNotAuthenticated.js";
-import type ConnectorNotFound from "./errors/ConnectorNotFound.js";
-import type ConnectorSettingsNotValid from "./errors/ConnectorSettingsNotValid.js";
 import type ContentBlockingKeysGetterNotValid from "./errors/ContentBlockingKeysGetterNotValid.js";
 import type ContentSummaryGetterNotValid from "./errors/ContentSummaryGetterNotValid.js";
 import type ConversationNotFound from "./errors/ConversationNotFound.js";
 import type DefaultDocumentViewUiOptionsNotValid from "./errors/DefaultDocumentViewUiOptionsNotValid.js";
 import type DocumentContentNotValid from "./errors/DocumentContentNotValid.js";
+import type DocumentContentPatchNotValid from "./errors/DocumentContentPatchNotValid.js";
 import type DocumentIsReferenced from "./errors/DocumentIsReferenced.js";
 import type DocumentNotFound from "./errors/DocumentNotFound.js";
 import type DocumentVersionIdNotMatching from "./errors/DocumentVersionIdNotMatching.js";
 import type DocumentVersionNotFound from "./errors/DocumentVersionNotFound.js";
 import type DuplicateDocumentDetected from "./errors/DuplicateDocumentDetected.js";
+import type ExecutingTypescriptFunctionFailed from "./errors/ExecutingTypescriptFunctionFailed.js";
 import type FileNotFound from "./errors/FileNotFound.js";
 import type FilesNotFound from "./errors/FilesNotFound.js";
 import type GlobalSettingsNotValid from "./errors/GlobalSettingsNotValid.js";
@@ -51,11 +51,12 @@ import type ParentCollectionCategoryIsDescendant from "./errors/ParentCollection
 import type ParentCollectionCategoryNotFound from "./errors/ParentCollectionCategoryNotFound.js";
 import type ReferencedCollectionsNotFound from "./errors/ReferencedCollectionsNotFound.js";
 import type ReferencedDocumentsNotFound from "./errors/ReferencedDocumentsNotFound.js";
-import type RemoteConvertersNotValid from "./errors/RemoteConvertersNotValid.js";
 import type TooManyFailedImplementationAttempts from "./errors/TooManyFailedImplementationAttempts.js";
+import type TypescriptCompilationFailed from "./errors/TypescriptCompilationFailed.js";
 import type UnexpectedError from "./errors/UnexpectedError.js";
 import type WriteTypescriptModuleToolNotCalled from "./errors/WriteTypescriptModuleToolNotCalled.js";
 import type AppId from "./ids/AppId.js";
+import type AppVersionId from "./ids/AppVersionId.js";
 import type BackgroundJobId from "./ids/BackgroundJobId.js";
 import type CollectionCategoryId from "./ids/CollectionCategoryId.js";
 import type CollectionId from "./ids/CollectionId.js";
@@ -67,6 +68,9 @@ import type FileId from "./ids/FileId.js";
 import type PackId from "./ids/PackId.js";
 import type App from "./types/App.js";
 import type AppDefinition from "./types/AppDefinition.js";
+import type AppPermissions from "./types/AppPermissions.js";
+import type AppState from "./types/AppState.js";
+import type AppStateDefinition from "./types/AppStateDefinition.js";
 import type AppVersion from "./types/AppVersion.js";
 import type AudioContent from "./types/AudioContent.js";
 import type BackgroundJob from "./types/BackgroundJob.js";
@@ -77,23 +81,22 @@ import type CollectionDefinition from "./types/CollectionDefinition.js";
 import type CollectionSettings from "./types/CollectionSettings.js";
 import type CollectionVersion from "./types/CollectionVersion.js";
 import type CollectionVersionSettings from "./types/CollectionVersionSettings.js";
-import type Connector from "./types/Connector.js";
-import type ConnectorAuthenticationSettings from "./types/ConnectorAuthenticationSettings.js";
 import type Conversation from "./types/Conversation.js";
 import type DeveloperPrompts from "./types/DeveloperPrompts.js";
 import type Document from "./types/Document.js";
+import type DocumentContentChange from "./types/DocumentContentChange.js";
 import type DocumentDefinition from "./types/DocumentDefinition.js";
 import type DocumentVersion from "./types/DocumentVersion.js";
 import type GlobalSettings from "./types/GlobalSettings.js";
 import type InferenceOptions from "./types/InferenceOptions.js";
 import type LiteBackgroundJob from "./types/LiteBackgroundJob.js";
+import type LiteCollection from "./types/LiteCollection.js";
 import type LiteConversation from "./types/LiteConversation.js";
 import type LiteDocument from "./types/LiteDocument.js";
 import type LitePack from "./types/LitePack.js";
 import type Message from "./types/Message.js";
 import type MinimalDocumentVersion from "./types/MinimalDocumentVersion.js";
 import type Pack from "./types/Pack.js";
-import type RemoteConverters from "./types/RemoteConverters.js";
 import type TextSearchResult from "./types/TextSearchResult.js";
 import type TypescriptFile from "./types/TypescriptFile.js";
 import type TypescriptModule from "./types/TypescriptModule.js";
@@ -107,6 +110,7 @@ export default interface Backend {
       | CollectionCategoryNameNotValid
       | CollectionCategoryIconNotValid
       | ParentCollectionCategoryNotFound
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -120,6 +124,7 @@ export default interface Backend {
       | CollectionCategoryIconNotValid
       | ParentCollectionCategoryNotFound
       | ParentCollectionCategoryIsDescendant
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -129,10 +134,14 @@ export default interface Backend {
       null,
       | CollectionCategoryNotFound
       | CollectionCategoryHasChildren
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
-    list(): ResultPromise<CollectionCategory[], UnexpectedError>;
+    list(): ResultPromise<
+      CollectionCategory[],
+      ArgumentsNotValid | UnexpectedError
+    >;
   };
 
   collections: {
@@ -148,9 +157,11 @@ export default interface Backend {
       | ContentBlockingKeysGetterNotValid
       | ContentSummaryGetterNotValid
       | DefaultDocumentViewUiOptionsNotValid
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
+    /** Atomic: if any collection fails, no collections are created. */
     createMany(
       definitions: CollectionDefinition[],
     ): ResultPromise<
@@ -163,6 +174,7 @@ export default interface Backend {
       | ContentBlockingKeysGetterNotValid
       | ContentSummaryGetterNotValid
       | DefaultDocumentViewUiOptionsNotValid
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -175,56 +187,7 @@ export default interface Backend {
       | CollectionSettingsNotValid
       | CollectionCategoryNotFound
       | AppNotFound
-      | UnexpectedError
-    >;
-
-    setRemote(
-      id: CollectionId,
-      connectorName: string,
-      connectorAuthenticationSettings: ConnectorAuthenticationSettings,
-      connectorSettings: any,
-      remoteConverters: RemoteConverters,
-    ): ResultPromise<
-      Collection,
-      | CollectionNotFound
-      | CollectionHasDocuments
-      | ConnectorNotFound
-      | CannotChangeCollectionRemoteConnector
-      | ConnectorAuthenticationSettingsNotValid
-      | ConnectorSettingsNotValid
-      | RemoteConvertersNotValid
-      | UnexpectedError
-    >;
-
-    getOAuth2PKCEConnectorAuthorizationRequestUrl(
-      id: CollectionId,
-    ): ResultPromise<
-      string,
-      | CollectionNotFound
-      | CollectionHasNoRemote
-      | ConnectorDoesNotUseOAuth2PKCEAuthenticationStrategy
-      | UnexpectedError
-    >;
-
-    authenticateOAuth2PKCEConnector(
-      id: CollectionId,
-      authorizationResponseUrl: string,
-    ): ResultPromise<
-      Collection,
-      | CollectionNotFound
-      | CollectionHasNoRemote
-      | ConnectorDoesNotUseOAuth2PKCEAuthenticationStrategy
-      | UnexpectedError
-    >;
-
-    triggerDownSync(
-      id: CollectionId,
-    ): ResultPromise<
-      Collection,
-      | CollectionNotFound
-      | CollectionHasNoRemote
-      | CollectionIsSyncing
-      | ConnectorNotAuthenticated
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -234,10 +197,7 @@ export default interface Backend {
       latestVersionId: CollectionVersionId,
       schema: Schema,
       settings: CollectionVersionSettings,
-      /** Null for collections with a remote. */
-      migration: TypescriptModule | null,
-      /** Null for collections without a remote. */
-      remoteConverters: RemoteConverters | null,
+      migration: TypescriptModule,
     ): ResultPromise<
       Collection,
       | CollectionNotFound
@@ -248,8 +208,8 @@ export default interface Backend {
       | ContentBlockingKeysGetterNotValid
       | DefaultDocumentViewUiOptionsNotValid
       | CollectionMigrationNotValid
-      | RemoteConvertersNotValid
       | CollectionMigrationFailed
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -265,6 +225,7 @@ export default interface Backend {
       | MakingContentBlockingKeysFailed
       | ContentSummaryGetterNotValid
       | DefaultDocumentViewUiOptionsNotValid
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -284,19 +245,44 @@ export default interface Backend {
       | CommandConfirmationNotValid
       | CollectionIsReferenced
       | DocumentIsReferenced
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
-    list(): ResultPromise<Collection[], UnexpectedError>;
+    list(): ResultPromise<
+      LiteCollection[],
+      ArgumentsNotValid | UnexpectedError
+    >;
+    list(
+      lite: false,
+    ): ResultPromise<Collection[], ArgumentsNotValid | UnexpectedError>;
+    list(
+      lite?: false,
+    ): ResultPromise<
+      (LiteCollection | Collection)[],
+      ArgumentsNotValid | UnexpectedError
+    >;
 
-    listConnectors(): ResultPromise<Connector[], UnexpectedError>;
+    get(
+      id: CollectionId,
+    ): ResultPromise<
+      Collection,
+      CollectionNotFound | ArgumentsNotValid | UnexpectedError
+    >;
 
     getVersion(
       collectionId: CollectionId,
       collectionVersionId: CollectionVersionId,
     ): ResultPromise<
       CollectionVersion,
-      CollectionVersionNotFound | UnexpectedError
+      CollectionVersionNotFound | ArgumentsNotValid | UnexpectedError
+    >;
+
+    getTypescriptSchema(
+      collectionId: CollectionId,
+    ): ResultPromise<
+      string,
+      CollectionNotFound | ArgumentsNotValid | UnexpectedError
     >;
   };
 
@@ -306,26 +292,27 @@ export default interface Backend {
     ): ResultPromise<
       Document,
       | CollectionNotFound
-      | ConnectorDoesNotSupportUpSyncing
       | DocumentContentNotValid
       | FilesNotFound
       | ReferencedDocumentsNotFound
       | MakingContentBlockingKeysFailed
       | DuplicateDocumentDetected
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
+    /** Atomic: if any document fails, no documents are created. */
     createMany(
       definitions: DocumentDefinition[],
     ): ResultPromise<
       Document[],
       | CollectionNotFound
-      | ConnectorDoesNotSupportUpSyncing
       | DocumentContentNotValid
       | FilesNotFound
       | ReferencedDocumentsNotFound
       | MakingContentBlockingKeysFailed
       | DuplicateDocumentDetected
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -333,17 +320,18 @@ export default interface Backend {
       collectionId: CollectionId,
       id: DocumentId,
       latestVersionId: DocumentVersionId,
-      content: any,
+      contentChange: DocumentContentChange,
     ): ResultPromise<
       Document,
       | CollectionNotFound
       | DocumentNotFound
-      | ConnectorDoesNotSupportUpSyncing
       | DocumentVersionIdNotMatching
+      | DocumentContentPatchNotValid
       | DocumentContentNotValid
       | MakingContentBlockingKeysFailed
       | FilesNotFound
       | ReferencedDocumentsNotFound
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -363,24 +351,30 @@ export default interface Backend {
       | CollectionNotFound
       | DocumentNotFound
       | CommandConfirmationNotValid
-      | ConnectorDoesNotSupportUpSyncing
       | DocumentIsReferenced
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
     list(
       collectionId: CollectionId,
-    ): ResultPromise<LiteDocument[], CollectionNotFound | UnexpectedError>;
+    ): ResultPromise<
+      LiteDocument[],
+      CollectionNotFound | ArgumentsNotValid | UnexpectedError
+    >;
     list(
       collectionId: CollectionId,
       lite: false,
-    ): ResultPromise<Document[], CollectionNotFound | UnexpectedError>;
+    ): ResultPromise<
+      Document[],
+      CollectionNotFound | ArgumentsNotValid | UnexpectedError
+    >;
     list(
       collectionId: CollectionId,
       lite?: false,
     ): ResultPromise<
       (LiteDocument | Document)[],
-      CollectionNotFound | UnexpectedError
+      CollectionNotFound | ArgumentsNotValid | UnexpectedError
     >;
 
     listVersions(
@@ -388,13 +382,16 @@ export default interface Backend {
       id: DocumentId,
     ): ResultPromise<
       MinimalDocumentVersion[],
-      DocumentNotFound | UnexpectedError
+      DocumentNotFound | ArgumentsNotValid | UnexpectedError
     >;
 
     get(
       collectionId: CollectionId,
       id: DocumentId,
-    ): ResultPromise<Document, DocumentNotFound | UnexpectedError>;
+    ): ResultPromise<
+      Document,
+      DocumentNotFound | ArgumentsNotValid | UnexpectedError
+    >;
 
     getVersion(
       collectionId: CollectionId,
@@ -402,7 +399,19 @@ export default interface Backend {
       documentVersionId: DocumentVersionId,
     ): ResultPromise<
       DocumentVersion,
-      DocumentVersionNotFound | UnexpectedError
+      DocumentVersionNotFound | ArgumentsNotValid | UnexpectedError
+    >;
+
+    executeTypescriptFunction(
+      collectionIds: CollectionId[],
+      typescriptFunction: string,
+    ): ResultPromise<
+      any,
+      | CollectionNotFound
+      | TypescriptCompilationFailed
+      | ExecutingTypescriptFunctionFailed
+      | ArgumentsNotValid
+      | UnexpectedError
     >;
 
     search(
@@ -415,14 +424,17 @@ export default interface Backend {
       },
     ): ResultPromise<
       TextSearchResult<LiteDocument>[],
-      CollectionNotFound | UnexpectedError
+      CollectionNotFound | ArgumentsNotValid | UnexpectedError
     >;
   };
 
   files: {
     getContent(
       id: FileId,
-    ): ResultPromise<Uint8Array<ArrayBuffer>, FileNotFound | UnexpectedError>;
+    ): ResultPromise<
+      Uint8Array<ArrayBuffer>,
+      FileNotFound | ArgumentsNotValid | UnexpectedError
+    >;
   };
 
   assistants: {
@@ -432,7 +444,10 @@ export default interface Backend {
       inferenceOptions: InferenceOptions<"completion">,
     ): ResultPromise<
       Conversation,
-      FilesNotFound | InferenceOptionsNotValid | UnexpectedError
+      | FilesNotFound
+      | InferenceOptionsNotValid
+      | ArgumentsNotValid
+      | UnexpectedError
     >;
 
     continueConversation(
@@ -445,6 +460,7 @@ export default interface Backend {
       | CannotContinueConversation
       | FilesNotFound
       | InferenceOptionsNotValid
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -456,6 +472,7 @@ export default interface Backend {
       | ConversationNotFound
       | CannotRetryLastResponse
       | InferenceOptionsNotValid
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -467,6 +484,7 @@ export default interface Backend {
       | ConversationNotFound
       | CannotRecoverConversation
       | InferenceOptionsNotValid
+      | ArgumentsNotValid
       | UnexpectedError
     >;
 
@@ -475,32 +493,50 @@ export default interface Backend {
       commandConfirmation: string,
     ): ResultPromise<
       null,
-      ConversationNotFound | CommandConfirmationNotValid | UnexpectedError
+      | ConversationNotFound
+      | CommandConfirmationNotValid
+      | ArgumentsNotValid
+      | UnexpectedError
     >;
 
-    listConversations(): ResultPromise<LiteConversation[], UnexpectedError>;
+    listConversations(): ResultPromise<
+      LiteConversation[],
+      ArgumentsNotValid | UnexpectedError
+    >;
 
     getConversation(
       id: ConversationId,
-    ): ResultPromise<Conversation, ConversationNotFound | UnexpectedError>;
+    ): ResultPromise<
+      Conversation,
+      ConversationNotFound | ArgumentsNotValid | UnexpectedError
+    >;
 
     getLiveConversation(
       id: ConversationId,
-    ): ResultPromise<Conversation | null, UnexpectedError>;
+    ): ResultPromise<Conversation | null, ArgumentsNotValid | UnexpectedError>;
 
     searchConversations(
       query: string,
       options: { limit: number },
-    ): ResultPromise<TextSearchResult<LiteConversation>[], UnexpectedError>;
+    ): ResultPromise<
+      TextSearchResult<LiteConversation>[],
+      ArgumentsNotValid | UnexpectedError
+    >;
 
-    getDeveloperPrompts(): ResultPromise<DeveloperPrompts, UnexpectedError>;
+    getDeveloperPrompts(): ResultPromise<
+      DeveloperPrompts,
+      ArgumentsNotValid | UnexpectedError
+    >;
   };
 
   inference: {
     stt(
       audio: AudioContent,
       inferenceOptions: InferenceOptions<"transcription">,
-    ): ResultPromise<string, InferenceOptionsNotValid | UnexpectedError>;
+    ): ResultPromise<
+      string,
+      InferenceOptionsNotValid | ArgumentsNotValid | UnexpectedError
+    >;
 
     implementTypescriptModule(
       spec: {
@@ -518,6 +554,7 @@ export default interface Backend {
       | InferenceOptionsNotValid
       | WriteTypescriptModuleToolNotCalled
       | TooManyFailedImplementationAttempts
+      | ArgumentsNotValid
       | UnexpectedError
     >;
   };
@@ -527,29 +564,85 @@ export default interface Backend {
       definition: AppDefinition,
     ): ResultPromise<
       App,
-      AppNameNotValid | CollectionNotFound | UnexpectedError
+      | AppStateSchemaNotValid
+      | AppStateContentNotValid
+      | AppNameNotValid
+      | CollectionNotFound
+      | ArgumentsNotValid
+      | UnexpectedError
     >;
+
+    updatePermissions(
+      id: AppId,
+      permissions: AppPermissions,
+    ): ResultPromise<App, AppNotFound | ArgumentsNotValid | UnexpectedError>;
 
     updateName(
       id: AppId,
       name: string,
-    ): ResultPromise<App, AppNotFound | AppNameNotValid | UnexpectedError>;
+    ): ResultPromise<
+      App,
+      AppNotFound | AppNameNotValid | ArgumentsNotValid | UnexpectedError
+    >;
 
     createNewVersion(
       id: AppId,
+      latestVersionId: AppVersionId,
       targetCollectionIds: CollectionId[],
       files: AppVersion["files"],
-    ): ResultPromise<App, AppNotFound | CollectionNotFound | UnexpectedError>;
+      stateDefinition: AppStateDefinition,
+    ): ResultPromise<
+      App,
+      | AppStateSchemaNotValid
+      | AppStateContentNotValid
+      | AppStateMigrationRequired
+      | AppStateMigrationNotValid
+      | AppStateMigrationFailed
+      | AppVersionIdNotMatching
+      | AppNotFound
+      | CollectionNotFound
+      | ArgumentsNotValid
+      | UnexpectedError
+    >;
 
     delete(
       id: AppId,
       commandConfirmation: string,
     ): ResultPromise<
       null,
-      AppNotFound | CommandConfirmationNotValid | UnexpectedError
+      | AppNotFound
+      | CommandConfirmationNotValid
+      | ArgumentsNotValid
+      | UnexpectedError
     >;
 
-    list(): ResultPromise<App[], UnexpectedError>;
+    list(): ResultPromise<App[], ArgumentsNotValid | UnexpectedError>;
+
+    getState(
+      id: AppId,
+      versionId: AppVersionId,
+    ): ResultPromise<
+      AppState,
+      | AppNotFound
+      | AppVersionIdNotMatching
+      | ArgumentsNotValid
+      | UnexpectedError
+    >;
+
+    updateState(
+      id: AppId,
+      versionId: AppVersionId,
+      latestRevision: number,
+      content: any,
+    ): ResultPromise<
+      AppState,
+      | AppNotFound
+      | AppVersionIdNotMatching
+      | AppStateRevisionNotMatching
+      | AppStateContentNotValid
+      | ArgumentsNotValid
+      | UnexpectedError
+    >;
   };
 
   packs: {
@@ -572,6 +665,8 @@ export default interface Backend {
       | ContentBlockingKeysGetterNotValid
       | ContentSummaryGetterNotValid
       | DefaultDocumentViewUiOptionsNotValid
+      | AppStateSchemaNotValid
+      | AppStateContentNotValid
       | AppNameNotValid
       | CollectionNotFound
       | DocumentContentNotValid
@@ -579,34 +674,47 @@ export default interface Backend {
       | ReferencedDocumentsNotFound
       | MakingContentBlockingKeysFailed
       | DuplicateDocumentDetected
-      | ConnectorDoesNotSupportUpSyncing
+      | ArgumentsNotValid
       | UnexpectedError
     >;
   };
 
   boutique: {
-    listPacks(): ResultPromise<LitePack[], UnexpectedError>;
+    listPacks(): ResultPromise<LitePack[], ArgumentsNotValid | UnexpectedError>;
 
-    getPack(id: PackId): ResultPromise<Pack, PackNotFound | UnexpectedError>;
+    getPack(
+      id: PackId,
+    ): ResultPromise<Pack, PackNotFound | ArgumentsNotValid | UnexpectedError>;
   };
 
   backgroundJobs: {
-    list(): ResultPromise<LiteBackgroundJob[], UnexpectedError>;
+    list(): ResultPromise<
+      LiteBackgroundJob[],
+      ArgumentsNotValid | UnexpectedError
+    >;
 
     get(
       id: BackgroundJobId,
-    ): ResultPromise<BackgroundJob, BackgroundJobNotFound | UnexpectedError>;
+    ): ResultPromise<
+      BackgroundJob,
+      BackgroundJobNotFound | ArgumentsNotValid | UnexpectedError
+    >;
   };
 
   globalSettings: {
-    get(): ResultPromise<GlobalSettings, UnexpectedError>;
+    get(): ResultPromise<GlobalSettings, ArgumentsNotValid | UnexpectedError>;
 
     update(
       globalSettingsPatch: Partial<GlobalSettings>,
-    ): ResultPromise<GlobalSettings, GlobalSettingsNotValid | UnexpectedError>;
+    ): ResultPromise<
+      GlobalSettings,
+      GlobalSettingsNotValid | ArgumentsNotValid | UnexpectedError
+    >;
   };
 
   database: {
-    export(path: string): ResultPromise<null, UnexpectedError>;
+    export(
+      path: string,
+    ): ResultPromise<null, ArgumentsNotValid | UnexpectedError>;
   };
 }

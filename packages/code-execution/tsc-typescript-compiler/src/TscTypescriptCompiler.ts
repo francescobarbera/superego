@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import type {
   TypescriptCompilationFailed,
   TypescriptFile,
@@ -7,6 +9,7 @@ import type { TypescriptCompiler } from "@superego/executing-backend";
 import type { ResultPromise } from "@superego/global-types";
 import {
   extractErrorDetails,
+  getTypescriptCompilerOptions,
   makeSuccessfulResult,
   makeUnsuccessfulResult,
 } from "@superego/shared-utils";
@@ -20,57 +23,17 @@ export default class TscTypescriptCompiler implements TypescriptCompiler {
     libs: TypescriptFile[],
   ): ResultPromise<string, TypescriptCompilationFailed | UnexpectedError> {
     try {
-      const fs = tsvfs.createDefaultMapFromNodeModules({
-        target: ts.ScriptTarget.ESNext,
-      });
+      const fs = tsvfs.createDefaultMapFromNodeModules(
+        { target: ts.ScriptTarget.ESNext },
+        ts,
+        this.getPackagedElectronTypescriptLibDirectory(),
+      );
       fs.set(main.path, main.source);
       for (const lib of libs) {
         fs.set(lib.path, lib.source);
       }
 
-      const compilerOptions: ts.CompilerOptions = {
-        // Emit
-        noEmit: false,
-        sourceMap: false,
-        declaration: false,
-        declarationMap: false,
-
-        // Modules
-        module: ts.ModuleKind.ESNext,
-        moduleResolution: ts.ModuleResolutionKind.NodeJs,
-
-        // Interop constraints
-        allowSyntheticDefaultImports: true,
-
-        // Language and environment
-        target: ts.ScriptTarget.ESNext,
-        jsx: ts.JsxEmit.React,
-
-        // Completeness
-        skipLibCheck: true,
-
-        // Type checking options
-        allowUnreachableCode: false,
-        allowUnusedLabels: false,
-        alwaysStrict: true,
-        exactOptionalPropertyTypes: false,
-        noFallthroughCasesInSwitch: true,
-        noImplicitAny: true,
-        noImplicitOverride: false,
-        noImplicitReturns: true,
-        noImplicitThis: true,
-        noPropertyAccessFromIndexSignature: false,
-        noUncheckedIndexedAccess: false,
-        noUnusedLocals: false,
-        noUnusedParameters: false,
-        strict: true,
-        strictBindCallApply: true,
-        strictBuiltinIteratorReturn: true,
-        strictFunctionTypes: true,
-        strictNullChecks: true,
-        strictPropertyInitialization: true,
-        useUnknownInCatchVariables: true,
-      };
+      const compilerOptions = getTypescriptCompilerOptions(ts);
       const program = ts.createProgram({
         rootNames: [...fs.keys()],
         options: compilerOptions,
@@ -113,5 +76,22 @@ export default class TscTypescriptCompiler implements TypescriptCompiler {
         details: { cause: extractErrorDetails(error) },
       });
     }
+  }
+
+  private getPackagedElectronTypescriptLibDirectory(): string | undefined {
+    const resourcesPath = (
+      process as typeof process & { resourcesPath?: string }
+    ).resourcesPath;
+    if (!resourcesPath) {
+      return undefined;
+    }
+
+    const typescriptLibDirectory = join(
+      resourcesPath,
+      "app.asar/node_modules/typescript/lib",
+    );
+    return existsSync(typescriptLibDirectory)
+      ? typescriptLibDirectory
+      : undefined;
   }
 }

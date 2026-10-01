@@ -1,6 +1,6 @@
 {
   "name": "@superego/sqlite-data-repositories",
-  "version": "2026.3.8",
+  "version": "2026.9.1",
   "private": true,
   "type": "module",
   "exports": {
@@ -17,13 +17,14 @@
     "@superego/backend": "workspace:*",
     "@superego/executing-backend": "workspace:*",
     "@superego/schema": "workspace:*",
-    "es-toolkit": "^1.45.1",
+    "es-toolkit": "^1.52.0",
     "flexsearch": "^0.8.212",
-    "jsondiffpatch": "^0.7.3"
+    "jsondiffpatch": "^0.7.6"
   },
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "@types/node": "^26.5.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0"
   }
 }

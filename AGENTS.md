@@ -8,10 +8,23 @@
 - **Package manager:** Yarn (Berry) via Corepack. PnP is **not** used.
 - Follow existing patterns in the package you are editing; keep changes focused
   and consistent with surrounding code.
+- **Never force push. Never amend commits that have already been pushed.** If a
+  pushed commit needs a fix, create a new forward commit and push normally,
+  unless the user explicitly instructs otherwise.
 - **Never** use abbreviations for variable names, aside from common
-  abbreviations (e.g., `i` for loop variables) and acronyms (e.g., `url`).
+  abbreviations (e.g., `i` for loop variables, `pkg` for package metadata),
+  acronyms (e.g., `url`), and idiomatic or project-standard namespace/import
+  aliases. Allowed aliases include `v` for Valibot and `cs` for vanilla-extract
+  style namespace imports from `.css.ts` files.
 - **Always use braces** for `if`/`else`/`for`/`while` blocks, even single-line
   bodies.
+
+## Data migrations
+
+- **Demo repositories NEVER need migrations.** The demo database is recreated
+  from scratch for each different commit. Do not add data migrations or
+  backward-compatibility migration logic to
+  `packages/data/demo-data-repositories`.
 
 ## Testing
 
@@ -43,7 +56,9 @@ a test.
 - `yarn check-types`: checks that **all packages** compile correctly
 - `yarn check-translations`: checks translations are up-to-date and complete
 
-Always run the checks before committing. They **should** pass, but if some fails
+Always run the checks before committing. **There must be no lint warnings or
+errors**, including pre-existing ones. Fix all lint findings before considering
+the work complete or committing. Other checks **should** pass, but if one fails
 and it's not trivial to fix, you can leave it failing and commit anyway.
 
 ### Workspace-specific
